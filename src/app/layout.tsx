@@ -3,6 +3,7 @@ import "../styles/globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Navbar } from "@/components/ui/Navbar";
+import { cn } from "@/lib/utils";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,10 +18,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <TopBar />
-      <body className={inter.className}>{children}</body>
-      <Navbar />
+    <html lang="en" className="w-full h-full">
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+      />
+
+      <body className={cn(inter.className, "w-full h-full flex flex-col")}>
+        <TopBar />
+        <main className="flex-1">{children}</main>
+        <Navbar />
+      </body>
     </html>
   );
 }
