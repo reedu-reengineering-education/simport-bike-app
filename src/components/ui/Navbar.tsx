@@ -33,7 +33,7 @@ const Navbar = () => {
           <Icon
             className={cx(
               "w-6 h-6",
-              pathName === href ? "text-primary" : "text-primary/50"
+              pathName === href ? "text-primary" : "text-primary/50",
             )}
           />
         </Link>

@@ -27,7 +27,7 @@ export default function ConnectionSelection() {
 
       // connect to device, the onDisconnect callback is optional
       await BleClient.connect(device.deviceId, (deviceId) =>
-        console.log(deviceId + " got disconnected")
+        console.log(deviceId + " got disconnected"),
       );
       console.log("connected to device", device);
       setConnected(true);
@@ -39,7 +39,7 @@ export default function ConnectionSelection() {
         (value) => {
           setValues((old) => [...old, value.getFloat32(0, true)]);
           console.log("current value", value.getFloat32(0, true));
-        }
+        },
       );
 
       // disconnect after 10 sec
@@ -47,7 +47,7 @@ export default function ConnectionSelection() {
         await BleClient.stopNotifications(
           device.deviceId,
           HEART_RATE_SERVICE,
-          HEART_RATE_MEASUREMENT_CHARACTERISTIC
+          HEART_RATE_MEASUREMENT_CHARACTERISTIC,
         );
         await BleClient.disconnect(device.deviceId);
         console.log("disconnected from device", device);
@@ -78,7 +78,7 @@ export default function ConnectionSelection() {
           {connected && (
             <div>
               {values.map((value) => (
-                <div>{value}</div>
+                <div key={value}>{value}</div>
               ))}
             </div>
           )}
