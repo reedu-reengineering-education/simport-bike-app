@@ -78,7 +78,7 @@ export default function ConnectionSelection() {
           {connected && (
             <div>
               {values.map((value) => (
-                <div>{value}</div>
+                <div key={value}>{value}</div>
               ))}
             </div>
           )}
