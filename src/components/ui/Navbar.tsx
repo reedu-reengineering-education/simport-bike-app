@@ -1,8 +1,9 @@
 "use client";
+
 import {
-  AcademicCapIcon,
-  BellIcon,
-  ExclamationTriangleIcon,
+  CpuChipIcon,
+  GlobeEuropeAfricaIcon,
+  HomeIcon,
 } from "@heroicons/react/24/outline";
 import { cx } from "class-variance-authority";
 import Link from "next/link";
@@ -11,15 +12,15 @@ import { usePathname } from "next/navigation";
 const pages = [
   {
     href: "/",
-    icon: AcademicCapIcon,
+    icon: HomeIcon,
   },
   {
-    href: "/notifications",
-    icon: BellIcon,
+    href: "/device",
+    icon: CpuChipIcon,
   },
   {
-    href: "/alerts",
-    icon: ExclamationTriangleIcon,
+    href: "/about",
+    icon: GlobeEuropeAfricaIcon,
   },
 ];
 
@@ -27,9 +28,16 @@ const Navbar = () => {
   const pathName = usePathname();
 
   return (
-    <div className="flex justify-evenly sticky bottom-0 w-full gap-2 py-4 border-t">
+    <div className="flex justify-evenly sticky bottom-0 w-full gap-2 pb-2 pt-3 border-t">
       {pages.map(({ href, icon: Icon }) => (
-        <Link href={href} key={href}>
+        <Link
+          href={href}
+          key={href}
+          className={cx(
+            pathName === href ? "bg-muted" : "",
+            "rounded-xl px-6 py-1",
+          )}
+        >
           <Icon
             className={cx(
               "w-6 h-6",

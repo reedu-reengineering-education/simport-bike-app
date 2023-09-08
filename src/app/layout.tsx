@@ -21,12 +21,15 @@ export default function RootLayout({
   return (
     <html lang="en" className="w-full h-full">
       <body
-        className={cn(inter.className, "w-full h-full flex flex-col p-safe")}
+        className={cn(
+          inter.className,
+          "w-full h-full flex flex-col p-safe max-h-full",
+        )}
       >
         <header>
           <TopBar />
         </header>
-        <main className="flex-1 p-4">{children}</main>
+        <main className="flex-1 p-4 overflow-auto">{children}</main>
         <nav>
           <Navbar />
         </nav>
