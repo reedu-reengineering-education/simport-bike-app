@@ -5,7 +5,7 @@ const config: CapacitorConfig = {
   appName: "senseBox:Bike X SIMPORT",
   webDir: "out",
   server: {
-    androidScheme: "https",
+    url: "http://192.168.0.220:3000",
   },
 };
 

@@ -13,7 +13,7 @@ import { InfoIcon } from "lucide-react";
 
 const TopBar = () => {
   return (
-    <div className="flex justify-evenly sticky top-0 w-full py-2 border border-slate-300">
+    <div className="flex justify-evenly sticky top-0 w-full py-2 border-b border-slate-300">
       <h1 className="basis-6/7 font-bold text-xl"> senseBox X SIMPORT </h1>
       <DropdownMenu>
         <DropdownMenuTrigger>

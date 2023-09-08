@@ -19,6 +19,13 @@
   dependencies:
     regenerator-runtime "^0.14.0"
 
+"@capacitor-community/bluetooth-le@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@capacitor-community/bluetooth-le/-/bluetooth-le-3.0.1.tgz#068362c4e7fbeb8dc83d8fa6c203a1201614d7c8"
+  integrity sha512-IRjurszsqKgvEiITmqEJnIAyJdPYkLf/45WaPKrCOP2c8bFYCrenBu2tdKXm8Vfh/d0ybpojK1kcEFj8M4z97w==
+  dependencies:
+    "@types/web-bluetooth" "^0.0.16"
+
 "@capacitor/android@^5.3.0":
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/@capacitor/android/-/android-5.3.0.tgz#d6bf2db5f385ac9ec6bc9ccf080c253f3c7b3db8"
@@ -658,6 +665,11 @@
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@types/slice-ansi/-/slice-ansi-4.0.0.tgz#eb40dfbe3ac5c1de61f6bcb9ed471f54baa989d6"
   integrity sha512-+OpjSaq85gvlZAYINyzKpLeiFkSC4EsC6IIiT6v6TLSU5k5U83fHGj9Lel8oKEXM0HqgrMVCjXPDPVICtxF7EQ==
+
+"@types/web-bluetooth@^0.0.16":
+  version "0.0.16"
+  resolved "https://registry.yarnpkg.com/@types/web-bluetooth/-/web-bluetooth-0.0.16.tgz#1d12873a8e49567371f2a75fe3e7f7edca6662d8"
+  integrity sha512-oh8q2Zc32S6gd/j50GowEjKLoOVOwHP/bWVjKJInBwQqdOYMdPrf1oVlelTlyfFK3CKxL1uahMDAr+vy8T7yMQ==
 
 "@typescript-eslint/parser@^5.4.2 || ^6.0.0":
   version "6.6.0"
@@ -3042,6 +3054,11 @@ tailwindcss-animate@^1.0.7:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/tailwindcss-animate/-/tailwindcss-animate-1.0.7.tgz#318b692c4c42676cc9e67b19b78775742388bef4"
   integrity sha512-bl6mpH3T7I3UFxuvDEXLxy/VuFxBk5bbzplh7tXI68mwMokNYd1t9qPBHlnyTwfa4JGC4zP516I1hYYtQ/vspA==
+
+tailwindcss-safe-area@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/tailwindcss-safe-area/-/tailwindcss-safe-area-0.4.0.tgz#0dc3d4d31a121482e7a0ed35dcf2bd311519aada"
+  integrity sha512-V6UFT+LCYJOg9780fcQwA4k0RDCmyjRab7G8fwdeoasT9NOCpmXdCV1q79PSI9AK/KtimTIzGeQfeRH583lH5A==
 
 tailwindcss@3.3.3:
   version "3.3.3"
