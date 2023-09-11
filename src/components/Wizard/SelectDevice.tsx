@@ -11,10 +11,12 @@ import { Toggle } from "../ui/toggle";
 import { Button } from "../ui/button";
 import { cx } from "class-variance-authority";
 import { useState } from "react";
+import { useSwiper } from "swiper/react";
 
 export default function SelectDevice() {
   const boxes = useAuthStore((state) => state.boxes);
 
+  const swiper = useSwiper();
   const [selectedBox, setSelectedBox] = useState("");
   const selectBox = (box) => {
     setSelectedBox(box);
@@ -45,7 +47,13 @@ export default function SelectDevice() {
           ))}{" "}
         </ScrollArea>
 
-        <Button className="w-11/12 rounded-md border">Weiter</Button>
+        <Button
+          disabled={selectedBox === ""}
+          className="w-11/12 rounded-md border"
+          onClick={() => swiper.slideNext()}
+        >
+          Weiter
+        </Button>
       </div>
     </div>
   );

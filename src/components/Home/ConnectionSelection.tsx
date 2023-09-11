@@ -31,7 +31,8 @@ export default function ConnectionSelection() {
       <div className="flex h-full flex-col justify-center gap-10">
         <div className="flex flex-col items-center text-center gap-5">
           <div>
-            Super! Der Login hat funktioniert ! Jetzt müssen wir nur noch die Box mit dem Gerät verbinden.
+            Super! Der Login hat funktioniert und deine Box ist ausgewählt !
+            Jetzt müssen wir nur noch die Box mit dem Gerät verbinden.
           </div>
           <Image
             alt="bike"
