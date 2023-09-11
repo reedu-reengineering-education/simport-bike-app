@@ -7,8 +7,13 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import Welcome from "@/components/Wizard/Welcome";
 import OpenSenseMapLogin from "@/components/Wizard/OpenSenseMapLogin";
+import SelectDevice from "@/components/Wizard/SelectDevice";
+import { useState } from "react";
 
 export default function Home() {
+
+  const [boxes, setBoxes] = useState([])
+
   return (
     <Swiper
     spaceBetween={50}
@@ -23,6 +28,9 @@ export default function Home() {
     </SwiperSlide>
     <SwiperSlide>
       <OpenSenseMapLogin />
+    </SwiperSlide>
+    <SwiperSlide>
+      <SelectDevice />
     </SwiperSlide>
     <SwiperSlide>
       <ConnectionSelection />

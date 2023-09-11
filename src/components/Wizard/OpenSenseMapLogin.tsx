@@ -17,7 +17,7 @@ const formSchema = z.object({
     password: z.string(),
 });
 
-export default function OpenSenseMapLogin(){
+export default function OpenSenseMapLogin(  ){
     const swiper = useSwiper();
     const [loading, setLoading] = useState(false);
     const { login } = useOpenSenseMapAuth();

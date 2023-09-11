@@ -20,6 +20,8 @@ const useOpenSenseMapAuth = () => {
   const setRefreshToken = useAuthStore((state) => state.setRefreshToken);
   const setEmail = useAuthStore((state) => state.setEmail);
   const setPassword = useAuthStore((state) => state.setPassword);
+  const setBoxes = useAuthStore((state) => state.setBoxes);
+
 
   const login = async (username:string, password:string) => {
     try {
@@ -42,6 +44,7 @@ const useOpenSenseMapAuth = () => {
         setRefreshToken(json.refreshToken);
         setEmail(username);
         setPassword(password);
+        setBoxes(json.data.user.boxes);
         return true
       } else {
         // Einloggen fehlgeschlagen
