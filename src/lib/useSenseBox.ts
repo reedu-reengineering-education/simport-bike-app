@@ -59,7 +59,7 @@ export default function useSenseBox(timestampInterval: number = 5000) {
       const existingTimestamp = acc.find(
         (e) =>
           Math.abs(new Date(e.timestamp).getTime() - timestamp.getTime()) <
-          timestampInterval
+          timestampInterval,
       ); // 5 seconds
 
       // add new record or update existing one
