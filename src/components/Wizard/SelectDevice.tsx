@@ -18,9 +18,8 @@ export default function SelectDevice() {
 
   const swiper = useSwiper();
   const [selectedBox, setSelectedBox] = useState("");
-  const selectBox = (box) => {
+  const selectBox = (box: string) => {
     setSelectedBox(box);
-    console.log(box);
     useAuthStore.setState({ selectedBox: box });
   };
 
