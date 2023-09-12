@@ -30,11 +30,19 @@ export default function ConnectionSelection() {
           />
           {!isConnected && (
             <div>
-              Nicht mit senseBox verbunden. Ürprüfen Sie, ob das Gerät
+              Nicht mit senseBox verbunden. Überprüfen Sie, ob das Gerät
               eingeschaltet ist und verbinden Sie das Gerät über Bluetooth
             </div>
           )}
-          {isConnected && <PreviewModal />}
+          {isConnected && (
+            <div>
+              Erfolgreich mit senseBox verbunden! Letzte Messung um{" "}
+              {values
+                .sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime())
+                .at(-1)
+                ?.timestamp.toLocaleTimeString() || "-"}
+            </div>
+          )}
         </div>
         <div className="flex flex-col items-center gap-2">
           {!isConnected && (
@@ -49,11 +57,6 @@ export default function ConnectionSelection() {
           )}
         </div>
       </div>
-      <Link href="/device" className="mx-auto">
-        <Button>
-          Bluetooth Device <ArrowRight className="inline-block w-4 h-4 ml-2" />
-        </Button>
-      </Link>
     </div>
   );
 }
