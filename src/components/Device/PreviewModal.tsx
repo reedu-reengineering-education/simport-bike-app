@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import {
   Dialog,
@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog'
 import {
   Table,
   TableBody,
@@ -17,13 +17,13 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import useSenseBox from "@/lib/useSenseBox";
-import { Button } from "../ui/button";
+} from '@/components/ui/table'
+import useSenseBox from '@/lib/useSenseBox'
+import { Button } from '../ui/button'
 
 export default function PreviewModal() {
   const { isConnected, connect, values, disconnect, resetValues } =
-    useSenseBox();
+    useSenseBox()
 
   return (
     <Dialog>
@@ -34,11 +34,11 @@ export default function PreviewModal() {
         <DialogHeader>
           <DialogTitle>Data Preview</DialogTitle>
           <DialogDescription>
-            Last Measurement:{" "}
+            Last Measurement:{' '}
             {values
               .sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime())
               .at(-1)
-              ?.timestamp.toLocaleTimeString() || "-"}
+              ?.timestamp.toLocaleTimeString() || '-'}
           </DialogDescription>
         </DialogHeader>
         <div className="max-h-80 overflow-auto">
@@ -97,5 +97,5 @@ export default function PreviewModal() {
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  );
+  )
 }
