@@ -19,7 +19,6 @@ export default function MeasurementsOverview({ data }: { data: any }) {
       <span className="flex">
         <CloudIcon className="h-6 w-6" /> {data.pm1} / {data.pm25} / {data.pm4}{" "}
         / {data.pm10} µg/m³
-        {data.pm10} µg/m³
       </span>
       <span className="flex">
         <ChartBarIcon className="h-6 w-6" /> {data.accelerationX} /{" "}
