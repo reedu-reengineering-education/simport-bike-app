@@ -1,8 +1,8 @@
-import { useToast } from '@/components/ui/use-toast';
-import { useState } from 'react';
-import { useAuthStore } from './store/useAuthStore';
+import { useToast } from "@/components/ui/use-toast";
+import { useState } from "react";
+import { useAuthStore } from "./store/useAuthStore";
 
-const OPEN_SENSE_MAP_API = 'https://api.opensensemap.org';
+const OPEN_SENSE_MAP_API = "https://api.opensensemap.org";
 
 interface LoginResponse {
   code: string;
@@ -14,7 +14,7 @@ interface LoginResponse {
 
 const useOpenSenseMapAuth = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const { toast }  = useToast();
+  const { toast } = useToast();
 
   const setToken = useAuthStore((state) => state.setToken);
   const setRefreshToken = useAuthStore((state) => state.setRefreshToken);
@@ -22,13 +22,12 @@ const useOpenSenseMapAuth = () => {
   const setPassword = useAuthStore((state) => state.setPassword);
   const setBoxes = useAuthStore((state) => state.setBoxes);
 
-
-  const login = async (username:string, password:string) => {
+  const login = async (username: string, password: string) => {
     try {
       const response = await fetch(`${OPEN_SENSE_MAP_API}/users/sign-in`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           email: username,
@@ -39,23 +38,22 @@ const useOpenSenseMapAuth = () => {
       if (response.status === 200) {
         // Erfolgreich eingeloggt
         setIsLoggedIn(true);
-        const json:any = await response.json();
+        const json: any = await response.json();
         setToken(json.token);
         setRefreshToken(json.refreshToken);
         setEmail(username);
         setPassword(password);
         setBoxes(json.data.user.boxes);
-        return true
+        return true;
       } else {
         // Einloggen fehlgeschlagen
         setIsLoggedIn(false);
-        return false
+        return false;
       }
     } catch (error) {
       // Fehler beim Einloggen
       setIsLoggedIn(false);
       return false;
-      
     }
   };
 
@@ -63,8 +61,6 @@ const useOpenSenseMapAuth = () => {
     // Hier kannst du die Logik für das Abmelden implementieren, z.B. das Löschen des Tokens oder Zurücksetzen von Zuständen.
     setIsLoggedIn(false);
   };
-
-  
 
   return { isLoggedIn, login, logout };
 };
