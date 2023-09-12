@@ -25,6 +25,7 @@ import { DialogTrigger } from "@radix-ui/react-dialog";
 import SettingsModal from "@/components/Map/Settings";
 import RecordButton from "@/components/Map/RecordButton";
 import MeasurementsOverview from "@/components/Map/MeasurementsOverview";
+import ControlBar from "@/components/Map/ControlBar";
 
 export default function Home() {
   const [recording, setRecording] = useState(false);
@@ -48,23 +49,15 @@ export default function Home() {
   return (
     <div className="h-full w-full">
       <MapComponent />
-      <div className="flex flex-col items-center">
-        <div className="absolute left-5 top-20 bg-slate-100 rounded-lg">
+      <div className="flex flex-col">
+        <div className="absolute left-5 top-20">
           <MeasurementsOverview data={data} />
         </div>
-        <div className="absolute top-20 right-5 rounded-lg">
+        <div className="absolute top-20 right-5 ">
           <RecordButton recording={recording} />
         </div>
-        <div className="absolute bottom-20 right-5 rounded-lg flex gap-2 flex-col bg-white">
-          {recording ? (
-            <PauseIcon
-              className="h-10 w-10"
-              onClick={() => toggleRecording()}
-            />
-          ) : (
-            <PlayIcon className="h-10 w-10" onClick={() => toggleRecording()} />
-          )}
-          <SettingsModal />
+        <div className="absolute bottom-20 right-5 ">
+          <ControlBar recording={recording} toggleRecording={toggleRecording} />
         </div>
       </div>
     </div>

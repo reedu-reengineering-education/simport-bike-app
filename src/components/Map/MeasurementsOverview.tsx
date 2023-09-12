@@ -9,7 +9,7 @@ import {
 
 export default function MeasurementsOverview({ data }: { data: any }) {
   return (
-    <div className="flex flex-col gap-1 ">
+    <div className="flex flex-col gap-1 bg-slate-100 rounded-lg opacity-90">
       <span className="flex">
         <SunIcon className="h-6 w-6" /> {data.temperature}°C
       </span>
