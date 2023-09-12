@@ -1,10 +1,11 @@
-import { TopBar } from '@/components/ui/TopBar'
-import '../styles/globals.css'
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import { Navbar } from '@/components/ui/Navbar'
-import { cn } from '@/lib/utils'
-import { Toaster } from '@/components/ui/toaster'
+import { TopBar } from "@/components/ui/TopBar";
+import "../styles/globals.css";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import { Navbar } from "@/components/ui/Navbar";
+import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/toaster";
+
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -31,7 +32,7 @@ export default function RootLayout({
         <header>
           <TopBar />
         </header>
-        <main className="flex-1 overflow-auto p-4">{children}</main>
+        <main className="flex-1 overflow-auto">{children}</main>
         <nav>
           <Navbar />
         </nav>
