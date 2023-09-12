@@ -1,15 +1,15 @@
-import { create } from "zustand";
+import { create } from 'zustand'
 
 interface SettingsStoreInterface {
-  uploadInterval: number;
-  setUploadInterval: (uploadInterval: number) => void;
-  useDeviceGPS: boolean;
-  setUseDeviceGPS: (useDeviceGPS: boolean) => void;
+  uploadInterval: number
+  setUploadInterval: (uploadInterval: number) => void
+  useDeviceGPS: boolean
+  setUseDeviceGPS: (useDeviceGPS: boolean) => void
 }
 
-export const useSettingsStore = create<SettingsStoreInterface>((set) => ({
+export const useSettingsStore = create<SettingsStoreInterface>(set => ({
   uploadInterval: 10,
-  setUploadInterval: (uploadInterval) => set({ uploadInterval }),
+  setUploadInterval: uploadInterval => set({ uploadInterval }),
   useDeviceGPS: false,
-  setUseDeviceGPS: (useDeviceGPS) => set({ useDeviceGPS }),
-}));
+  setUseDeviceGPS: useDeviceGPS => set({ useDeviceGPS }),
+}))

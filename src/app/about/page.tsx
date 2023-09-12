@@ -1,14 +1,9 @@
-import { Navbar } from '@/components/ui/Navbar'
-import { TopBar } from '@/components/ui/TopBar'
-import { Button } from '@/components/ui/button'
-import {
-  AcademicCapIcon,
-  BellIcon,
-  ExclamationTriangleIcon,
-} from '@heroicons/react/24/outline'
-import Image from 'next/image'
-import Logo from '../../public/bike.png'
+import Geolocation from '@/components/Geolocation'
 
 export default function Home() {
-  return <div className="flex h-full w-full flex-col">des</div>
+  return (
+    <div className="flex h-full w-full flex-col">
+      <Geolocation />
+    </div>
+  )
 }

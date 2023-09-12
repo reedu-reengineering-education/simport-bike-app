@@ -13,11 +13,11 @@ import { InfoIcon } from 'lucide-react'
 
 const TopBar = () => {
   return (
-    <div className="sticky top-0 flex w-full justify-evenly border-b border-slate-300 py-2">
-      <h1 className="basis-6/7 text-xl font-bold"> senseBox X SIMPORT </h1>
+    <div className="sticky top-0 flex w-full items-center justify-between border-b border-slate-300 px-4 py-2">
+      <h1 className="text-xl font-bold"> senseBox X SIMPORT </h1>
       <DropdownMenu>
         <DropdownMenuTrigger>
-          <Bars3Icon className="absolute right-2 top-2 h-6 w-6" />
+          <Bars3Icon className="h-6 w-6" />
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuItem>

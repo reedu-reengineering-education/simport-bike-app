@@ -1,18 +1,23 @@
 PODS:
   - Capacitor (5.3.0):
     - CapacitorCordova
+  - CapacitorCommunityBackgroundGeolocation (0.0.1):
+    - Capacitor
   - CapacitorCommunityBluetoothLe (3.0.1):
     - Capacitor
   - CapacitorCordova (5.3.0)
 
 DEPENDENCIES:
   - "Capacitor (from `../../node_modules/@capacitor/ios`)"
+  - "CapacitorCommunityBackgroundGeolocation (from `../../node_modules/@capacitor-community/background-geolocation`)"
   - "CapacitorCommunityBluetoothLe (from `../../node_modules/@capacitor-community/bluetooth-le`)"
   - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
 
 EXTERNAL SOURCES:
   Capacitor:
     :path: "../../node_modules/@capacitor/ios"
+  CapacitorCommunityBackgroundGeolocation:
+    :path: "../../node_modules/@capacitor-community/background-geolocation"
   CapacitorCommunityBluetoothLe:
     :path: "../../node_modules/@capacitor-community/bluetooth-le"
   CapacitorCordova:
@@ -20,9 +25,10 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Capacitor: 1ac9165943bc4f2137642d218c5ba05df811de69
+  CapacitorCommunityBackgroundGeolocation: 6f26f4290377dbd1d6dec21e62cb66f008f61ec7
   CapacitorCommunityBluetoothLe: 308770c1ee9499c216776159326bc2b9a49076b4
   CapacitorCordova: b9374d68e63ce29e96ab5db994cf14fbefd722c9
 
-PODFILE CHECKSUM: 209b88b5339b30dc7f4dfccad65ac57cc69b251e
+PODFILE CHECKSUM: 6e41747aee00f59e1e4a8249f9aa31ede26dcdf5
 
 COCOAPODS: 1.11.3
