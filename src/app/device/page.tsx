@@ -27,6 +27,7 @@ import RecordButton from "@/components/Map/RecordButton";
 import MeasurementsOverview from "@/components/Map/MeasurementsOverview";
 import ControlBar from "@/components/Map/ControlBar";
 
+
 export default function Home() {
   const [recording, setRecording] = useState(false);
 
@@ -60,6 +61,7 @@ export default function Home() {
           <ControlBar recording={recording} toggleRecording={toggleRecording} />
         </div>
       </div>
+
     </div>
-  );
+  )
 }

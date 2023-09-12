@@ -4,23 +4,25 @@ import { useAuthStore } from "./store/useAuthStore";
 
 const OPEN_SENSE_MAP_API = "https://api.opensensemap.org";
 
+
 interface LoginResponse {
-  code: string;
-  token: string;
-  data: Object;
-  refreshToken: string;
-  message: string;
+  code: string
+  token: string
+  data: Object
+  refreshToken: string
+  message: string
 }
 
 const useOpenSenseMapAuth = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { toast } = useToast();
 
-  const setToken = useAuthStore((state) => state.setToken);
-  const setRefreshToken = useAuthStore((state) => state.setRefreshToken);
-  const setEmail = useAuthStore((state) => state.setEmail);
-  const setPassword = useAuthStore((state) => state.setPassword);
-  const setBoxes = useAuthStore((state) => state.setBoxes);
+
+  const setToken = useAuthStore(state => state.setToken)
+  const setRefreshToken = useAuthStore(state => state.setRefreshToken)
+  const setEmail = useAuthStore(state => state.setEmail)
+  const setPassword = useAuthStore(state => state.setPassword)
+  const setBoxes = useAuthStore(state => state.setBoxes)
 
   const login = async (username: string, password: string) => {
     try {
@@ -33,7 +35,7 @@ const useOpenSenseMapAuth = () => {
           email: username,
           password: password,
         }),
-      });
+      })
 
       if (response.status === 200) {
         // Erfolgreich eingeloggt
@@ -54,8 +56,9 @@ const useOpenSenseMapAuth = () => {
       // Fehler beim Einloggen
       setIsLoggedIn(false);
       return false;
+
     }
-  };
+  }
 
   const logout = () => {
     // Hier kannst du die Logik für das Abmelden implementieren, z.B. das Löschen des Tokens oder Zurücksetzen von Zuständen.
@@ -66,3 +69,4 @@ const useOpenSenseMapAuth = () => {
 };
 
 export default useOpenSenseMapAuth;
+
