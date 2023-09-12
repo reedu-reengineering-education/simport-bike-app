@@ -16,13 +16,12 @@ import { useSwiper } from 'swiper/react'
 export default function SelectDevice() {
   const boxes = useAuthStore(state => state.boxes)
 
-  const swiper = useSwiper();
-  const [selectedBox, setSelectedBox] = useState("");
+  const swiper = useSwiper()
+  const [selectedBox, setSelectedBox] = useState('')
   const selectBox = (box: string) => {
-    setSelectedBox(box);
-    useAuthStore.setState({ selectedBox: box });
-  };
-
+    setSelectedBox(box)
+    useAuthStore.setState({ selectedBox: box })
+  }
 
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-4">
