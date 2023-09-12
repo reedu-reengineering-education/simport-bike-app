@@ -1,67 +1,77 @@
-"use client";
-import MapComponent from "@/components/Map/Map";
-import {
-  BeakerIcon,
-  ChartBarIcon,
-  CloudIcon,
-  PauseIcon,
-  PlayIcon,
-  RssIcon,
-  SignalIcon,
-  SunIcon,
-  TruckIcon,
-} from "@heroicons/react/24/outline";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { cx } from "class-variance-authority";
-import { Settings2Icon, SettingsIcon } from "lucide-react";
-import { useState } from "react";
-import { DialogTrigger } from "@radix-ui/react-dialog";
-import SettingsModal from "@/components/Map/Settings";
-import RecordButton from "@/components/Map/RecordButton";
-import MeasurementsOverview from "@/components/Map/MeasurementsOverview";
-import ControlBar from "@/components/Map/ControlBar";
+'use client'
 
+import MapComponent from '@/components/Map/Map'
+import { useEffect, useState } from 'react'
+import MeasurementsOverview from '@/components/Map/MeasurementsOverview'
+import ControlBar from '@/components/Map/ControlBar'
+import useSenseBox from '@/lib/useSenseBox'
+import { Source, Layer } from 'react-map-gl/maplibre'
 
 export default function Home() {
-  const [recording, setRecording] = useState(false);
+  const [recording, setRecording] = useState(false)
 
-  const [data, setData] = useState({
-    temperature: 0,
-    humidity: 0,
-    pm1: 0,
-    pm25: 0,
-    pm4: 0,
-    pm10: 0,
-    accelerationX: 0,
-    accelerationY: 0,
-    accelerationZ: 0,
-    speed: 0,
-  });
-  const toggleRecording = () => {
-    setRecording(!recording);
-  };
+  const { values, connect, isConnected, disconnect } = useSenseBox()
+
+  useEffect(() => {
+    if (recording && !isConnected) {
+      connect()
+      return
+    }
+    if (!recording && isConnected) {
+      disconnect()
+      return
+    }
+  })
 
   return (
-    <div className="h-full w-full">
-      <MapComponent />
-      <div className="flex flex-col">
-        <div className="absolute left-5 top-20">
-          <MeasurementsOverview data={data} />
-        </div>
-        <div className="absolute top-20 right-5 ">
-          <RecordButton recording={recording} />
-        </div>
-        <div className="absolute bottom-20 right-5 ">
-          <ControlBar recording={recording} toggleRecording={toggleRecording} />
-        </div>
-      </div>
+    <div className="relative h-full w-full">
+      <MapComponent>
+        <Source
+          id="location"
+          type="geojson"
+          data={{
+            type: 'Point',
+            coordinates: [
+              values.at(-1)?.gps_lat || 0,
+              values.at(-1)?.gps_lng || 0,
+            ],
+          }}
+        >
+          <Layer
+            id="point"
+            type="circle"
+            paint={{
+              'circle-radius': 10,
+              'circle-color': '#007cbf',
+            }}
+          />
+        </Source>
+        <Source
+          id="location-history"
+          type="geojson"
+          data={{
+            features: values.map(v => ({
+              type: 'Feature',
+              properties: {},
+              geometry: {
+                type: 'Point',
+                coordinates: [v.gps_lat || 0, v.gps_lng || 0],
+              },
+            })),
+            type: 'FeatureCollection',
+          }}
+        >
+          <Layer id="point" type="line" />
+        </Source>
+      </MapComponent>
+      <div className="pointer-events-none absolute inset-0 left-0 top-0 flex h-full w-full flex-col items-center justify-between gap-2 p-4">
+        <MeasurementsOverview data={values.at(-1)} isConnected={isConnected} />
 
+        <ControlBar
+          recording={recording}
+          toggleRecording={() => setRecording(!recording)}
+        />
+      </div>
     </div>
   )
 }

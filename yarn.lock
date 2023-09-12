@@ -19,6 +19,11 @@
   dependencies:
     regenerator-runtime "^0.14.0"
 
+"@capacitor-community/background-geolocation@^1.2.14":
+  version "1.2.14"
+  resolved "https://registry.yarnpkg.com/@capacitor-community/background-geolocation/-/background-geolocation-1.2.14.tgz#ba27c8cafcb5bee0076659171789e7ba916f178e"
+  integrity sha512-XJqxOKgn3fRtUB8sgfkqRCFKDmefA4fVDhGGtKZL3Bi6yxtHG5DC0n/kmLlQX51/6viw/x74rd25yvK18mCgbg==
+
 "@capacitor-community/bluetooth-le@^3.0.1":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@capacitor-community/bluetooth-le/-/bluetooth-le-3.0.1.tgz#068362c4e7fbeb8dc83d8fa6c203a1201614d7c8"

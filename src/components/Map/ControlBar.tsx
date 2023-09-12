@@ -1,31 +1,23 @@
-import {
-  BeakerIcon,
-  ChartBarIcon,
-  CloudIcon,
-  PauseIcon,
-  PlayIcon,
-  RssIcon,
-  SignalIcon,
-  SunIcon,
-  TruckIcon,
-} from "@heroicons/react/24/outline";
-import SettingsModal from "./Settings";
+import { PauseIcon, PlayIcon } from '@heroicons/react/24/outline'
+import SettingsModal from './Settings'
+import { Card } from '../ui/card'
 
 export default function ControlBar({
   recording,
   toggleRecording,
 }: {
-  recording: boolean;
-  toggleRecording: () => void;
+  recording: boolean
+  toggleRecording: () => void
 }) {
   return (
-    <div className="rounded-lg flex gap-2 flex-col bg-white">
+    <Card className="pointer-events-auto flex w-fit items-center gap-2 rounded-lg bg-white p-2">
       {recording ? (
-        <PauseIcon className="h-10 w-10" onClick={() => toggleRecording()} />
+        <PauseIcon className="h-8 w-8" onClick={() => toggleRecording()} />
       ) : (
-        <PlayIcon className="h-10 w-10" onClick={() => toggleRecording()} />
+        <PlayIcon className="h-8 w-8" onClick={() => toggleRecording()} />
       )}
+      <div className="h-10 border-l-2 border-gray-200"></div>
       <SettingsModal />
-    </div>
-  );
+    </Card>
+  )
 }

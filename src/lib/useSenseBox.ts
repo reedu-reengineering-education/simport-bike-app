@@ -21,7 +21,7 @@ function parsePackages(data: DataView) {
   return valueRecords
 }
 
-type DataRecord = {
+export type senseBoxDataRecord = {
   timestamp: Date
   temperature?: number
   humidity?: number
@@ -43,13 +43,13 @@ export default function useSenseBox(timestampInterval: number = 5000) {
     namePrefix: 'senseBox',
   })
 
-  const [rawDataRecords, setRawDataRecords] = useState<DataRecord[]>([]) // holds the incoming data
+  const [rawDataRecords, setRawDataRecords] = useState<senseBoxDataRecord[]>([]) // holds the incoming data
 
-  const [values, setValues] = useState<DataRecord[]>([]) // holds the merged data (grouped by received timestamp)
+  const [values, setValues] = useState<senseBoxDataRecord[]>([]) // holds the merged data (grouped by received timestamp)
 
   // update the values when new data is received
   useEffect(() => {
-    const dataList: DataRecord[] = []
+    const dataList: senseBoxDataRecord[] = []
 
     // merge the data by timestamp
     const buckets = rawDataRecords.reduce((acc, record) => {
@@ -120,7 +120,9 @@ export default function useSenseBox(timestampInterval: number = 5000) {
     setRawDataRecords([])
   }
 
-  const appendToRawDataRecords = (record: Omit<DataRecord, 'timestamp'>) =>
+  const appendToRawDataRecords = (
+    record: Omit<senseBoxDataRecord, 'timestamp'>,
+  ) =>
     setRawDataRecords(records => [
       ...records,
       { timestamp: new Date(), ...record },
