@@ -19,10 +19,9 @@
   dependencies:
     regenerator-runtime "^0.14.0"
 
-"@capacitor-community/background-geolocation@^1.2.14":
+"@capacitor-community/background-geolocation@felixerdy/background-geolocation":
   version "1.2.14"
-  resolved "https://registry.yarnpkg.com/@capacitor-community/background-geolocation/-/background-geolocation-1.2.14.tgz#ba27c8cafcb5bee0076659171789e7ba916f178e"
-  integrity sha512-XJqxOKgn3fRtUB8sgfkqRCFKDmefA4fVDhGGtKZL3Bi6yxtHG5DC0n/kmLlQX51/6viw/x74rd25yvK18mCgbg==
+  resolved "https://codeload.github.com/felixerdy/background-geolocation/tar.gz/874b07c04d77076c9486cd9e48dabd7e1250f63a"
 
 "@capacitor-community/bluetooth-le@^3.0.1":
   version "3.0.1"

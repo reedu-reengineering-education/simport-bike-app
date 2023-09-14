@@ -9,7 +9,7 @@
     "static": "next build && next export"
   },
   "dependencies": {
-    "@capacitor-community/background-geolocation": "^1.2.14",
+    "@capacitor-community/background-geolocation": "felixerdy/background-geolocation",
     "@capacitor-community/bluetooth-le": "^3.0.1",
     "@capacitor/android": "^5.3.0",
     "@capacitor/core": "^5.3.0",
