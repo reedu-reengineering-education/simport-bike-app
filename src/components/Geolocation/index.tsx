@@ -6,6 +6,9 @@ import {
   BackgroundGeolocationPlugin,
   Location,
 } from '@capacitor-community/background-geolocation'
+import { Button } from '../ui/button'
+import MapComponent from '@/components/Map/Map'
+import LocationMarker from '../Map/LocationMarker'
 
 const BackgroundGeolocation = registerPlugin<BackgroundGeolocationPlugin>(
   'BackgroundGeolocation',
@@ -60,6 +63,14 @@ export default function Geolocation() {
   return (
     <div>
       Geolocation
+      <Button onClick={() => BackgroundGeolocation.openSettings()}>
+        Settings
+      </Button>
+      <div className="h-96 w-full overflow-hidden rounded">
+        <MapComponent>
+          {location && <LocationMarker location={location} />}
+        </MapComponent>
+      </div>
       <div>{JSON.stringify(location, undefined, '\t')}</div>
     </div>
   )
