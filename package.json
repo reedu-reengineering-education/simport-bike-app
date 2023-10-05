@@ -9,7 +9,7 @@
     "static": "next build && next export"
   },
   "dependencies": {
-    "@capacitor-community/background-geolocation": "^1.2.14",
+    "@capacitor-community/background-geolocation": "felixerdy/background-geolocation",
     "@capacitor-community/bluetooth-le": "^3.0.1",
     "@capacitor/android": "^5.3.0",
     "@capacitor/core": "^5.3.0",
@@ -26,6 +26,7 @@
     "@radix-ui/react-switch": "^1.0.3",
     "@radix-ui/react-toast": "^1.1.4",
     "@radix-ui/react-toggle": "^1.0.3",
+    "@turf/circle": "^6.5.0",
     "autoprefixer": "10.4.15",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
