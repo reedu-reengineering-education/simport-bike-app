@@ -19,7 +19,7 @@
   dependencies:
     regenerator-runtime "^0.14.0"
 
-"@capacitor-community/background-geolocation@felixerdy/background-geolocation#master":
+"@capacitor-community/background-geolocation@felixerdy/background-geolocation":
   version "1.2.14"
   resolved "https://codeload.github.com/felixerdy/background-geolocation/tar.gz/a61469d2d6b9607299a4b5b9e343367797d20759"
 

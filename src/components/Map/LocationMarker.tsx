@@ -1,6 +1,6 @@
 import { Location } from '@capacitor-community/background-geolocation'
-import Layer from 'react-map-gl/dist/esm/components/layer'
-import Source from 'react-map-gl/dist/esm/components/source'
+import { Source, Layer } from 'react-map-gl/maplibre'
+
 // @ts-ignore
 import circle from '@turf/circle'
 
