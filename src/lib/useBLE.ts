@@ -1,13 +1,11 @@
 import {
   BleClient,
-  BleDevice,
   RequestBleDeviceOptions,
 } from '@capacitor-community/bluetooth-le'
-import { useState } from 'react'
+import { useBLEStore } from './store/useBLEStore'
 
 export default function useBLEDevice(options: RequestBleDeviceOptions) {
-  const [device, setDevice] = useState<BleDevice>()
-  const [connected, setConnected] = useState(false)
+  const { device, setDevice, connected, setConnected } = useBLEStore()
 
   /**
    * Connect to a BLE device
@@ -27,6 +25,7 @@ export default function useBLEDevice(options: RequestBleDeviceOptions) {
     if (!device) return
 
     await BleClient.disconnect(device.deviceId)
+    setDevice(undefined)
     setConnected(false)
   }
 
@@ -52,11 +51,30 @@ export default function useBLEDevice(options: RequestBleDeviceOptions) {
     )
   }
 
+  const send = async (
+    service: string,
+    characteristic: string,
+    value: DataView,
+  ) => {
+    if (!device) return
+
+    return await BleClient.write(
+      device.deviceId,
+      service,
+      characteristic,
+      value,
+      {
+        timeout: 10000,
+      },
+    )
+  }
+
   return {
     device,
     connect,
     disconnect,
     listen,
+    send,
     isConnected: connected,
   }
 }

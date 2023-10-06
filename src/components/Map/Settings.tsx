@@ -24,6 +24,8 @@ import { Switch } from '../ui/switch'
 import { useSettingsStore } from '@/lib/store/useSettingsStore'
 import { Button } from '../ui/button'
 import { DialogClose } from '@radix-ui/react-dialog'
+import useSenseBox from '@/lib/useSenseBox'
+import { numbersToDataView } from '@capacitor-community/bluetooth-le'
 
 const formSchema = z.object({
   uploadInterval: z.number().min(1).max(60),
@@ -34,6 +36,7 @@ const formSchema = z.object({
 export default function SettingsModal() {
   const uploadInterval = useSettingsStore(state => state.uploadInterval)
   const useDeviceGPS = useSettingsStore(state => state.useDeviceGPS)
+  const { send } = useSenseBox()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -45,6 +48,14 @@ export default function SettingsModal() {
   })
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
+    send(
+      '29BD0A85-51E4-4D3C-914E-126541EB2A5E',
+      '60B1D5CE-3539-44D2-BB35-FF2DAABE17FF',
+      numbersToDataView([
+        values.uploadInterval,
+        values.switchUseDeviceGPS ? 1 : 0,
+      ]),
+    )
     useSettingsStore.setState({
       uploadInterval: values.uploadInterval,
       useDeviceGPS: values.switchUseDeviceGPS,
@@ -78,12 +89,18 @@ export default function SettingsModal() {
                           Upload Interval (in Sekunden) bestimmen
                         </FormDescription>
                         <FormControl>
-                          <Slider
-                            onValueChange={e => field.onChange(e[0])}
-                            defaultValue={[field.value]}
-                            min={1}
-                            max={60}
-                          />
+                          <div className="flex items-center gap-2">
+                            <Slider
+                              onValueChange={e => field.onChange(e[0])}
+                              defaultValue={[field.value]}
+                              min={10}
+                              max={60}
+                              step={10}
+                            />
+                            <span className="whitespace-nowrap text-xs">
+                              {form.watch('uploadInterval')} s
+                            </span>
+                          </div>
                         </FormControl>
                       </FormItem>
                     )}

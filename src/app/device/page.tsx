@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react'
 import MeasurementsOverview from '@/components/Map/MeasurementsOverview'
 import ControlBar from '@/components/Map/ControlBar'
 import useSenseBox from '@/lib/useSenseBox'
-import { Source, Layer } from 'react-map-gl/maplibre'
 import LocationMarker from '@/components/Map/LocationMarker'
 
 export default function Home() {
@@ -22,18 +21,11 @@ export default function Home() {
       disconnect()
       return
     }
-  })
+  }, [connect, disconnect, isConnected, recording])
 
   return (
     <div className="relative h-full w-full">
-      <MapComponent
-        initialViewState={{
-          longitude: 7.629040078544051,
-          latitude: 51.95991276754322,
-          zoom: 14,
-          pitch: 45,
-        }}
-      >
+      <MapComponent>
         {values && values.length > 0 && (
           <>
             <LocationMarker
@@ -49,23 +41,6 @@ export default function Home() {
                 time: null,
               }}
             />
-            <Source
-              id="location-history"
-              type="geojson"
-              data={{
-                features: values.map(v => ({
-                  type: 'Feature',
-                  properties: {},
-                  geometry: {
-                    type: 'Point',
-                    coordinates: [v.gps_lat || 0, v.gps_lng || 0],
-                  },
-                })),
-                type: 'FeatureCollection',
-              }}
-            >
-              <Layer id="point" type="line" />
-            </Source>
           </>
         )}
       </MapComponent>
