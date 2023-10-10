@@ -1,4 +1,10 @@
 import { useEffect, useState } from 'react'
+import {
+  BackgroundGeolocationPlugin,
+  Location,
+} from '@capacitor-community/background-geolocation'
+import { registerPlugin } from '@capacitor/core'
+
 import useBLEDevice from './useBLE'
 
 const BLE_SENSEBOX_SERVICE = 'CF06A218-F68E-E0BE-AD04-8EBC1EB0BC84'
@@ -9,6 +15,13 @@ const BLE_PM_CHARACTERISTIC = '7E14E070-84EA-489F-B45A-E1317364B979'
 const BLE_ACCELERATION_CHARACTERISTIC = 'B944AF10-F495-4560-968F-2F0D18CAB522'
 const BLE_GPS_CHARACTERISTIC = '8EDF8EBB-1246-4329-928D-EE0C91DB2389'
 const BLE_DISTANCE_CHARACTERISTIC = 'B3491B60-C0F3-4306-A30D-49C91F37A62B'
+
+const BLE_CONFIG_SERVICE = '29BD0A85-51E4-4D3C-914E-126541EB2A5E'
+const BLE_CONFIG_CHARACTERISTIC = '60B1D5CE-3539-44D2-BB35-FF2DAABE17FF'
+
+const BackgroundGeolocation = registerPlugin<BackgroundGeolocationPlugin>(
+  'BackgroundGeolocation',
+)
 
 function parsePackages(data: DataView) {
   const packages = data.byteLength / 4
@@ -38,8 +51,8 @@ export type senseBoxDataRecord = {
   distance_l?: number
 }
 
-export default function useSenseBox(timestampInterval: number = 5000) {
-  const { isConnected, connect, listen, disconnect } = useBLEDevice({
+export default function useSenseBox(timestampInterval: number = 2000) {
+  const { isConnected, connect, listen, send, disconnect } = useBLEDevice({
     namePrefix: 'senseBox',
   })
 
@@ -113,7 +126,25 @@ export default function useSenseBox(timestampInterval: number = 5000) {
       const [distance_l] = parsePackages(data)
       appendToRawDataRecords({ distance_l })
     })
-  }, [isConnected, listen])
+  }, [isConnected])
+
+  useEffect(() => {
+    const latestValue = values.at(-1)
+    const formattedLocation: Location = {
+      latitude: latestValue?.gps_lat ?? 0,
+      longitude: latestValue?.gps_lng ?? 0,
+      speed: latestValue?.gps_spd ?? 0,
+      time: latestValue?.timestamp.getTime() ?? null,
+      accuracy: 0,
+      altitude: 0,
+      bearing: 0,
+      simulated: false,
+      altitudeAccuracy: 0,
+    }
+    BackgroundGeolocation.processLocation({ location: formattedLocation }).then(
+      location => console.log(formattedLocation, location),
+    )
+  }, [values])
 
   const resetValues = () => {
     setValues([])
@@ -134,5 +165,6 @@ export default function useSenseBox(timestampInterval: number = 5000) {
     values,
     disconnect,
     resetValues,
+    send,
   }
 }
