@@ -11,11 +11,16 @@ export default function useBLEDevice(options: RequestBleDeviceOptions) {
    * Connect to a BLE device
    */
   const connect = async () => {
-    await BleClient.initialize()
-    const device = await BleClient.requestDevice(options)
-    await BleClient.connect(device.deviceId)
-    setConnected(true)
-    setDevice(device)
+    try {
+      await BleClient.initialize()
+      const device = await BleClient.requestDevice(options)
+      await BleClient.connect(device.deviceId)
+      setConnected(true)
+      setDevice(device)
+      return device
+    } catch (e) {
+      throw e
+    }
   }
 
   /**

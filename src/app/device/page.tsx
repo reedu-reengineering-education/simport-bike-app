@@ -6,28 +6,17 @@ import MeasurementsOverview from '@/components/Map/MeasurementsOverview'
 import ControlBar from '@/components/Map/ControlBar'
 import useSenseBox from '@/lib/useSenseBox'
 import LocationMarker from '@/components/Map/LocationMarker'
+import LocationHistory from '@/components/Map/LocationHistory'
 
 export default function Home() {
-  const [recording, setRecording] = useState(false)
-
-  const { values, connect, isConnected, disconnect } = useSenseBox()
-
-  useEffect(() => {
-    if (recording && !isConnected) {
-      connect()
-      return
-    }
-    if (!recording && isConnected) {
-      disconnect()
-      return
-    }
-  }, [connect, disconnect, isConnected, recording])
+  const { values, isConnected } = useSenseBox()
 
   return (
     <div className="relative h-full w-full">
       <MapComponent>
         {values && values.length > 0 && (
           <>
+            <LocationHistory values={values} />
             <LocationMarker
               location={{
                 latitude: values.at(-1)?.gps_lat || 0,
@@ -51,10 +40,7 @@ export default function Home() {
             isConnected={isConnected}
           />
         )}
-        <ControlBar
-          recording={recording}
-          toggleRecording={() => setRecording(!recording)}
-        />
+        <ControlBar />
       </div>
     </div>
   )

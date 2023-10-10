@@ -26,6 +26,12 @@ import { Button } from '../ui/button'
 import { DialogClose } from '@radix-ui/react-dialog'
 import useSenseBox from '@/lib/useSenseBox'
 import { numbersToDataView } from '@capacitor-community/bluetooth-le'
+import { registerPlugin } from '@capacitor/core'
+import { BackgroundGeolocationPlugin } from '@capacitor-community/background-geolocation'
+
+const BackgroundGeolocation = registerPlugin<BackgroundGeolocationPlugin>(
+  'BackgroundGeolocation',
+)
 
 const formSchema = z.object({
   uploadInterval: z.number().min(1).max(60),
@@ -71,6 +77,9 @@ export default function SettingsModal() {
         <DialogHeader>
           <DialogTitle>Settings</DialogTitle>
         </DialogHeader>
+        <Button onClick={() => BackgroundGeolocation.openSettings()}>
+          Geolocation Settings
+        </Button>
         <div className="flex flex-col justify-end gap-2 py-4">
           <Form {...form}>
             <form
