@@ -6,10 +6,6 @@ export default function LocationHistory({
 }: {
   values: senseBoxDataRecord[]
 }) {
-  console.log({
-    type: 'LineString',
-    coordinates: [values.map(value => [value.gps_lng, value.gps_lat])],
-  })
   return (
     <>
       <Source
