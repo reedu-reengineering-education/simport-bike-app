@@ -18,10 +18,6 @@ const pages = [
     href: '/device',
     icon: CpuChipIcon,
   },
-  {
-    href: '/about',
-    icon: GlobeEuropeAfricaIcon,
-  },
 ]
 
 const Navbar = () => {
