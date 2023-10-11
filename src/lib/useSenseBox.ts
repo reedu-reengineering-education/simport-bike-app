@@ -51,7 +51,7 @@ export type senseBoxDataRecord = {
   distance_l?: number
 }
 
-export default function useSenseBox(timestampInterval: number = 2000) {
+export default function useSenseBox(timestampInterval: number = 500) {
   const { isConnected, connect, listen, send, disconnect } = useBLEDevice({
     namePrefix: 'senseBox',
   })
