@@ -41,7 +41,7 @@ const formSchema = z.object({
 
 export default function SettingsModal() {
   const uploadInterval = useSettingsStore(state => state.uploadInterval)
-  const useDeviceGPS = useSettingsStore(state => state.useDeviceGPS)
+  const useDeviceGPS = useSettingsStore(state => state.useSenseBoxGPS)
   const { send } = useSenseBox()
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -64,7 +64,7 @@ export default function SettingsModal() {
     )
     useSettingsStore.setState({
       uploadInterval: values.uploadInterval,
-      useDeviceGPS: values.switchUseDeviceGPS,
+      useSenseBoxGPS: values.switchUseDeviceGPS,
     })
   }
 
@@ -119,9 +119,8 @@ export default function SettingsModal() {
                     control={form.control}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Use Device GPS</FormLabel>
+                        <FormLabel>Use senseBox GPS</FormLabel>
                         <FormDescription>
-                          {' '}
                           Das GPS vom Smartphone benutzen oder von der
                           senseBox:bike
                         </FormDescription>
