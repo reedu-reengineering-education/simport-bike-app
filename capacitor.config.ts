@@ -6,8 +6,8 @@ const ipAddress = execSync(`ipconfig getifaddr en0`, {
 }).trim()
 
 const config: CapacitorConfig = {
-  appId: 'com.example.app',
-  appName: 'senseBox:Bike X SIMPORT',
+  appId: 'de.reedu.senseboxbike',
+  appName: 'senseBox:Bike',
   webDir: 'out',
   server: {
     url: `http://${ipAddress}:3000`,
