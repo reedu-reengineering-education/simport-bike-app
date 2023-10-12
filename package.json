@@ -6,10 +6,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "static": "next build && next export"
+    "export": "NODE_ENV=production npx cap sync && yarn build"
   },
   "dependencies": {
-    "@capacitor-community/background-geolocation": "felixerdy/background-geolocation#feat/process-external-location",
+    "@capacitor-community/background-geolocation": "felixerdy/background-geolocation",
     "@capacitor-community/bluetooth-le": "^3.0.1",
     "@capacitor/android": "^5.3.0",
     "@capacitor/core": "^5.3.0",
@@ -37,6 +37,7 @@
     "lucide-react": "^0.284.0",
     "maplibre-gl": "^3.3.1",
     "next": "13.5.4",
+    "next-themes": "^0.2.1",
     "postcss": "8.4.31",
     "react": "18.2.0",
     "react-dom": "18.2.0",

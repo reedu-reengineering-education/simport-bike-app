@@ -7,7 +7,7 @@ export default function ControlBar() {
   const { connect, isConnected, disconnect } = useSenseBox()
 
   return (
-    <Card className="pointer-events-auto flex w-fit items-center gap-2 rounded-lg bg-white p-2">
+    <Card className="pointer-events-auto flex w-fit items-center gap-2 rounded-lg bg-background p-2">
       {isConnected ? (
         <PauseIcon className="h-8 w-8" onClick={() => disconnect()} />
       ) : (
