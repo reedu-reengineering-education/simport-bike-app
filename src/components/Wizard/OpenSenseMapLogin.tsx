@@ -19,6 +19,8 @@ import {
 import { useToast } from '../ui/use-toast'
 import Spinner from '../ui/Spinner'
 import { useAuthStore } from '@/lib/store/useAuthStore'
+import WizardSlide from './WizardSlide'
+import { Loader2Icon } from 'lucide-react'
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -47,7 +49,6 @@ export default function OpenSenseMapLogin() {
     const success = await login(values.email, values.password)
     setLoading(false)
     if (success) {
-      toast({ title: 'Login erfolgreich' })
       swiper.slideNext()
     } else {
       toast({ variant: 'destructive', title: 'Login fehlgeschlagen' })
@@ -55,8 +56,10 @@ export default function OpenSenseMapLogin() {
   }
 
   return (
-    <div className="flex h-full flex-col content-center justify-center gap-4 p-2">
-      <div>Bitte loggen Sie sich mit Ihrem openSenseMap-Account ein.</div>
+    <WizardSlide className="flex h-full flex-col content-center justify-center gap-4">
+      <p className="mb-4 font-medium">
+        Bitte loggen Sie sich mit Ihrem openSenseMap-Account ein
+      </p>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleLogin)} className="space-y-8">
           <FormField
@@ -87,10 +90,11 @@ export default function OpenSenseMapLogin() {
           />
 
           <Button disabled={loading} type="submit">
-            {loading ? <Spinner /> : 'Login'}
+            {loading && <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />}
+            Anmelden
           </Button>
         </form>
       </Form>
-    </div>
+    </WizardSlide>
   )
 }
