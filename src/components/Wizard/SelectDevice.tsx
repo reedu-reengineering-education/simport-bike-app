@@ -13,48 +13,52 @@ import { cx } from 'class-variance-authority'
 import { useState } from 'react'
 import { useSwiper } from 'swiper/react'
 import WizardSlide from './WizardSlide'
+import { Separator } from '../ui/separator'
+import { CheckCircle, Circle } from 'lucide-react'
 
 export default function SelectDevice() {
-  const boxes = useAuthStore(state => state.boxes)
+  const { boxes } = useAuthStore(state => state.boxes)
+  const selectedBox = useAuthStore(state => state.selectedBox)
+  const setSelectedBox = useAuthStore(state => state.setSelectedBox)
 
   const swiper = useSwiper()
-  const [selectedBox, setSelectedBox] = useState('')
-  const selectBox = (box: string) => {
-    setSelectedBox(box)
-    useAuthStore.setState({ selectedBox: box })
-  }
 
   return (
     <WizardSlide className="flex h-full w-full flex-col items-center justify-center gap-4">
-      <div>
+      <p className="mb-4 font-medium">
         Wähle bitte nun die openSenseMap-Box aus, die du mit dem Gerät verbinden
         möchtest.
-      </div>
-      <div>
-        <ScrollArea className="h-[200px] w-[350px] rounded-md border p-4">
-          {boxes.map(box => (
-            <div
-              aria-label="Toggle"
-              key={box}
-              onClick={e => selectBox(box)}
-              className={cx(
-                'flex h-12 w-full items-center justify-center gap-2 rounded-md border border-gray-300',
-                selectedBox === box ? 'bg-green-400' : '',
-              )}
-            >
-              {box}
-            </div>
-          ))}{' '}
-        </ScrollArea>
+      </p>
+      <ScrollArea className="flex h-60 w-full flex-col gap-2">
+        {boxes &&
+          boxes.map(box => (
+            <>
+              <div
+                aria-label="Toggle"
+                key={box._id}
+                onClick={e => setSelectedBox(box)}
+                className={cx('flex h-12 w-full items-center')}
+              >
+                {selectedBox?._id === box._id && (
+                  <CheckCircle className={cx('mr-2 h-5 w-5 text-green-500')} />
+                )}
+                {selectedBox?._id !== box._id && (
+                  <Circle className={cx('mr-2 h-5 w-5')} />
+                )}
+                {box.name}
+              </div>
+              <Separator className="my-2" />
+            </>
+          ))}
+      </ScrollArea>
 
-        <Button
-          disabled={selectedBox === ''}
-          className="w-11/12 rounded-md border"
-          onClick={() => swiper.slideNext()}
-        >
-          Weiter
-        </Button>
-      </div>
+      <Button
+        disabled={selectedBox === undefined}
+        className="w-11/12 rounded-md border"
+        onClick={() => swiper.slideNext()}
+      >
+        Weiter
+      </Button>
     </WizardSlide>
   )
 }

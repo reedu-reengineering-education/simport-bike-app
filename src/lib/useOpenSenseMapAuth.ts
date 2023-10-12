@@ -43,7 +43,25 @@ const useOpenSenseMapAuth = () => {
         setRefreshToken(json.refreshToken)
         setEmail(username)
         setPassword(password)
-        setBoxes(json.data.user.boxes)
+
+        try {
+          console.log('boxesRequest', json.token)
+          const boxesRequest = await fetch(
+            `${OPEN_SENSE_MAP_API}/users/me/boxes`,
+            {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${json.token}`,
+              },
+            },
+          )
+          console.log('boxesRequest', boxesRequest)
+          const { data: boxesData } = await boxesRequest.json()
+          setBoxes(boxesData)
+        } catch (e) {
+          console.log('boxesRequest error', e)
+        }
         return true
       } else {
         // Einloggen fehlgeschlagen

@@ -26,7 +26,7 @@ export default function RootLayout({
       <body
         className={cn(
           inter.className,
-          'flex h-full max-h-full w-full flex-col p-safe',
+          'flex h-full max-h-full w-full flex-col px-safe pt-safe',
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
@@ -34,9 +34,6 @@ export default function RootLayout({
             <TopBar />
           </header>
           <main className="flex-1 overflow-auto">{children}</main>
-          <nav>
-            <Navbar />
-          </nav>
           <Toaster />
         </ThemeProvider>
       </body>

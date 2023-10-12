@@ -4,60 +4,52 @@ import { Button } from '../ui/button'
 import Logo from '../../../public/bike.png'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
+import { ArrowLeft, ArrowRight, CheckCircle } from 'lucide-react'
 import useSenseBox from '@/lib/useSenseBox'
 import { cn } from '@/lib/utils'
 import PreviewModal from '../Device/PreviewModal'
 import WizardSlide from './WizardSlide'
+import { useAuthStore } from '@/lib/store/useAuthStore'
+import { useSwiper } from 'swiper/react'
 
-export default function ConnectionSelection() {
-  const { isConnected, connect, values, disconnect, resetValues } =
-    useSenseBox()
+export default function ConnectionSelection({
+  onClose,
+}: {
+  onClose: () => void
+}) {
+  const { connect } = useSenseBox()
+
+  const selectedBox = useAuthStore(state => state.selectedBox)
+
+  const swiper = useSwiper()
 
   return (
-    <WizardSlide className="flex h-full w-full flex-col">
-      <div className="flex h-full flex-col justify-center gap-10">
-        <div className="flex flex-col items-center gap-5 text-center">
-          <div>
-            Super! Der Login hat funktioniert und deine Box ist ausgewählt !
-            Jetzt müssen wir nur noch die Box mit dem Gerät verbinden.
-          </div>
-          <Image
-            alt="bike"
-            src={Logo}
-            width={100}
-            height={100}
-            className={cn(isConnected ? 'animate-spin' : '')}
-          />
-          {!isConnected && (
-            <div>
-              Nicht mit senseBox verbunden. Überprüfen Sie, ob das Gerät
-              eingeschaltet ist und verbinden Sie das Gerät über Bluetooth
-            </div>
-          )}
-          {isConnected && (
-            <div>
-              Erfolgreich mit senseBox verbunden! Letzte Messung um{' '}
-              {values
-                .sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime())
-                .at(-1)
-                ?.timestamp.toLocaleTimeString() || '-'}
-            </div>
-          )}
-        </div>
-        <div className="flex flex-col items-center gap-2">
-          {!isConnected && (
-            <Button variant="default" onClick={connect}>
-              Verbinden
-            </Button>
-          )}
-          {isConnected && (
-            <Button variant="default" onClick={disconnect}>
-              Verbindung trennen
-            </Button>
-          )}
+    <WizardSlide className="flex h-full w-full flex-col justify-between gap-8">
+      <Button
+        variant={'secondary'}
+        className="w-fit"
+        onClick={() => swiper.slidePrev()}
+      >
+        <ArrowLeft className="mr-2 w-5" /> Zurück
+      </Button>
+      <p className="mb-4 font-medium">Verknüpfung erfolgreich</p>
+
+      <div>
+        <p>Verknüfte Box:</p>
+        <div className="my-4 flex items-center gap-2">
+          <CheckCircle className="mr-2 h-5 w-5 text-green-500" />
+          {selectedBox?.name}
         </div>
       </div>
+
+      <Button
+        onClick={() => {
+          onClose()
+          connect()
+        }}
+      >
+        Aufnahme starten
+      </Button>
     </WizardSlide>
   )
 }
