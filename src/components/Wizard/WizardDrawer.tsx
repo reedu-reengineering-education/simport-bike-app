@@ -1,5 +1,5 @@
 import { Drawer } from 'vaul'
-import { Check, UserCog2 } from 'lucide-react'
+import { AlertOctagon, AlertTriangle, Check, UserCog2 } from 'lucide-react'
 import { Button } from '../ui/button'
 import ConnectionSelection from '@/components/Wizard/ConnectionSelection'
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -11,6 +11,7 @@ import OpenSenseMapLogin from '@/components/Wizard/OpenSenseMapLogin'
 import SelectDevice from '@/components/Wizard/SelectDevice'
 import { useEffect, useState } from 'react'
 import { useAuthStore } from '@/lib/store/useAuthStore'
+import { ExclamationCircleIcon } from '@heroicons/react/24/outline'
 
 export default function WizardDrawer() {
   const [open, setOpen] = useState(false)
@@ -28,6 +29,11 @@ export default function WizardDrawer() {
       <Drawer.Trigger onClick={() => setOpen(true)}>
         <div className="relative">
           <UserCog2 className="w-6" />
+          {!selectedBox && (
+            <div className="absolute -right-1 -top-1 rounded-full bg-amber-400 p-0.5">
+              <AlertOctagon className="h-2 w-2 text-background" />
+            </div>
+          )}
           {selectedBox && (
             <div className="absolute -right-1 -top-1 rounded-full bg-green-500 p-0.5">
               <Check className="h-2 w-2 text-background" />

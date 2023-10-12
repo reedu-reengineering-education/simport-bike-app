@@ -8,7 +8,7 @@
     "lint": "next lint",
     "ios": "NODE_ENV=development npx cap sync && npx cap open ios && yarn dev",
     "android": "NODE_ENV=development npx cap sync && npx cap open android && yarn dev",
-    "export": "NODE_ENV=production npx cap sync && yarn build"
+    "export": "yarn build && NODE_ENV=production npx cap sync"
   },
   "dependencies": {
     "@capacitor-community/background-geolocation": "felixerdy/background-geolocation",
