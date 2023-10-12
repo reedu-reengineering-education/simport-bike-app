@@ -1,11 +1,11 @@
 PODS:
-  - Capacitor (5.4.2):
+  - Capacitor (5.5.0):
     - CapacitorCordova
   - CapacitorCommunityBackgroundGeolocation (0.0.1):
     - Capacitor
   - CapacitorCommunityBluetoothLe (3.0.2):
     - Capacitor
-  - CapacitorCordova (5.4.2)
+  - CapacitorCordova (5.5.0)
   - CapacitorPreferences (5.0.6):
     - Capacitor
 
@@ -29,10 +29,10 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/preferences"
 
 SPEC CHECKSUMS:
-  Capacitor: 8a9db42d105f55843cd8ed2a3cb54e2b78e7f102
+  Capacitor: 57890b363df14d5d2d5d8461aa23e886cb34da2a
   CapacitorCommunityBackgroundGeolocation: 6f26f4290377dbd1d6dec21e62cb66f008f61ec7
   CapacitorCommunityBluetoothLe: 83b0de348b2ec461e0f9fa0e48c9e79c8378ddb0
-  CapacitorCordova: cfcc06b698481da655415985eeb2b8da363f8451
+  CapacitorCordova: 3d3908a3d208a11a75f9df3b18c4405c4de76e1d
   CapacitorPreferences: f03954bcb0ff09c792909e46bff88e3183c16b10
 
 PODFILE CHECKSUM: 9b6de18670d2912d292198b53eb36ecbb7122bf6
