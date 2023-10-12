@@ -1,4 +1,6 @@
 import { create } from 'zustand'
+import { createJSONStorage, persist } from 'zustand/middleware'
+import { capPreferencesStorage } from './capPreferencesZustandStorage'
 
 interface AuthStoreInterface {
   email: string
@@ -17,19 +19,27 @@ interface AuthStoreInterface {
   setSelectedBox: (boxId: string) => void
 }
 
-export const useAuthStore = create<AuthStoreInterface>(set => ({
-  email: '',
-  setEmail: email => set({ email }),
-  password: '',
-  setPassword: password => set({ password }),
-  token: '',
-  setToken: token => set({ token }),
-  refreshToken: '',
-  setRefreshToken: refreshToken => set({ refreshToken }),
-  isLoggedIn: false,
-  setIsLoggedIn: isLoggedIn => set({ isLoggedIn }),
-  boxes: [],
-  setBoxes: boxes => set({ boxes }),
-  selectedBox: '',
-  setSelectedBox: selectedBox => set({ selectedBox }),
-}))
+export const useAuthStore = create<AuthStoreInterface>()(
+  persist(
+    set => ({
+      email: '',
+      setEmail: email => set({ email }),
+      password: '',
+      setPassword: password => set({ password }),
+      token: '',
+      setToken: token => set({ token }),
+      refreshToken: '',
+      setRefreshToken: refreshToken => set({ refreshToken }),
+      isLoggedIn: false,
+      setIsLoggedIn: isLoggedIn => set({ isLoggedIn }),
+      boxes: [],
+      setBoxes: boxes => set({ boxes }),
+      selectedBox: '',
+      setSelectedBox: selectedBox => set({ selectedBox }),
+    }),
+    {
+      name: 'auth-storage',
+      storage: createJSONStorage(() => capPreferencesStorage),
+    },
+  ),
+)

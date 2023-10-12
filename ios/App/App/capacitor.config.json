@@ -3,6 +3,6 @@
 	"appName": "senseBox:Bike",
 	"webDir": "out",
 	"server": {
-		"url": "http://192.168.2.135:3000"
+		"url": "http://192.168.0.220:3000"
 	}
 }
