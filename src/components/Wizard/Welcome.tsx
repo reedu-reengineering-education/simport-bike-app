@@ -2,12 +2,13 @@ import { useSwiper } from 'swiper/react'
 import { Button } from '../ui/button'
 import Logo from '../../../public/senseboxbike.png'
 import Image from 'next/image'
+import WizardSlide from './WizardSlide'
 
 export default function Welcome() {
   const swiper = useSwiper()
 
   return (
-    <div className="flex h-full flex-col content-center justify-center gap-4">
+    <WizardSlide className="flex h-full flex-col content-center justify-center gap-4">
       <div className="flex flex-col items-center gap-2">
         <Image src={Logo} alt="senseBox:bike" width={100} height={100} />
         Willkommen beim senseBox Wizard In den nächsten Schritten werden Sie
@@ -16,6 +17,6 @@ export default function Welcome() {
         sowie eine senseBox:bike mit einem Bluetooth-Modul.
       </div>
       <Button onClick={() => swiper.slideNext()}>Weiter</Button>
-    </div>
+    </WizardSlide>
   )
 }

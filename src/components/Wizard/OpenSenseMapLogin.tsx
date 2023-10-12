@@ -19,6 +19,7 @@ import {
 import { useToast } from '../ui/use-toast'
 import Spinner from '../ui/Spinner'
 import { useAuthStore } from '@/lib/store/useAuthStore'
+import WizardSlide from './WizardSlide'
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -55,7 +56,7 @@ export default function OpenSenseMapLogin() {
   }
 
   return (
-    <div className="flex h-full flex-col content-center justify-center gap-4 p-2">
+    <WizardSlide className="flex h-full flex-col content-center justify-center gap-4">
       <div>Bitte loggen Sie sich mit Ihrem openSenseMap-Account ein.</div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleLogin)} className="space-y-8">
@@ -91,6 +92,6 @@ export default function OpenSenseMapLogin() {
           </Button>
         </form>
       </Form>
-    </div>
+    </WizardSlide>
   )
 }

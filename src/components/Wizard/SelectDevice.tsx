@@ -12,6 +12,7 @@ import { Button } from '../ui/button'
 import { cx } from 'class-variance-authority'
 import { useState } from 'react'
 import { useSwiper } from 'swiper/react'
+import WizardSlide from './WizardSlide'
 
 export default function SelectDevice() {
   const boxes = useAuthStore(state => state.boxes)
@@ -24,7 +25,7 @@ export default function SelectDevice() {
   }
 
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center gap-4">
+    <WizardSlide className="flex h-full w-full flex-col items-center justify-center gap-4">
       <div>
         Wähle bitte nun die openSenseMap-Box aus, die du mit dem Gerät verbinden
         möchtest.
@@ -54,6 +55,6 @@ export default function SelectDevice() {
           Weiter
         </Button>
       </div>
-    </div>
+    </WizardSlide>
   )
 }

@@ -8,13 +8,14 @@ import { ArrowRight } from 'lucide-react'
 import useSenseBox from '@/lib/useSenseBox'
 import { cn } from '@/lib/utils'
 import PreviewModal from '../Device/PreviewModal'
+import WizardSlide from './WizardSlide'
 
 export default function ConnectionSelection() {
   const { isConnected, connect, values, disconnect, resetValues } =
     useSenseBox()
 
   return (
-    <div className="flex h-full w-full flex-col">
+    <WizardSlide className="flex h-full w-full flex-col">
       <div className="flex h-full flex-col justify-center gap-10">
         <div className="flex flex-col items-center gap-5 text-center">
           <div>
@@ -57,6 +58,6 @@ export default function ConnectionSelection() {
           )}
         </div>
       </div>
-    </div>
+    </WizardSlide>
   )
 }
