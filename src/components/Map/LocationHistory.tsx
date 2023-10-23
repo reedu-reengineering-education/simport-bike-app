@@ -1,5 +1,5 @@
+import { senseBoxDataRecord } from '@/lib/store/useSenseBoxValuesStore'
 import { Source, Layer } from 'react-map-gl/maplibre'
-import { senseBoxDataRecord } from '@/lib/useSenseBox'
 
 export default function LocationHistory({
   values,

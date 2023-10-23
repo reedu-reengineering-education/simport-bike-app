@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { use, useEffect, useReducer, useRef, useState } from 'react'
 import {
   BackgroundGeolocationPlugin,
   Location,
@@ -6,6 +6,11 @@ import {
 import { registerPlugin } from '@capacitor/core'
 
 import useBLEDevice from './useBLE'
+import {
+  senseBoxDataRecord,
+  useSenseBoxValuesStore,
+} from './store/useSenseBoxValuesStore'
+import { useSettingsStore } from './store/useSettingsStore'
 
 const BLE_SENSEBOX_SERVICE = 'CF06A218-F68E-E0BE-AD04-8EBC1EB0BC84'
 const BLE_TEMPERATURE_CHARACTERISTIC = '2CDF2174-35BE-FDC4-4CA2-6FD173F8B3A8'
@@ -34,31 +39,71 @@ function parsePackages(data: DataView) {
   return valueRecords
 }
 
-export type senseBoxDataRecord = {
-  timestamp: Date
-  temperature?: number
-  humidity?: number
-  pm1?: number
-  pm2_5?: number
-  pm4?: number
-  pm10?: number
-  acceleration_x?: number
-  acceleration_y?: number
-  acceleration_z?: number
-  gps_lat?: number
-  gps_lng?: number
-  gps_spd?: number
-  distance_l?: number
-}
-
 export default function useSenseBox(timestampInterval: number = 500) {
   const { isConnected, connect, listen, send, disconnect } = useBLEDevice({
     namePrefix: 'senseBox',
   })
+  const { values, setValues } = useSenseBoxValuesStore()
+  const { useSenseBoxGPS } = useSettingsStore()
+  const useSenseBoxGPSRef = useRef<boolean>()
+  useSenseBoxGPSRef.current = useSenseBoxGPS
 
   const [rawDataRecords, setRawDataRecords] = useState<senseBoxDataRecord[]>([]) // holds the incoming data
 
-  const [values, setValues] = useState<senseBoxDataRecord[]>([]) // holds the merged data (grouped by received timestamp)
+  const [watcherId, setWatcherId] = useState<string>()
+
+  const [location, setLocation] = useState<Location>()
+  const locationRef = useRef<Location>()
+  locationRef.current = location
+
+  useEffect(() => {
+    if (useSenseBoxGPS) {
+      if (watcherId)
+        BackgroundGeolocation.removeWatcher({ id: watcherId }).then(() =>
+          setWatcherId(undefined),
+        )
+      return
+    }
+
+    BackgroundGeolocation.addWatcher(
+      {
+        backgroundMessage: 'Cancel to prevent battery drain.',
+        backgroundTitle: 'Tracking You.',
+        requestPermissions: true,
+        stale: false,
+      },
+      function callback(location, error) {
+        if (error) {
+          if (error.code === 'NOT_AUTHORIZED') {
+            if (
+              window.confirm(
+                'This app needs your location, ' +
+                  'but does not have permission.\n\n' +
+                  'Open settings now?',
+              )
+            ) {
+              BackgroundGeolocation.openSettings()
+            }
+          }
+          console.error(error)
+        } else {
+          setLocation(location)
+        }
+      },
+    ).then(watcherId => {
+      setWatcherId(watcherId)
+    })
+
+    return () => {
+      console.log('in unmount')
+      if (!watcherId) return
+
+      console.log('removing watcher', watcherId)
+      BackgroundGeolocation.removeWatcher({
+        id: watcherId,
+      })
+    }
+  }, [useSenseBoxGPS])
 
   // update the values when new data is received
   useEffect(() => {
@@ -153,11 +198,22 @@ export default function useSenseBox(timestampInterval: number = 500) {
 
   const appendToRawDataRecords = (
     record: Omit<senseBoxDataRecord, 'timestamp'>,
-  ) =>
+  ) => {
+    let data = record
+    if (!useSenseBoxGPSRef.current) {
+      data = {
+        ...data,
+        gps_lat: locationRef.current?.latitude,
+        gps_lng: locationRef.current?.longitude,
+        gps_spd: locationRef.current?.speed ?? 0,
+      }
+    }
+
     setRawDataRecords(records => [
       ...records,
-      { timestamp: new Date(), ...record },
+      { timestamp: new Date(), ...data },
     ])
+  }
 
   return {
     isConnected,

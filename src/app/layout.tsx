@@ -5,6 +5,8 @@ import { Inter } from 'next/font/google'
 import { Navbar } from '@/components/ui/Navbar'
 import { cn } from '@/lib/utils'
 import { Toaster } from '@/components/ui/toaster'
+import { ThemeProvider } from './ThemeProvider'
+import AuthChecker from './AuthChecker'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -21,21 +23,21 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="h-full w-full">
+    <html lang="en" className="h-full w-full" suppressHydrationWarning>
       <body
         className={cn(
           inter.className,
-          'flex h-full max-h-full w-full flex-col p-safe',
+          'flex h-full max-h-full w-full flex-col px-safe pt-safe',
         )}
       >
-        <header>
-          <TopBar />
-        </header>
-        <main className="flex-1 overflow-auto">{children}</main>
-        <nav>
-          <Navbar />
-        </nav>
-        <Toaster />
+        <AuthChecker />
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <header>
+            <TopBar />
+          </header>
+          <main className="flex-1 overflow-auto">{children}</main>
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   )
