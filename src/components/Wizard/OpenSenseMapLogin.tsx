@@ -46,12 +46,13 @@ export default function OpenSenseMapLogin() {
 
   const handleLogin = async (values: z.infer<typeof formSchema>) => {
     setLoading(true)
-    const success = await login(values.email, values.password)
-    setLoading(false)
-    if (success) {
+    try {
+      await login(values.email, values.password)
       swiper.slideNext()
-    } else {
+    } catch (e) {
       toast({ variant: 'destructive', title: 'Login fehlgeschlagen' })
+    } finally {
+      setLoading(false)
     }
   }
 

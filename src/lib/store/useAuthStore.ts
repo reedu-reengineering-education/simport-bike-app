@@ -48,7 +48,19 @@ export const useAuthStore = create<AuthStoreInterface>()(
       refreshToken: '',
       setRefreshToken: refreshToken => set({ refreshToken }),
       isLoggedIn: false,
-      setIsLoggedIn: isLoggedIn => set({ isLoggedIn }),
+      setIsLoggedIn: isLoggedIn => {
+        set({ isLoggedIn })
+        if (!isLoggedIn) {
+          set({
+            email: '',
+            password: '',
+            token: '',
+            refreshToken: '',
+            boxes: { boxes_count: 0 },
+            selectedBox: undefined,
+          })
+        }
+      },
       boxes: { boxes_count: 0 },
       setBoxes: boxes => set({ boxes }),
       selectedBox: undefined,

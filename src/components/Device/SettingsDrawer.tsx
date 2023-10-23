@@ -85,7 +85,7 @@ export default function SettingsDrawer() {
       </Drawer.Trigger>
       <Drawer.Portal>
         <Drawer.Overlay className="fixed inset-0 bg-black/40" />
-        <Drawer.Content className="fixed bottom-0 left-0 right-0 mt-24 flex max-h-[75%] flex-col rounded-t-lg bg-zinc-100 pb-safe ">
+        <Drawer.Content className="fixed bottom-0 left-0 right-0 z-10 mt-24 flex max-h-[75%] flex-col rounded-t-lg bg-zinc-100 pb-safe">
           <div className="flex-1 overflow-auto rounded-t-[10px] bg-white p-4">
             <div className="mx-auto mb-8 h-1.5 w-12 flex-shrink-0 rounded-full bg-zinc-300" />
             <div className="mx-auto max-w-md">

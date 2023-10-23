@@ -6,6 +6,7 @@ import { Navbar } from '@/components/ui/Navbar'
 import { cn } from '@/lib/utils'
 import { Toaster } from '@/components/ui/toaster'
 import { ThemeProvider } from './ThemeProvider'
+import AuthChecker from './AuthChecker'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -29,6 +30,7 @@ export default function RootLayout({
           'flex h-full max-h-full w-full flex-col px-safe pt-safe',
         )}
       >
+        <AuthChecker />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <header>
             <TopBar />
