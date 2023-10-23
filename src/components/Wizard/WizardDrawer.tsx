@@ -1,6 +1,5 @@
 import { Drawer } from 'vaul'
-import { AlertOctagon, AlertTriangle, Check, UserCog2 } from 'lucide-react'
-import { Button } from '../ui/button'
+import { AlertOctagon, Check, UserCog2 } from 'lucide-react'
 import ConnectionSelection from '@/components/Wizard/ConnectionSelection'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation } from 'swiper/modules'
@@ -11,11 +10,12 @@ import OpenSenseMapLogin from '@/components/Wizard/OpenSenseMapLogin'
 import SelectDevice from '@/components/Wizard/SelectDevice'
 import { useEffect, useState } from 'react'
 import { useAuthStore } from '@/lib/store/useAuthStore'
-import { ExclamationCircleIcon } from '@heroicons/react/24/outline'
+import { signout } from '@/lib/api/openSenseMapClient'
+import { toast } from '../ui/use-toast'
 
 export default function WizardDrawer() {
   const [open, setOpen] = useState(false)
-  const { selectedBox } = useAuthStore()
+  const { selectedBox, isLoggedIn } = useAuthStore()
 
   // fix for disappearing map
   useEffect(() => {
@@ -29,7 +29,7 @@ export default function WizardDrawer() {
       <Drawer.Trigger onClick={() => setOpen(true)}>
         <div className="relative">
           <UserCog2 className="w-6" />
-          {!selectedBox && (
+          {(!isLoggedIn || !selectedBox) && (
             <div className="absolute -right-1 -top-1 rounded-full bg-amber-400 p-0.5">
               <AlertOctagon className="h-2 w-2 text-background" />
             </div>
@@ -43,11 +43,12 @@ export default function WizardDrawer() {
       </Drawer.Trigger>
       <Drawer.Portal>
         <Drawer.Overlay className="fixed inset-0 bg-black/40" />
-        <Drawer.Content className="fixed bottom-0 left-0 right-0 mt-24 flex max-h-[75%] flex-col rounded-t-lg bg-zinc-100 pb-safe ">
+        <Drawer.Content className="fixed bottom-0 left-0 right-0 z-10 mt-24 flex max-h-[75%] flex-col rounded-t-lg bg-zinc-100 pb-safe">
           <div className="flex-1 overflow-auto rounded-t-[10px] bg-white p-4">
             <div className="mx-auto mb-8 h-1.5 w-12 flex-shrink-0 rounded-full bg-zinc-300" />
             <div className="mx-auto max-w-md">
               <Swiper
+                initialSlide={isLoggedIn ? 1 : 0}
                 spaceBetween={48}
                 modules={[Navigation]}
                 slidesPerView={1}
@@ -69,14 +70,15 @@ export default function WizardDrawer() {
               </Swiper>
             </div>
           </div>
-          <DrawerWizardFooter />
+          <DrawerWizardFooter setOpen={setOpen} />
         </Drawer.Content>
       </Drawer.Portal>
     </Drawer.Root>
   )
 }
 
-function DrawerWizardFooter() {
+function DrawerWizardFooter({ setOpen }: { setOpen: (open: boolean) => void }) {
+  const { isLoggedIn } = useAuthStore()
   return (
     <div className="mt-auto border-t border-zinc-200 bg-zinc-100 p-4">
       <div className="mx-auto flex max-w-md justify-end gap-6">
@@ -126,6 +128,24 @@ function DrawerWizardFooter() {
             <path d="M10 14L21 3"></path>
           </svg>
         </a>
+        {isLoggedIn && (
+          <p
+            className="cursor-pointer text-xs text-zinc-600"
+            onClick={async () => {
+              try {
+                await signout()
+                setOpen(false)
+              } catch (e) {
+                toast({
+                  variant: 'destructive',
+                  title: 'Logout fehlgeschlagen',
+                })
+              }
+            }}
+          >
+            Logout
+          </p>
+        )}
       </div>
     </div>
   )

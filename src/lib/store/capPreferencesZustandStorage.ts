@@ -7,15 +7,12 @@ import { Preferences } from '@capacitor/preferences'
  */
 export const capPreferencesStorage: StateStorage = {
   getItem: async (key: string): Promise<string | null> => {
-    console.log(key, 'has been retrieved')
     return (await Preferences.get({ key })).value || null
   },
   setItem: async (key: string, value: string): Promise<void> => {
-    console.log(key, 'with value', value, 'has been saved')
     await Preferences.set({ key, value })
   },
   removeItem: async (key: string): Promise<void> => {
-    console.log(key, 'has been deleted')
     await Preferences.remove({ key })
   },
 }
