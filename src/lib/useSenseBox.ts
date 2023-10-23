@@ -194,9 +194,9 @@ export default function useSenseBox(timestampInterval: number = 500) {
       simulated: false,
       altitudeAccuracy: 0,
     }
-    BackgroundGeolocation.processLocation({ location: formattedLocation }).then(
-      location => {},
-    )
+    // BackgroundGeolocation.processLocation({ location: formattedLocation }).then(
+    //   location => {},
+    // )
   }, [values])
 
   const resetValues = () => {
