@@ -1,4 +1,4 @@
-import { use, useEffect, useReducer, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   BackgroundGeolocationPlugin,
   Location,
@@ -11,6 +11,9 @@ import {
   useSenseBoxValuesStore,
 } from './store/useSenseBoxValuesStore'
 import { useSettingsStore } from './store/useSettingsStore'
+import { uploadData } from './api/openSenseMapClient'
+import { useAuthStore } from './store/useAuthStore'
+import match from './senseBoxSensorIdMatcher'
 
 const BLE_SENSEBOX_SERVICE = 'CF06A218-F68E-E0BE-AD04-8EBC1EB0BC84'
 const BLE_TEMPERATURE_CHARACTERISTIC = '2CDF2174-35BE-FDC4-4CA2-6FD173F8B3A8'
@@ -44,6 +47,7 @@ export default function useSenseBox(timestampInterval: number = 500) {
     namePrefix: 'senseBox',
   })
   const { values, setValues } = useSenseBoxValuesStore()
+  const { selectedBox } = useAuthStore()
   const { useSenseBoxGPS } = useSettingsStore()
   const useSenseBoxGPSRef = useRef<boolean>()
   useSenseBoxGPSRef.current = useSenseBoxGPS
@@ -55,6 +59,10 @@ export default function useSenseBox(timestampInterval: number = 500) {
   const [location, setLocation] = useState<Location>()
   const locationRef = useRef<Location>()
   locationRef.current = location
+
+  const [lastUploadTimestamp, setLastUploadTimestamp] = useState(
+    new Date('1970-01-01'),
+  )
 
   useEffect(() => {
     if (useSenseBoxGPS) {
@@ -113,7 +121,7 @@ export default function useSenseBox(timestampInterval: number = 500) {
     const buckets = rawDataRecords.reduce((acc, record) => {
       const { timestamp, ...data } = record
 
-      // check if there is already a record with the same timestamp
+      // check if there is already a record with similar timestamp
       const existingTimestamp = acc.find(
         e =>
           Math.abs(new Date(e.timestamp).getTime() - timestamp.getTime()) <
@@ -187,7 +195,7 @@ export default function useSenseBox(timestampInterval: number = 500) {
       altitudeAccuracy: 0,
     }
     BackgroundGeolocation.processLocation({ location: formattedLocation }).then(
-      location => console.log(formattedLocation, location),
+      location => {},
     )
   }, [values])
 
@@ -215,6 +223,27 @@ export default function useSenseBox(timestampInterval: number = 500) {
     ])
   }
 
+  const uploadValues = async () => {
+    if (!selectedBox) {
+      throw new Error('No box selected.')
+    }
+
+    const data = values
+      .slice(-2500)
+      .flatMap(record => match(selectedBox, record))
+      .map(record => ({
+        ...record,
+        value: record.value.toFixed(2),
+      }))
+
+    const latestTimestamp = Math.max(
+      ...data.map(e => new Date(e.createdAt).getTime()),
+    )
+    setLastUploadTimestamp(new Date(latestTimestamp))
+
+    uploadData(selectedBox, data)
+  }
+
   return {
     isConnected,
     connect,
@@ -222,5 +251,6 @@ export default function useSenseBox(timestampInterval: number = 500) {
     disconnect,
     resetValues,
     send,
+    uploadData: uploadValues,
   }
 }

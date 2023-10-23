@@ -4,7 +4,7 @@ import useSenseBox from '@/lib/useSenseBox'
 import { BluetoothIcon, BluetoothOffIcon, Circle, Square } from 'lucide-react'
 
 export default function ControlBar() {
-  const { connect, isConnected, disconnect } = useSenseBox()
+  const { connect, isConnected, disconnect, uploadData } = useSenseBox()
 
   const isRecording = false
 
@@ -26,7 +26,7 @@ export default function ControlBar() {
           ) : (
             <Circle
               className="h-8 w-8 fill-red-500 text-red-500"
-              // onClick={() => connect()}
+              onClick={() => uploadData()}
             />
           )}
         </>

@@ -17,6 +17,17 @@ export interface BoxEntity {
   lastMeasurementAt?: string | null
   _id: string
   description?: string | null
+  sensors: Sensor[]
+  access_token: string
+}
+
+export interface Sensor {
+  icon: string
+  title: string
+  unit: string
+  sensorType: string
+  _id: string
+  lastMeasurement: any
 }
 
 interface AuthStoreInterface {

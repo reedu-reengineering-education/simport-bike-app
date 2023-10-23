@@ -12,11 +12,9 @@ export default function AuthChecker() {
       // if we can get user data, we are logged in
       try {
         const userData = await getUser()
-        console.log(userData)
         if (userData) setIsLoggedIn(true)
         else setIsLoggedIn(false)
       } catch (e) {
-        console.log(e)
         setIsLoggedIn(false)
       }
     }
