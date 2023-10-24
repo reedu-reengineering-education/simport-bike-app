@@ -7,6 +7,8 @@ import {
 import match from './senseBoxSensorIdMatcher'
 import { uploadData } from './api/openSenseMapClient'
 import { useUploadStore } from './store/useUploadStore'
+import { toast } from '@/components/ui/use-toast'
+import { AxiosError } from 'axios'
 
 const useUploadToOpenSenseMap = (interval: number = 10000) => {
   const [isLoading, setIsLoading] = useState(false)
@@ -78,10 +80,9 @@ const useUploadToOpenSenseMap = (interval: number = 10000) => {
       const maxTimestamp = new Date(
         Math.max(...data.map(record => new Date(record.createdAt).getTime())),
       )
-      console.log('maxTimestamp', maxTimestamp)
       setLastUpload(maxTimestamp)
     } catch (error) {
-      throw error
+      console.error(error)
     } finally {
       setIsLoading(false)
     }

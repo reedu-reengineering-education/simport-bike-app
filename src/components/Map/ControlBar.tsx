@@ -3,9 +3,12 @@ import { Card } from '../ui/card'
 import useSenseBox from '@/lib/useSenseBox'
 import { BluetoothIcon, BluetoothOffIcon, Circle, Square } from 'lucide-react'
 import useUploadToOpenSenseMap from '@/lib/useUploadToOpenSenseMap'
+import { useAuthStore } from '@/lib/store/useAuthStore'
+import WizardDrawer from '../Wizard/WizardDrawer'
 
 export default function ControlBar() {
   const { connect, isConnected, disconnect } = useSenseBox()
+  const { selectedBox } = useAuthStore()
   const { isRecording, start, stop } = useUploadToOpenSenseMap()
 
   return (
@@ -15,9 +18,10 @@ export default function ControlBar() {
       ) : (
         <BluetoothIcon className="h-8 w-8" onClick={() => connect()} />
       )}
-      {isConnected && (
+      {isConnected && !selectedBox && <WizardDrawer />}
+      {selectedBox && isConnected && (
         <>
-          <div className="mx-2 h-full border-r-2 border-muted" />
+          <div className="mx-2 h-full border border-muted" />
           {isRecording ? (
             <Square
               className="h-8 w-8 fill-red-500 text-red-500"
