@@ -2,11 +2,11 @@ import { PauseIcon, PlayIcon } from '@heroicons/react/24/outline'
 import { Card } from '../ui/card'
 import useSenseBox from '@/lib/useSenseBox'
 import { BluetoothIcon, BluetoothOffIcon, Circle, Square } from 'lucide-react'
+import useUploadToOpenSenseMap from '@/lib/useUploadToOpenSenseMap'
 
 export default function ControlBar() {
-  const { connect, isConnected, disconnect, uploadData } = useSenseBox()
-
-  const isRecording = false
+  const { connect, isConnected, disconnect } = useSenseBox()
+  const { isRecording, start, stop } = useUploadToOpenSenseMap()
 
   return (
     <Card className="pointer-events-auto flex w-fit items-center gap-2 rounded-lg bg-background p-4">
@@ -21,12 +21,12 @@ export default function ControlBar() {
           {isRecording ? (
             <Square
               className="h-8 w-8 fill-red-500 text-red-500"
-              // onClick={() => disconnect()}
+              onClick={() => stop()}
             />
           ) : (
             <Circle
               className="h-8 w-8 fill-red-500 text-red-500"
-              onClick={() => uploadData()}
+              onClick={() => start()}
             />
           )}
         </>

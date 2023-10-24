@@ -1,5 +1,5 @@
 import { Drawer } from 'vaul'
-import { AlertOctagon, Check, UserCog2 } from 'lucide-react'
+import { AlertOctagon, Check, ExternalLinkIcon, UserCog2 } from 'lucide-react'
 import ConnectionSelection from '@/components/Wizard/ConnectionSelection'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation } from 'swiper/modules'
@@ -26,7 +26,10 @@ export default function WizardDrawer() {
 
   return (
     <Drawer.Root open={open} onClose={() => setOpen(false)}>
-      <Drawer.Trigger onClick={() => setOpen(true)}>
+      <Drawer.Trigger
+        onClick={() => setOpen(true)}
+        className="focus:outline-none"
+      >
         <div className="relative">
           <UserCog2 className="w-6" />
           {(!isLoggedIn || !selectedBox) && (
@@ -43,12 +46,12 @@ export default function WizardDrawer() {
       </Drawer.Trigger>
       <Drawer.Portal>
         <Drawer.Overlay className="fixed inset-0 bg-black/40" />
-        <Drawer.Content className="fixed bottom-0 left-0 right-0 z-10 mt-24 flex max-h-[75%] flex-col rounded-t-lg bg-zinc-100 pb-safe">
+        <Drawer.Content className="fixed bottom-0 left-0 right-0 z-10 mt-24 flex max-h-[75%] flex-col rounded-t-lg bg-zinc-100 pb-safe focus:outline-none">
           <div className="flex-1 overflow-auto rounded-t-[10px] bg-white p-4">
             <div className="mx-auto mb-8 h-1.5 w-12 flex-shrink-0 rounded-full bg-zinc-300" />
             <div className="mx-auto max-w-md">
               <Swiper
-                initialSlide={isLoggedIn ? 1 : 0}
+                initialSlide={isLoggedIn ? (selectedBox ? 2 : 1) : 0}
                 spaceBetween={48}
                 modules={[Navigation]}
                 slidesPerView={1}
@@ -88,22 +91,7 @@ function DrawerWizardFooter({ setOpen }: { setOpen: (open: boolean) => void }) {
           target="_blank"
         >
           openSenseMap
-          <svg
-            fill="none"
-            height="16"
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-            width="16"
-            aria-hidden="true"
-            className="ml-1 h-3 w-3"
-          >
-            <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
-            <path d="M15 3h6v6"></path>
-            <path d="M10 14L21 3"></path>
-          </svg>
+          <ExternalLinkIcon className="ml-1 h-3 w-3" />
         </a>
         <a
           className="gap-0.25 flex items-center text-xs text-zinc-600"
@@ -111,22 +99,7 @@ function DrawerWizardFooter({ setOpen }: { setOpen: (open: boolean) => void }) {
           target="_blank"
         >
           re:edu
-          <svg
-            fill="none"
-            height="16"
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-            width="16"
-            aria-hidden="true"
-            className="ml-1 h-3 w-3"
-          >
-            <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
-            <path d="M15 3h6v6"></path>
-            <path d="M10 14L21 3"></path>
-          </svg>
+          <ExternalLinkIcon className="ml-1 h-3 w-3" />
         </a>
         {isLoggedIn && (
           <p

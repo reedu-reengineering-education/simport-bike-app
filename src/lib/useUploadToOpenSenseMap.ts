@@ -1,48 +1,93 @@
-import { use, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useAuthStore } from './store/useAuthStore'
+import {
+  senseBoxDataRecord,
+  useSenseBoxValuesStore,
+} from './store/useSenseBoxValuesStore'
+import match from './senseBoxSensorIdMatcher'
+import { uploadData } from './api/openSenseMapClient'
+import { useUploadStore } from './store/useUploadStore'
 
-interface UploadToOpenSenseMapProps {
-  sensorid: string
-  value: number
-  createdAt: string
-}
-
-const useUploadToOpenSenseMap = () => {
+const useUploadToOpenSenseMap = (interval: number = 10000) => {
   const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState(null)
-  const [success, setSuccess] = useState(false)
-  const boxId = useAuthStore(state => state.selectedBox)
+  const selectedBox = useAuthStore(state => state.selectedBox)
+  const values = useSenseBoxValuesStore(state => state.values)
+  const valuesRef = useRef<typeof values>()
+  valuesRef.current = values
 
-  const uploadToOpenSenseMap = async (data: UploadToOpenSenseMapProps) => {
-    setIsLoading(true)
-    try {
-      const response = await fetch(
-        `https://api.opensensemap.org/boxes/${boxId}/sensors/${data.sensorid}/data`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            value: data.value, // Deine Messwertdaten hier
-            createdAt: data.createdAt,
-          }),
-        },
+  const [intervalId, setIntervalId] = useState<NodeJS.Timeout>()
+  const lastUpload = useUploadStore(state => state.lastUpload)
+  const lastUploadRef = useRef<typeof lastUpload>()
+  lastUploadRef.current = lastUpload
+  const setLastUpload = useUploadStore(state => state.setLastUpload)
+
+  // useEffect(() => {
+  //   return () => {
+  //     console.log('in effect cleanup')
+  //     clearInterval(intervalId)
+  //     setIntervalId(undefined)
+  //   }
+  // }, [intervalId])
+
+  function start() {
+    const intervalId = setInterval(() => {
+      uploadToOpenSenseMap()
+    }, interval)
+    setIntervalId(intervalId)
+  }
+
+  function stop() {
+    clearInterval(intervalId)
+    setIntervalId(undefined)
+  }
+
+  async function uploadToOpenSenseMap() {
+    if (!selectedBox) {
+      throw new Error('No box selected.')
+    }
+    if (!valuesRef.current) {
+      throw new Error('No values.')
+    }
+
+    const data = valuesRef.current
+      .flatMap(record => match(selectedBox, record))
+      .map(record => ({
+        ...record,
+        value: record.value.toFixed(2),
+      }))
+      .slice(-2500) // max data to upload
+
+    let filteredData = data
+
+    if (lastUploadRef.current) {
+      filteredData = data.filter(
+        record =>
+          new Date(record.createdAt).getTime() >
+          lastUploadRef.current!.getTime(),
       )
+    }
 
-      if (!response.ok) {
-        throw new Error('Fehler beim Hochladen der Daten')
-      }
+    if (filteredData.length === 0) {
+      console.log('No new data to upload.')
+      return
+    }
 
-      setSuccess(true)
-    } catch (err: any) {
-      setError(err)
+    try {
+      setIsLoading(true)
+      await uploadData(selectedBox, filteredData)
+      const maxTimestamp = new Date(
+        Math.max(...data.map(record => new Date(record.createdAt).getTime())),
+      )
+      console.log('maxTimestamp', maxTimestamp)
+      setLastUpload(maxTimestamp)
+    } catch (error) {
+      throw error
     } finally {
       setIsLoading(false)
     }
   }
 
-  return { isLoading, success, error, uploadToOpenSenseMap }
+  return { isRecording: intervalId !== undefined, isLoading, start, stop }
 }
 
 export default useUploadToOpenSenseMap

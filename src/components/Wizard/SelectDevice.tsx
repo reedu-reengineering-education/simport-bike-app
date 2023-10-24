@@ -13,20 +13,12 @@ export default function SelectDevice() {
   const { boxes } = useAuthStore(state => state.boxes)
   const selectedBox = useAuthStore(state => state.selectedBox)
   const setSelectedBox = useAuthStore(state => state.setSelectedBox)
-  const { refreshBoxes } = useOpenSenseMapAuth()
 
   const swiper = useSwiper()
 
   return (
     <WizardSlide className="flex h-full w-full flex-col items-center justify-center gap-4">
-      <p className="mb-4 font-medium">
-        Wähle bitte die openSenseMap-Box aus, die du mit dem Gerät verbinden
-        möchtest.
-      </p>
-      <Button onClick={refreshBoxes}>
-        <RefreshCcw className="mr-2 w-5" />
-        Neu laden
-      </Button>
+      <p className="mb-4 font-medium">Box auswählen</p>
       <ScrollArea className="flex h-60 w-full flex-col gap-2">
         {boxes &&
           boxes.map(box => (

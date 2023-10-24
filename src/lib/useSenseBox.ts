@@ -31,6 +31,11 @@ const BackgroundGeolocation = registerPlugin<BackgroundGeolocationPlugin>(
   'BackgroundGeolocation',
 )
 
+/**
+ * Parses the data received from the SenseBox and returns an array of values.
+ * @param data - The data received from the SenseBox as a DataView.
+ * @returns An array of values parsed from the data.
+ */
 function parsePackages(data: DataView) {
   const packages = data.byteLength / 4
 
@@ -47,7 +52,6 @@ export default function useSenseBox(timestampInterval: number = 500) {
     namePrefix: 'senseBox',
   })
   const { values, setValues } = useSenseBoxValuesStore()
-  const { selectedBox } = useAuthStore()
   const { useSenseBoxGPS } = useSettingsStore()
   const useSenseBoxGPSRef = useRef<boolean>()
   useSenseBoxGPSRef.current = useSenseBoxGPS
@@ -59,10 +63,6 @@ export default function useSenseBox(timestampInterval: number = 500) {
   const [location, setLocation] = useState<Location>()
   const locationRef = useRef<Location>()
   locationRef.current = location
-
-  const [lastUploadTimestamp, setLastUploadTimestamp] = useState(
-    new Date('1970-01-01'),
-  )
 
   useEffect(() => {
     if (useSenseBoxGPS) {
@@ -103,10 +103,8 @@ export default function useSenseBox(timestampInterval: number = 500) {
     })
 
     return () => {
-      console.log('in unmount')
       if (!watcherId) return
 
-      console.log('removing watcher', watcherId)
       BackgroundGeolocation.removeWatcher({
         id: watcherId,
       })
@@ -223,27 +221,6 @@ export default function useSenseBox(timestampInterval: number = 500) {
     ])
   }
 
-  const uploadValues = async () => {
-    if (!selectedBox) {
-      throw new Error('No box selected.')
-    }
-
-    const data = values
-      .slice(-2500)
-      .flatMap(record => match(selectedBox, record))
-      .map(record => ({
-        ...record,
-        value: record.value.toFixed(2),
-      }))
-
-    const latestTimestamp = Math.max(
-      ...data.map(e => new Date(e.createdAt).getTime()),
-    )
-    setLastUploadTimestamp(new Date(latestTimestamp))
-
-    uploadData(selectedBox, data)
-  }
-
   return {
     isConnected,
     connect,
@@ -251,6 +228,5 @@ export default function useSenseBox(timestampInterval: number = 500) {
     disconnect,
     resetValues,
     send,
-    uploadData: uploadValues,
   }
 }

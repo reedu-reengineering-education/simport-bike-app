@@ -27,7 +27,7 @@ axiosApiInstance.interceptors.response.use(
   },
   async function (error) {
     const originalRequest = error.config
-    if (error.response.status === 403 && !originalRequest._retry) {
+    if (error?.response?.status === 403 && !originalRequest._retry) {
       originalRequest._retry = true
       const access_token = await refreshAccessToken()
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + access_token
@@ -125,7 +125,7 @@ export async function uploadData(box: BoxEntity, data: UploadData) {
       Authorization: box.access_token,
     },
   })
-  if (response.status === 200) {
+  if (response.status === 201) {
     return true
   } else {
     throw new Error(response.data.message)
