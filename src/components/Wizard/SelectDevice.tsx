@@ -1,20 +1,13 @@
 import { useAuthStore } from '@/lib/store/useAuthStore'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '../ui/select'
 import { ScrollArea } from '../ui/scroll-area'
-import { Toggle } from '../ui/toggle'
 import { Button } from '../ui/button'
 import { cx } from 'class-variance-authority'
 import { useState } from 'react'
 import { useSwiper } from 'swiper/react'
 import WizardSlide from './WizardSlide'
 import { Separator } from '../ui/separator'
-import { CheckCircle, Circle } from 'lucide-react'
+import { CheckCircle, Circle, RefreshCcw } from 'lucide-react'
+import useOpenSenseMapAuth from '@/lib/useOpenSenseMapAuth'
 
 export default function SelectDevice() {
   const { boxes } = useAuthStore(state => state.boxes)
@@ -25,10 +18,7 @@ export default function SelectDevice() {
 
   return (
     <WizardSlide className="flex h-full w-full flex-col items-center justify-center gap-4">
-      <p className="mb-4 font-medium">
-        Wähle bitte nun die openSenseMap-Box aus, die du mit dem Gerät verbinden
-        möchtest.
-      </p>
+      <p className="mb-4 font-medium">Box auswählen</p>
       <ScrollArea className="flex h-60 w-full flex-col gap-2">
         {boxes &&
           boxes.map(box => (

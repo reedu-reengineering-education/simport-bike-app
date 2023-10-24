@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { BoxResponse, useAuthStore } from '../store/useAuthStore'
+import { BoxEntity, BoxResponse, useAuthStore } from '../store/useAuthStore'
 
 const axiosApiInstance = axios.create({
   baseURL: 'https://api.opensensemap.org',
@@ -27,7 +27,7 @@ axiosApiInstance.interceptors.response.use(
   },
   async function (error) {
     const originalRequest = error.config
-    if (error.response.status === 403 && !originalRequest._retry) {
+    if (error?.response?.status === 403 && !originalRequest._retry) {
       originalRequest._retry = true
       const access_token = await refreshAccessToken()
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + access_token
@@ -103,6 +103,29 @@ export async function signout() {
     useAuthStore.getState().setEmail('')
     useAuthStore.getState().setPassword('')
     useAuthStore.getState().setIsLoggedIn(false)
+    return true
+  } else {
+    throw new Error(response.data.message)
+  }
+}
+
+export type UploadData = {
+  sensor: string
+  value: number | string
+  createdAt: string
+  location: {
+    lng: number
+    lat: number
+  }
+}[]
+
+export async function uploadData(box: BoxEntity, data: UploadData) {
+  const response = await axiosApiInstance.post(`/boxes/${box._id}/data`, data, {
+    headers: {
+      Authorization: box.access_token,
+    },
+  })
+  if (response.status === 201) {
     return true
   } else {
     throw new Error(response.data.message)

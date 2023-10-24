@@ -1,4 +1,3 @@
-import { BleDevice } from '@capacitor-community/bluetooth-le'
 import { create } from 'zustand'
 
 export type senseBoxDataRecord = {

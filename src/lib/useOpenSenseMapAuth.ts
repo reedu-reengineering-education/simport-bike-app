@@ -8,16 +8,20 @@ const useOpenSenseMapAuth = () => {
     try {
       await signin(username, password)
 
-      const boxesData = await getBoxes()
-      if (boxesData) {
-        setBoxes(boxesData)
-      }
+      await refreshBoxes()
     } catch (error) {
       throw error
     }
   }
 
-  return { login, logout: signout }
+  async function refreshBoxes() {
+    const boxesData = await getBoxes()
+    if (boxesData) {
+      setBoxes(boxesData)
+    }
+  }
+
+  return { login, logout: signout, refreshBoxes }
 }
 
 export default useOpenSenseMapAuth

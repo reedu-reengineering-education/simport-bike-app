@@ -1,4 +1,4 @@
-import { use, useEffect, useReducer, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   BackgroundGeolocationPlugin,
   Location,
@@ -11,6 +11,9 @@ import {
   useSenseBoxValuesStore,
 } from './store/useSenseBoxValuesStore'
 import { useSettingsStore } from './store/useSettingsStore'
+import { uploadData } from './api/openSenseMapClient'
+import { useAuthStore } from './store/useAuthStore'
+import match from './senseBoxSensorIdMatcher'
 
 const BLE_SENSEBOX_SERVICE = 'CF06A218-F68E-E0BE-AD04-8EBC1EB0BC84'
 const BLE_TEMPERATURE_CHARACTERISTIC = '2CDF2174-35BE-FDC4-4CA2-6FD173F8B3A8'
@@ -28,6 +31,11 @@ const BackgroundGeolocation = registerPlugin<BackgroundGeolocationPlugin>(
   'BackgroundGeolocation',
 )
 
+/**
+ * Parses the data received from the SenseBox and returns an array of values.
+ * @param data - The data received from the SenseBox as a DataView.
+ * @returns An array of values parsed from the data.
+ */
 function parsePackages(data: DataView) {
   const packages = data.byteLength / 4
 
@@ -95,10 +103,8 @@ export default function useSenseBox(timestampInterval: number = 500) {
     })
 
     return () => {
-      console.log('in unmount')
       if (!watcherId) return
 
-      console.log('removing watcher', watcherId)
       BackgroundGeolocation.removeWatcher({
         id: watcherId,
       })
@@ -113,7 +119,7 @@ export default function useSenseBox(timestampInterval: number = 500) {
     const buckets = rawDataRecords.reduce((acc, record) => {
       const { timestamp, ...data } = record
 
-      // check if there is already a record with the same timestamp
+      // check if there is already a record with similar timestamp
       const existingTimestamp = acc.find(
         e =>
           Math.abs(new Date(e.timestamp).getTime() - timestamp.getTime()) <
@@ -186,9 +192,9 @@ export default function useSenseBox(timestampInterval: number = 500) {
       simulated: false,
       altitudeAccuracy: 0,
     }
-    BackgroundGeolocation.processLocation({ location: formattedLocation }).then(
-      location => console.log(formattedLocation, location),
-    )
+    // BackgroundGeolocation.processLocation({ location: formattedLocation }).then(
+    //   location => {},
+    // )
   }, [values])
 
   const resetValues = () => {
