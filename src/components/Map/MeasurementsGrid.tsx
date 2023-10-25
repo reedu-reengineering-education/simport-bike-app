@@ -131,7 +131,7 @@ function GridItem({
       )}
       <p className="text-xs font-semibold">{name}</p>
       <p className="text-2xl">
-        {!value && (
+        {value === undefined && (
           <div className="my-1.5 h-5 animate-pulse rounded-full bg-accent" />
         )}
         {value?.toFixed(2)}
