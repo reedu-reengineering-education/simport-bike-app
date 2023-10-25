@@ -22,8 +22,7 @@ import useSenseBox from '@/lib/useSenseBox'
 import { Button } from '../ui/button'
 
 export default function PreviewModal() {
-  const { isConnected, connect, values, disconnect, resetValues } =
-    useSenseBox()
+  const { isConnected, connect, values, disconnect } = useSenseBox()
 
   return (
     <div>

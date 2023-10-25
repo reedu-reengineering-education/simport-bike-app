@@ -3,44 +3,44 @@ PODS:
     - CapacitorCordova
   - CapacitorApp (5.0.6):
     - Capacitor
-  - CapacitorCommunityBackgroundGeolocation (0.0.1):
-    - Capacitor
   - CapacitorCommunityBluetoothLe (3.0.2):
     - Capacitor
   - CapacitorCordova (5.5.0)
   - CapacitorPreferences (5.0.6):
     - Capacitor
+  - FelixerdyBackgroundGeolocation (0.0.1):
+    - Capacitor
 
 DEPENDENCIES:
   - "Capacitor (from `../../node_modules/@capacitor/ios`)"
   - "CapacitorApp (from `../../node_modules/@capacitor/app`)"
-  - "CapacitorCommunityBackgroundGeolocation (from `../../node_modules/@capacitor-community/background-geolocation`)"
   - "CapacitorCommunityBluetoothLe (from `../../node_modules/@capacitor-community/bluetooth-le`)"
   - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
   - "CapacitorPreferences (from `../../node_modules/@capacitor/preferences`)"
+  - "FelixerdyBackgroundGeolocation (from `../../node_modules/@felixerdy/background-geolocation`)"
 
 EXTERNAL SOURCES:
   Capacitor:
     :path: "../../node_modules/@capacitor/ios"
   CapacitorApp:
     :path: "../../node_modules/@capacitor/app"
-  CapacitorCommunityBackgroundGeolocation:
-    :path: "../../node_modules/@capacitor-community/background-geolocation"
   CapacitorCommunityBluetoothLe:
     :path: "../../node_modules/@capacitor-community/bluetooth-le"
   CapacitorCordova:
     :path: "../../node_modules/@capacitor/ios"
   CapacitorPreferences:
     :path: "../../node_modules/@capacitor/preferences"
+  FelixerdyBackgroundGeolocation:
+    :path: "../../node_modules/@felixerdy/background-geolocation"
 
 SPEC CHECKSUMS:
   Capacitor: 57890b363df14d5d2d5d8461aa23e886cb34da2a
   CapacitorApp: 024e1b1bea5f883d79f6330d309bc441c88ad04a
-  CapacitorCommunityBackgroundGeolocation: 6f26f4290377dbd1d6dec21e62cb66f008f61ec7
   CapacitorCommunityBluetoothLe: 83b0de348b2ec461e0f9fa0e48c9e79c8378ddb0
   CapacitorCordova: 3d3908a3d208a11a75f9df3b18c4405c4de76e1d
   CapacitorPreferences: f03954bcb0ff09c792909e46bff88e3183c16b10
+  FelixerdyBackgroundGeolocation: 1e6a92a836b58a62b20e0eb6b78bff201265deb8
 
-PODFILE CHECKSUM: 0b2ce188826fd8b5860c476484770aab80e94b53
+PODFILE CHECKSUM: f2e3708e22e094f8a9b03f2e5f0e3688df829e58
 
 COCOAPODS: 1.11.3

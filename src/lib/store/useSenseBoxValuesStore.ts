@@ -20,11 +20,16 @@ export type senseBoxDataRecord = {
 interface senseBoxValuesStore {
   values: senseBoxDataRecord[]
   setValues: (values: senseBoxDataRecord[]) => void
-  resetValues: () => void
+  addValues: (values: senseBoxDataRecord[]) => void
 }
 
 export const useSenseBoxValuesStore = create<senseBoxValuesStore>(set => ({
   values: [],
   setValues: values => set({ values }),
-  resetValues: () => set({ values: [] }),
+  addValues: values =>
+    set(state => ({
+      values: [...state.values, ...values].sort(
+        (a, b) => a.timestamp.getTime() - b.timestamp.getTime(),
+      ),
+    })),
 }))

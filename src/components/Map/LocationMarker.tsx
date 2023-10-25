@@ -1,4 +1,4 @@
-import { Location } from '@capacitor-community/background-geolocation'
+import { Location } from '@felixerdy/background-geolocation'
 import { Source, Layer } from 'react-map-gl/maplibre'
 
 // @ts-ignore
