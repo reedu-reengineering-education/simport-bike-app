@@ -33,7 +33,7 @@ import { DialogClose } from '@radix-ui/react-dialog'
 import useSenseBox from '@/lib/useSenseBox'
 import { numbersToDataView } from '@capacitor-community/bluetooth-le'
 import { registerPlugin } from '@capacitor/core'
-import { BackgroundGeolocationPlugin } from '@capacitor-community/background-geolocation'
+import { BackgroundGeolocationPlugin } from '@felixerdy/background-geolocation'
 import { Drawer } from 'vaul'
 import { useEffect, useState } from 'react'
 

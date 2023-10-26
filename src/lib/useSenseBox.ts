@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import {
   BackgroundGeolocationPlugin,
   Location,
-} from '@capacitor-community/background-geolocation'
+} from '@felixerdy/background-geolocation'
 import { registerPlugin } from '@capacitor/core'
 
 import useBLEDevice from './useBLE'
@@ -11,9 +11,8 @@ import {
   useSenseBoxValuesStore,
 } from './store/useSenseBoxValuesStore'
 import { useSettingsStore } from './store/useSettingsStore'
-import { uploadData } from './api/openSenseMapClient'
-import { useAuthStore } from './store/useAuthStore'
-import match from './senseBoxSensorIdMatcher'
+import { set } from 'react-hook-form'
+import { SenseBoxDataParser } from './SenseBoxDataParser'
 
 const BLE_SENSEBOX_SERVICE = 'CF06A218-F68E-E0BE-AD04-8EBC1EB0BC84'
 const BLE_TEMPERATURE_CHARACTERISTIC = '2CDF2174-35BE-FDC4-4CA2-6FD173F8B3A8'
@@ -51,12 +50,12 @@ export default function useSenseBox(timestampInterval: number = 500) {
   const { isConnected, connect, listen, send, disconnect } = useBLEDevice({
     namePrefix: 'senseBox',
   })
-  const { values, setValues } = useSenseBoxValuesStore()
+  const { values } = useSenseBoxValuesStore()
   const { useSenseBoxGPS } = useSettingsStore()
   const useSenseBoxGPSRef = useRef<boolean>()
   useSenseBoxGPSRef.current = useSenseBoxGPS
 
-  const [rawDataRecords, setRawDataRecords] = useState<senseBoxDataRecord[]>([]) // holds the incoming data
+  const dataParser = SenseBoxDataParser.getInstance(timestampInterval)
 
   const [watcherId, setWatcherId] = useState<string>()
 
@@ -111,59 +110,27 @@ export default function useSenseBox(timestampInterval: number = 500) {
     }
   }, [useSenseBoxGPS])
 
-  // update the values when new data is received
-  useEffect(() => {
-    const dataList: senseBoxDataRecord[] = []
-
-    // merge the data by timestamp
-    const buckets = rawDataRecords.reduce((acc, record) => {
-      const { timestamp, ...data } = record
-
-      // check if there is already a record with similar timestamp
-      const existingTimestamp = acc.find(
-        e =>
-          Math.abs(new Date(e.timestamp).getTime() - timestamp.getTime()) <
-          timestampInterval,
-      ) // 5 seconds
-
-      // add new record or update existing one
-      if (!existingTimestamp) {
-        acc.push({ timestamp, ...data })
-      } else {
-        const existingIndex = acc.indexOf(existingTimestamp)
-        acc[existingIndex] = {
-          ...existingTimestamp,
-          ...data,
-        }
-      }
-
-      return acc
-    }, dataList)
-
-    setValues(buckets)
-  }, [rawDataRecords, timestampInterval])
-
   // listen to the BLE characteristics
   useEffect(() => {
     if (!isConnected) return
 
     listen(BLE_SENSEBOX_SERVICE, BLE_TEMPERATURE_CHARACTERISTIC, data => {
       const [temperature] = parsePackages(data)
-      appendToRawDataRecords({ temperature })
+      pushDataToProcess({ temperature })
     })
     listen(BLE_SENSEBOX_SERVICE, BLE_HUMIDITY_CHARACTERISTIC, data => {
       const [humidity] = parsePackages(data)
-      appendToRawDataRecords({ humidity })
+      pushDataToProcess({ humidity })
     })
     listen(BLE_SENSEBOX_SERVICE, BLE_PM_CHARACTERISTIC, data => {
       const [pm1, pm2_5, pm4, pm10] = parsePackages(data)
-      appendToRawDataRecords({ pm1, pm2_5, pm4, pm10 })
+      pushDataToProcess({ pm1, pm2_5, pm4, pm10 })
     })
     listen(BLE_SENSEBOX_SERVICE, BLE_ACCELERATION_CHARACTERISTIC, data => {
       const [acceleration_x, acceleration_y, acceleration_z] =
         parsePackages(data)
 
-      appendToRawDataRecords({
+      pushDataToProcess({
         acceleration_x,
         acceleration_y,
         acceleration_z,
@@ -171,40 +138,15 @@ export default function useSenseBox(timestampInterval: number = 500) {
     })
     listen(BLE_SENSEBOX_SERVICE, BLE_GPS_CHARACTERISTIC, data => {
       const [gps_lat, gps_lng, gps_spd] = parsePackages(data)
-      appendToRawDataRecords({ gps_lat, gps_lng, gps_spd })
+      pushDataToProcess({ gps_lat, gps_lng, gps_spd })
     })
     listen(BLE_SENSEBOX_SERVICE, BLE_DISTANCE_CHARACTERISTIC, data => {
       const [distance_l] = parsePackages(data)
-      appendToRawDataRecords({ distance_l })
+      pushDataToProcess({ distance_l })
     })
   }, [isConnected])
 
-  useEffect(() => {
-    const latestValue = values.at(-1)
-    const formattedLocation: Location = {
-      latitude: latestValue?.gps_lat ?? 0,
-      longitude: latestValue?.gps_lng ?? 0,
-      speed: latestValue?.gps_spd ?? 0,
-      time: latestValue?.timestamp.getTime() ?? null,
-      accuracy: 0,
-      altitude: 0,
-      bearing: 0,
-      simulated: false,
-      altitudeAccuracy: 0,
-    }
-    // BackgroundGeolocation.processLocation({ location: formattedLocation }).then(
-    //   location => {},
-    // )
-  }, [values])
-
-  const resetValues = () => {
-    setValues([])
-    setRawDataRecords([])
-  }
-
-  const appendToRawDataRecords = (
-    record: Omit<senseBoxDataRecord, 'timestamp'>,
-  ) => {
+  const pushDataToProcess = (record: Omit<senseBoxDataRecord, 'timestamp'>) => {
     let data = record
     if (!useSenseBoxGPSRef.current) {
       data = {
@@ -215,10 +157,7 @@ export default function useSenseBox(timestampInterval: number = 500) {
       }
     }
 
-    setRawDataRecords(records => [
-      ...records,
-      { timestamp: new Date(), ...data },
-    ])
+    dataParser.pushData(data)
   }
 
   return {
@@ -226,7 +165,6 @@ export default function useSenseBox(timestampInterval: number = 500) {
     connect,
     values,
     disconnect,
-    resetValues,
     send,
   }
 }

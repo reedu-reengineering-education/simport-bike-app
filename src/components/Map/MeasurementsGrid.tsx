@@ -1,5 +1,6 @@
 import useSenseBox from '@/lib/useSenseBox'
 import { AreaChart } from '@tremor/react'
+import AnimatedNumber from '../ui/animated-number'
 
 export default function MeasurementsGrid() {
   const { values } = useSenseBox()
@@ -111,7 +112,7 @@ function GridItem({
   sparklineData?: { x: Date; y: number }[]
 }) {
   return (
-    <div className="relative flex w-full flex-col justify-between p-2">
+    <div className="relative flex w-full flex-1 flex-col justify-between overflow-hidden p-2">
       {sparklineData && sparklineData.length > 2 && (
         <div className="absolute left-0 top-0 h-full w-full">
           <AreaChart
@@ -134,7 +135,7 @@ function GridItem({
         {value === undefined && (
           <div className="my-1.5 h-5 animate-pulse rounded-full bg-accent" />
         )}
-        {value?.toFixed(2)}
+        {value && <AnimatedNumber decimals={2}>{value}</AnimatedNumber>}
       </p>
       <p className="text-xs font-semibold">{unit}</p>
     </div>
