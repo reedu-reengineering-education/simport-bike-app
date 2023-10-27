@@ -131,12 +131,12 @@ function GridItem({
         </div>
       )}
       <p className="text-xs font-semibold">{name}</p>
-      <p className="text-2xl">
+      <div className="text-2xl">
         {value === undefined && (
           <div className="my-1.5 h-5 animate-pulse rounded-full bg-accent" />
         )}
         {value && <AnimatedNumber decimals={2}>{value}</AnimatedNumber>}
-      </p>
+      </div>
       <p className="text-xs font-semibold">{unit}</p>
     </div>
   )
