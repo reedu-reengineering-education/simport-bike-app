@@ -26,9 +26,8 @@ const BLE_DISTANCE_CHARACTERISTIC = 'B3491B60-C0F3-4306-A30D-49C91F37A62B'
 const BLE_CONFIG_SERVICE = '29BD0A85-51E4-4D3C-914E-126541EB2A5E'
 const BLE_CONFIG_CHARACTERISTIC = '60B1D5CE-3539-44D2-BB35-FF2DAABE17FF'
 
-const BackgroundGeolocation = registerPlugin<BackgroundGeolocationPlugin>(
-  'BackgroundGeolocation',
-)
+export const BackgroundGeolocation =
+  registerPlugin<BackgroundGeolocationPlugin>('BackgroundGeolocation')
 
 /**
  * Parses the data received from the SenseBox and returns an array of values.
