@@ -28,8 +28,6 @@ export const useSenseBoxValuesStore = create<senseBoxValuesStore>(set => ({
   setValues: values => set({ values }),
   addValues: values =>
     set(state => ({
-      values: [...state.values, ...values].sort(
-        (a, b) => a.timestamp.getTime() - b.timestamp.getTime(),
-      ),
+      values: [...state.values, ...values],
     })),
 }))

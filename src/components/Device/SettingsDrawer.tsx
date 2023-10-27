@@ -30,16 +30,10 @@ import { Switch } from '../ui/switch'
 import { useSettingsStore } from '@/lib/store/useSettingsStore'
 import { Button } from '../ui/button'
 import { DialogClose } from '@radix-ui/react-dialog'
-import useSenseBox from '@/lib/useSenseBox'
+import useSenseBox, { BackgroundGeolocation } from '@/lib/useSenseBox'
 import { numbersToDataView } from '@capacitor-community/bluetooth-le'
-import { registerPlugin } from '@capacitor/core'
-import { BackgroundGeolocationPlugin } from '@felixerdy/background-geolocation'
 import { Drawer } from 'vaul'
 import { useEffect, useState } from 'react'
-
-const BackgroundGeolocation = registerPlugin<BackgroundGeolocationPlugin>(
-  'BackgroundGeolocation',
-)
 
 const formSchema = z.object({
   uploadInterval: z.number().min(1).max(60),
@@ -62,14 +56,14 @@ export default function SettingsDrawer() {
   })
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
-    send(
-      '29BD0A85-51E4-4D3C-914E-126541EB2A5E',
-      '60B1D5CE-3539-44D2-BB35-FF2DAABE17FF',
-      numbersToDataView([
-        values.uploadInterval,
-        values.switchUseDeviceGPS ? 1 : 0,
-      ]),
-    )
+    // send(
+    //   '29BD0A85-51E4-4D3C-914E-126541EB2A5E',
+    //   '60B1D5CE-3539-44D2-BB35-FF2DAABE17FF',
+    //   numbersToDataView([
+    //     values.uploadInterval,
+    //     values.switchUseDeviceGPS ? 1 : 0,
+    //   ]),
+    // )
     useSettingsStore.setState({
       uploadInterval: values.uploadInterval,
       useSenseBoxGPS: values.switchUseDeviceGPS,
