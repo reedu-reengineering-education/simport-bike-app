@@ -2,7 +2,6 @@ import { TopBar } from '@/components/ui/TopBar'
 import '../styles/globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import { Navbar } from '@/components/ui/Navbar'
 import { cn } from '@/lib/utils'
 import { Toaster } from '@/components/ui/toaster'
 import { ThemeProvider } from './ThemeProvider'
@@ -27,7 +26,7 @@ export default function RootLayout({
       <body
         className={cn(
           inter.className,
-          'flex h-full max-h-full w-full flex-col px-safe pt-safe',
+          'flex h-full max-h-full w-full flex-col px-safe pt-safe landscape:px-0',
         )}
       >
         <AuthChecker />
@@ -35,7 +34,9 @@ export default function RootLayout({
           <header>
             <TopBar />
           </header>
-          <main className="flex-1 overflow-auto">{children}</main>
+          <main className="flex-1 overflow-auto landscape:pl-safe">
+            {children}
+          </main>
           <Toaster />
         </ThemeProvider>
       </body>

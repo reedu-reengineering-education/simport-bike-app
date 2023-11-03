@@ -2,18 +2,16 @@ import { useAuthStore } from '@/lib/store/useAuthStore'
 import { ScrollArea } from '../ui/scroll-area'
 import { Button } from '../ui/button'
 import { cx } from 'class-variance-authority'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSwiper } from 'swiper/react'
 import WizardSlide from './WizardSlide'
 import { Separator } from '../ui/separator'
 import { CheckCircle, Circle, RefreshCcw } from 'lucide-react'
-import useOpenSenseMapAuth from '@/lib/useOpenSenseMapAuth'
 
 export default function SelectDevice() {
   const { boxes } = useAuthStore(state => state.boxes)
   const selectedBox = useAuthStore(state => state.selectedBox)
   const setSelectedBox = useAuthStore(state => state.setSelectedBox)
-
   const swiper = useSwiper()
 
   return (

@@ -17,8 +17,6 @@ export default function ConnectionSelection({
 }: {
   onClose: () => void
 }) {
-  const { connect } = useSenseBox()
-
   const selectedBox = useAuthStore(state => state.selectedBox)
 
   const swiper = useSwiper()
@@ -42,10 +40,9 @@ export default function ConnectionSelection({
       <Button
         onClick={() => {
           onClose()
-          connect()
         }}
       >
-        Aufnahme starten
+        OK
       </Button>
     </WizardSlide>
   )

@@ -1,4 +1,4 @@
-package com.example.app;
+package de.reedu.senseboxbike;
 
 import com.getcapacitor.BridgeActivity;
 

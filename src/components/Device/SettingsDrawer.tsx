@@ -88,9 +88,9 @@ export default function SettingsDrawer() {
       </Drawer.Trigger>
       <Drawer.Portal>
         <Drawer.Overlay className="fixed inset-0 bg-black/40" />
-        <Drawer.Content className="fixed bottom-0 left-0 right-0 z-10 mt-24 flex max-h-[75%] flex-col rounded-t-lg bg-zinc-100 pb-safe focus:outline-none">
-          <div className="flex-1 overflow-auto rounded-t-[10px] bg-white p-4">
-            <div className="mx-auto mb-8 h-1.5 w-12 flex-shrink-0 rounded-full bg-zinc-300" />
+        <Drawer.Content className="fixed bottom-0 left-0 right-0 z-10 mt-24 flex max-h-[75%] flex-col rounded-t-lg bg-background pb-safe focus:outline-none">
+          <div className="flex-1 overflow-auto rounded-t-[10px] p-4">
+            <div className="mx-auto mb-8 h-1.5 w-12 flex-shrink-0 rounded-full bg-muted" />
             <div className="mx-auto max-w-md">
               <p className="mb-4 font-medium">Einstellungen</p>
               <Button onClick={() => BackgroundGeolocation.openSettings()}>
@@ -168,10 +168,10 @@ export default function SettingsDrawer() {
 
 function SettingsDrawerFooter() {
   return (
-    <div className="mt-auto border-t border-zinc-200 bg-zinc-100 p-4">
+    <div className="mt-auto border-t bg-muted p-4">
       <div className="mx-auto flex max-w-md justify-end gap-6">
         <a
-          className="gap-0.25 flex items-center text-xs text-zinc-600"
+          className="gap-0.25 flex items-center text-xs text-muted-foreground"
           href="https://opensensemap.org"
           target="_blank"
         >
@@ -179,7 +179,7 @@ function SettingsDrawerFooter() {
           <ExternalLinkIcon className="ml-1 h-3 w-3" />
         </a>
         <a
-          className="gap-0.25 flex items-center text-xs text-zinc-600"
+          className="gap-0.25 flex items-center text-xs text-muted-foreground"
           href="https://reedu.de"
           target="_blank"
         >

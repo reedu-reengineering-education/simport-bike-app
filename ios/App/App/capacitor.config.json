@@ -2,5 +2,7 @@
 	"appId": "de.reedu.senseboxbike",
 	"appName": "senseBox:Bike",
 	"webDir": "out",
-	"server": {}
+	"server": {
+		"url": "http://192.168.2.136:3000"
+	}
 }
