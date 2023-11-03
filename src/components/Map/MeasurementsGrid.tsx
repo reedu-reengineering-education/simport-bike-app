@@ -1,112 +1,128 @@
 import useSenseBox from '@/lib/useSenseBox'
-import { AreaChart } from '@tremor/react'
+import { AreaChart, AreaChartProps } from '@tremor/react'
 import AnimatedNumber from '../ui/animated-number'
 import { Button } from '../ui/button'
-import { Bluetooth, BluetoothOff, Circle, Square, UserCog2 } from 'lucide-react'
+import {
+  Bluetooth,
+  BluetoothOff,
+  Circle,
+  Square,
+  UploadCloud,
+  UserCog2,
+} from 'lucide-react'
 import { useAuthStore } from '@/lib/store/useAuthStore'
 import useUploadToOpenSenseMap from '@/lib/useUploadToOpenSenseMap'
 import WizardDrawer from '../Wizard/WizardDrawer'
+import { useEffect, useState } from 'react'
 
 export default function MeasurementsGrid() {
-  const { values, connect, isConnected, disconnect } = useSenseBox()
+  const { values: allValues, connect, isConnected, disconnect } = useSenseBox()
   const { selectedBox } = useAuthStore()
-  const { isRecording, start, stop } = useUploadToOpenSenseMap()
+  const { isRecording, start, stop, isLoading } = useUploadToOpenSenseMap()
 
+  const values = allValues.filter((_, i) => i > allValues.length - 20)
   const lastValue = values.at(-1)
 
   return (
-    <div className="relative">
-      <div className="flex w-full flex-col divide-y">
+    <div className="relative h-full w-full p-1">
+      <div className="flex h-full w-full flex-col justify-around">
         <div className="relative flex w-full flex-col divide-y">
           <div className="flex w-full justify-between divide-x">
             <GridItem
               name="Temperatur"
               value={lastValue?.temperature}
               unit="°C"
-              sparklineData={values
-                .filter(e => e.temperature)
-                .map(v => ({ x: v.timestamp, y: v.temperature! }))
-                .splice(-20)}
-            />
-            <GridItem
-              name="Luftfeuchtigkeit"
-              value={lastValue?.humidity}
-              unit="%"
-              sparklineData={values
-                .filter(e => e.humidity)
-                .map(v => ({ x: v.timestamp, y: v.humidity! }))
-                .splice(-20)}
-            />
-          </div>
-          <div className="flex w-full justify-between divide-x">
-            <GridItem
-              name="PM1"
-              value={lastValue?.pm1}
-              unit="µg/m³"
-              sparklineData={values
-                .filter(e => e.pm1)
-                .map(v => ({ x: v.timestamp, y: v.pm1! }))
-                .splice(-20)}
-            />
-            <GridItem
-              name="PM2.5"
-              value={lastValue?.pm2_5}
-              unit="µg/m³"
-              sparklineData={values
-                .filter(e => e.pm2_5)
-                .map(v => ({ x: v.timestamp, y: v.pm2_5! }))
-                .splice(-20)}
-            />
-            <GridItem
-              name="PM4"
-              value={lastValue?.pm4}
-              unit="µg/m³"
-              sparklineData={values
-                .filter(e => e.pm4)
-                .map(v => ({ x: v.timestamp, y: v.pm4! }))
-                .splice(-20)}
-            />
-            <GridItem
-              name="PM10"
-              value={lastValue?.pm10}
-              unit="µg/m³"
-              sparklineData={values
-                .filter(e => e.pm10)
-                .map(v => ({ x: v.timestamp, y: v.pm10! }))
-                .splice(-20)}
-            />
-          </div>
-          <div className="flex w-full justify-between divide-x">
-            <GridItem
-              name="Distanz Links"
-              value={lastValue?.distance_l}
-              unit="cm"
-              sparklineData={values
-                .filter(e => e.distance_l)
-                .map(v => ({ x: v.timestamp, y: v.distance_l! }))
-                .splice(-20)}
+              areaProps={{
+                data: values.map(v => ({ x: v.timestamp, y: v.temperature })),
+                index: 'x',
+                categories: ['y'],
+              }}
             />
             <GridItem
               name="Geschwindigkeit"
               value={lastValue?.gps_spd}
               unit="km/h"
-              sparklineData={values
-                .filter(e => e.gps_spd)
-                .map(v => ({ x: v.timestamp, y: v.gps_spd! }))
-                .splice(-20)}
+              areaProps={{
+                data: values.map(v => ({ x: v.timestamp, y: v.gps_spd })),
+                index: 'x',
+                categories: ['y'],
+              }}
             />
             <GridItem
-              name="Beschleunigung"
-              value={lastValue?.acceleration_x}
+              name="Luftfeuchtigkeit"
+              value={lastValue?.humidity}
+              unit="%"
+              areaProps={{
+                data: values.map(v => ({ x: v.timestamp, y: v.humidity })),
+                index: 'x',
+                categories: ['y'],
+              }}
+            />
+          </div>
+          <div className="flex w-full justify-between divide-x">
+            <GridItem
+              name="Feinstaub"
+              value={[
+                lastValue?.pm1,
+                lastValue?.pm2_5,
+                lastValue?.pm4,
+                lastValue?.pm10,
+              ]}
+              labels={['PM1', 'PM2.5', 'PM4', 'PM10']}
+              unit="µg/m³"
+              areaProps={{
+                data: values
+                  .filter(e => e.pm1)
+                  .map(v => ({
+                    x: v.timestamp,
+                    pm1: v.pm1,
+                    pm2_5: v.pm2_5,
+                    pm4: v.pm4,
+                    pm10: v.pm10,
+                  })),
+                index: 'x',
+                categories: ['pm1', 'pm2_5', 'pm4', 'pm10'],
+              }}
+            />
+            <GridItem
+              name="Distanz Links"
+              value={lastValue?.distance_l}
+              unit="cm"
+              areaProps={{
+                data: values.map(v => ({ x: v.timestamp, y: v.distance_l })),
+                index: 'x',
+                categories: ['y'],
+              }}
+            />
+
+            <GridItem
+              name="Beschl."
+              value={[
+                lastValue?.acceleration_x,
+                lastValue?.acceleration_y,
+                lastValue?.acceleration_z,
+              ]}
               unit="m/s²"
-              sparklineData={values
-                .filter(e => e.acceleration_x)
-                .map(v => ({ x: v.timestamp, y: v.acceleration_x! }))
-                .splice(-20)}
+              labels={['X', 'Y', 'Z']}
+              areaProps={{
+                data: values.map(v => ({
+                  x: v.timestamp,
+                  acceleration_x: v.acceleration_x,
+                  acceleration_y: v.acceleration_y,
+                  acceleration_z: v.acceleration_z,
+                })),
+                index: 'x',
+                categories: [
+                  'acceleration_x',
+                  'acceleration_y',
+                  'acceleration_z',
+                ],
+                colors: ['indigo', 'cyan', 'amber'],
+              }}
             />
           </div>
           {(!selectedBox || values.length === 0) && (
-            <div className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center bg-background/75 p-12 backdrop-blur">
+            <div className="absolute left-0 top-0 z-10 flex h-full w-full flex-col items-center justify-center bg-background/75 p-12 backdrop-blur">
               {!selectedBox && (
                 <p className="text-center text-sm">
                   Bitte verknüpfen Sie eine senseBox über den Setup-Button.
@@ -154,24 +170,28 @@ export default function MeasurementsGrid() {
                 Aufzeichnen
               </Button>
             ) : (
-              <Button
-                size={'sm'}
-                className="w-full"
-                onClick={() => stop()}
-                variant={'secondary'}
-              >
-                <Square className="mr-2 h-5 fill-red-500 text-red-500" />
-                Stop
-              </Button>
+              <>
+                <Button
+                  size={'sm'}
+                  className="w-full"
+                  onClick={() => stop()}
+                  variant={'secondary'}
+                >
+                  {isLoading && (
+                    <UploadCloud className="mr-2 h-5 animate-pulse opacity-50" />
+                  )}
+                  {!isLoading && (
+                    <Square className="mr-2 h-5 fill-red-500 text-red-500" />
+                  )}
+                  Stop
+                </Button>
+              </>
             )
           ) : (
             <></>
           )}
         </div>
       </div>
-      {/* <div className="absolute left-0 top-0 h-full w-full bg-white bg-opacity-50 backdrop-blur">
-        Hello World
-      </div> */}
     </div>
   )
 }
@@ -179,41 +199,83 @@ export default function MeasurementsGrid() {
 function GridItem({
   name,
   value,
+  labels,
   unit,
-  sparklineData,
+  areaProps,
 }: {
   name: string
-  value: number | undefined
+  value: number | (number | undefined)[] | undefined
+  labels?: string[]
   unit: string
-  sparklineData?: { x: Date; y: number }[]
+  areaProps: AreaChartProps
 }) {
+  const [selectedValue, setSelectedValue] = useState<number>()
+  const [labelIndex, setLabelIndex] = useState<number>()
+
+  useEffect(() => {
+    if (value !== undefined && !Array.isArray(value)) {
+      setSelectedValue(value)
+    }
+  }, [value])
+
+  useEffect(() => {
+    if (labels && labels.length > 0 && labelIndex === undefined) {
+      setLabelIndex(0)
+    }
+  }, [labels])
+
+  useEffect(() => {
+    if (
+      labels &&
+      labels.length > 0 &&
+      labelIndex !== undefined &&
+      Array.isArray(value)
+    ) {
+      setSelectedValue(value[labelIndex])
+    }
+  }, [labelIndex, value])
+
   return (
-    <div className="relative flex w-full flex-1 flex-col justify-between overflow-hidden p-2">
-      {sparklineData && sparklineData.length > 2 && (
-        <div className="absolute left-0 top-0 h-full w-full">
+    <div
+      className="relative flex w-full flex-1 flex-col justify-between overflow-hidden p-2"
+      onClick={() => {
+        if (labelIndex !== undefined && labels && labels.length > 0) {
+          setLabelIndex((labelIndex + 1) % labels!.length)
+        }
+      }}
+    >
+      {areaProps && areaProps.data.length > 2 && (
+        <div className="pointer-events-none absolute left-0 top-0 h-full w-full">
           <AreaChart
             className="h-full w-full opacity-50"
-            data={sparklineData}
-            index="x"
-            categories={['y']}
-            colors={['blue']}
             showXAxis={false}
             showYAxis={false}
             showLegend={false}
             showGridLines={false}
             curveType="natural"
             showTooltip={false}
+            colors={['slate']}
+            {...areaProps}
           />
         </div>
       )}
-      <p className="text-xs font-semibold">{name}</p>
-      <div className="text-2xl">
-        {value === undefined && (
+      <div className="z-10 flex gap-1">
+        <p className="text-xs font-semibold">{name}</p>
+        {labels && labels.length > 0 && (
+          <span className="rounded-full bg-primary px-1 py-0.5 text-[8px] font-semibold text-accent">
+            {labels[labelIndex!]}
+          </span>
+        )}
+      </div>
+      <div className="z-10 flex flex-col text-2xl">
+        {selectedValue === undefined && (
           <div className="my-1.5 h-5 animate-pulse rounded-full bg-accent" />
         )}
-        {value && <AnimatedNumber decimals={2}>{value}</AnimatedNumber>}
+        {selectedValue !== undefined ? (
+          <AnimatedNumber decimals={2}>{selectedValue}</AnimatedNumber>
+        ) : null}
       </div>
-      <p className="text-xs font-semibold">{unit}</p>
+      <p className="z-10 text-xs font-semibold">{unit}</p>
     </div>
   )
 }
