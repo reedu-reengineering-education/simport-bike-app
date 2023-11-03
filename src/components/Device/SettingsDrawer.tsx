@@ -79,7 +79,11 @@ export default function SettingsDrawer() {
   }, [open])
 
   return (
-    <Drawer.Root open={open} onClose={() => setOpen(false)}>
+    <Drawer.Root
+      open={open}
+      onClose={() => setOpen(false)}
+      shouldScaleBackground
+    >
       <Drawer.Trigger
         onClick={() => setOpen(true)}
         className="focus:outline-none"

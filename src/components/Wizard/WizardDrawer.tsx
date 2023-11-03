@@ -29,10 +29,15 @@ export default function WizardDrawer({
   }, [open])
 
   return (
-    <Drawer.Root open={open} onClose={() => setOpen(false)}>
+    <Drawer.Root
+      open={open}
+      onClose={() => setOpen(false)}
+      shouldScaleBackground
+    >
       <Drawer.Trigger
         onClick={() => setOpen(true)}
         className="w-full focus:outline-none"
+        asChild
       >
         {trigger ? (
           trigger
