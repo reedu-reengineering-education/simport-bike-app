@@ -13,7 +13,11 @@ import { useAuthStore } from '@/lib/store/useAuthStore'
 import { signout } from '@/lib/api/openSenseMapClient'
 import { toast } from '../ui/use-toast'
 
-export default function WizardDrawer() {
+export default function WizardDrawer({
+  trigger,
+}: {
+  trigger?: React.ReactNode
+}) {
   const [open, setOpen] = useState(false)
   const { selectedBox, isLoggedIn } = useAuthStore()
 
@@ -28,21 +32,25 @@ export default function WizardDrawer() {
     <Drawer.Root open={open} onClose={() => setOpen(false)}>
       <Drawer.Trigger
         onClick={() => setOpen(true)}
-        className="focus:outline-none"
+        className="w-full focus:outline-none"
       >
-        <div className="relative">
-          <UserCog2 className="w-6" />
-          {(!isLoggedIn || !selectedBox) && (
-            <div className="absolute -right-1 -top-1 rounded-full bg-amber-400 p-0.5">
-              <AlertOctagon className="h-2 w-2 text-background" />
-            </div>
-          )}
-          {selectedBox && (
-            <div className="absolute -right-1 -top-1 rounded-full bg-green-500 p-0.5">
-              <Check className="h-2 w-2 text-background" />
-            </div>
-          )}
-        </div>
+        {trigger ? (
+          trigger
+        ) : (
+          <div className="relative">
+            <UserCog2 className="w-6" />
+            {(!isLoggedIn || !selectedBox) && (
+              <div className="absolute -right-1 -top-1 rounded-full bg-amber-400 p-0.5">
+                <AlertOctagon className="h-2 w-2 text-background" />
+              </div>
+            )}
+            {selectedBox && (
+              <div className="absolute -right-1 -top-1 rounded-full bg-green-500 p-0.5">
+                <Check className="h-2 w-2 text-background" />
+              </div>
+            )}
+          </div>
+        )}
       </Drawer.Trigger>
       <Drawer.Portal>
         <Drawer.Overlay className="fixed inset-0 bg-black/40" />

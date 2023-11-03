@@ -1,101 +1,177 @@
 import useSenseBox from '@/lib/useSenseBox'
 import { AreaChart } from '@tremor/react'
 import AnimatedNumber from '../ui/animated-number'
+import { Button } from '../ui/button'
+import { Bluetooth, BluetoothOff, Circle, Square, UserCog2 } from 'lucide-react'
+import { useAuthStore } from '@/lib/store/useAuthStore'
+import useUploadToOpenSenseMap from '@/lib/useUploadToOpenSenseMap'
+import WizardDrawer from '../Wizard/WizardDrawer'
 
 export default function MeasurementsGrid() {
-  const { values } = useSenseBox()
+  const { values, connect, isConnected, disconnect } = useSenseBox()
+  const { selectedBox } = useAuthStore()
+  const { isRecording, start, stop } = useUploadToOpenSenseMap()
 
   const lastValue = values.at(-1)
 
   return (
-    <div className="flex w-full flex-col divide-y">
-      <div className="flex w-full justify-between divide-x">
-        <GridItem
-          name="Temperatur"
-          value={lastValue?.temperature}
-          unit="°C"
-          sparklineData={values
-            .filter(e => e.temperature)
-            .map(v => ({ x: v.timestamp, y: v.temperature! }))
-            .splice(-20)}
-        />
-        <GridItem
-          name="Luftfeuchtigkeit"
-          value={lastValue?.humidity}
-          unit="%"
-          sparklineData={values
-            .filter(e => e.humidity)
-            .map(v => ({ x: v.timestamp, y: v.humidity! }))
-            .splice(-20)}
-        />
+    <div className="relative">
+      <div className="flex w-full flex-col divide-y">
+        <div className="relative flex w-full flex-col divide-y">
+          <div className="flex w-full justify-between divide-x">
+            <GridItem
+              name="Temperatur"
+              value={lastValue?.temperature}
+              unit="°C"
+              sparklineData={values
+                .filter(e => e.temperature)
+                .map(v => ({ x: v.timestamp, y: v.temperature! }))
+                .splice(-20)}
+            />
+            <GridItem
+              name="Luftfeuchtigkeit"
+              value={lastValue?.humidity}
+              unit="%"
+              sparklineData={values
+                .filter(e => e.humidity)
+                .map(v => ({ x: v.timestamp, y: v.humidity! }))
+                .splice(-20)}
+            />
+          </div>
+          <div className="flex w-full justify-between divide-x">
+            <GridItem
+              name="PM1"
+              value={lastValue?.pm1}
+              unit="µg/m³"
+              sparklineData={values
+                .filter(e => e.pm1)
+                .map(v => ({ x: v.timestamp, y: v.pm1! }))
+                .splice(-20)}
+            />
+            <GridItem
+              name="PM2.5"
+              value={lastValue?.pm2_5}
+              unit="µg/m³"
+              sparklineData={values
+                .filter(e => e.pm2_5)
+                .map(v => ({ x: v.timestamp, y: v.pm2_5! }))
+                .splice(-20)}
+            />
+            <GridItem
+              name="PM4"
+              value={lastValue?.pm4}
+              unit="µg/m³"
+              sparklineData={values
+                .filter(e => e.pm4)
+                .map(v => ({ x: v.timestamp, y: v.pm4! }))
+                .splice(-20)}
+            />
+            <GridItem
+              name="PM10"
+              value={lastValue?.pm10}
+              unit="µg/m³"
+              sparklineData={values
+                .filter(e => e.pm10)
+                .map(v => ({ x: v.timestamp, y: v.pm10! }))
+                .splice(-20)}
+            />
+          </div>
+          <div className="flex w-full justify-between divide-x">
+            <GridItem
+              name="Distanz Links"
+              value={lastValue?.distance_l}
+              unit="cm"
+              sparklineData={values
+                .filter(e => e.distance_l)
+                .map(v => ({ x: v.timestamp, y: v.distance_l! }))
+                .splice(-20)}
+            />
+            <GridItem
+              name="Geschwindigkeit"
+              value={lastValue?.gps_spd}
+              unit="km/h"
+              sparklineData={values
+                .filter(e => e.gps_spd)
+                .map(v => ({ x: v.timestamp, y: v.gps_spd! }))
+                .splice(-20)}
+            />
+            <GridItem
+              name="Beschleunigung"
+              value={lastValue?.acceleration_x}
+              unit="m/s²"
+              sparklineData={values
+                .filter(e => e.acceleration_x)
+                .map(v => ({ x: v.timestamp, y: v.acceleration_x! }))
+                .splice(-20)}
+            />
+          </div>
+          {(!selectedBox || values.length === 0) && (
+            <div className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center bg-background/75 p-12 backdrop-blur">
+              {!selectedBox && (
+                <p className="text-center text-sm">
+                  Bitte verknüpfen Sie eine senseBox über den Setup-Button.
+                </p>
+              )}
+              {selectedBox && (
+                <p className="text-center text-sm">
+                  Sie können sich nun mit der senseBox verbinden und die
+                  Messwerte aufzeichnen
+                </p>
+              )}
+            </div>
+          )}
+        </div>
+        <div className="flex w-full justify-between gap-2 p-2">
+          {!isConnected ? (
+            <Button size={'sm'} className="w-full" onClick={() => connect()}>
+              <Bluetooth className="mr-2 h-4" />
+              Verbinden
+            </Button>
+          ) : (
+            <Button size={'sm'} className="w-full" onClick={() => disconnect()}>
+              <BluetoothOff className="mr-2 h-4" />
+              Trennen
+            </Button>
+          )}
+          {!selectedBox ? (
+            <WizardDrawer
+              trigger={
+                <Button size={'sm'} className="w-full" variant={'secondary'}>
+                  <UserCog2 className="mr-2 h-5" />
+                  Setup
+                </Button>
+              }
+            />
+          ) : isConnected ? (
+            !isRecording ? (
+              <Button
+                size={'sm'}
+                className="w-full"
+                onClick={() => start()}
+                variant={'secondary'}
+              >
+                <Circle className="mr-2 h-5 fill-red-500 text-red-500" />
+                Aufzeichnen
+              </Button>
+            ) : (
+              <Button
+                size={'sm'}
+                className="w-full"
+                onClick={() => stop()}
+                variant={'secondary'}
+              >
+                <Square className="mr-2 h-5 fill-red-500 text-red-500" />
+                Stop
+              </Button>
+            )
+          ) : (
+            <></>
+          )}
+        </div>
       </div>
-      <div className="flex w-full justify-between divide-x">
-        <GridItem
-          name="PM1"
-          value={lastValue?.pm1}
-          unit="µg/m³"
-          sparklineData={values
-            .filter(e => e.pm1)
-            .map(v => ({ x: v.timestamp, y: v.pm1! }))
-            .splice(-20)}
-        />
-        <GridItem
-          name="PM2.5"
-          value={lastValue?.pm2_5}
-          unit="µg/m³"
-          sparklineData={values
-            .filter(e => e.pm2_5)
-            .map(v => ({ x: v.timestamp, y: v.pm2_5! }))
-            .splice(-20)}
-        />
-        <GridItem
-          name="PM4"
-          value={lastValue?.pm4}
-          unit="µg/m³"
-          sparklineData={values
-            .filter(e => e.pm4)
-            .map(v => ({ x: v.timestamp, y: v.pm4! }))
-            .splice(-20)}
-        />
-        <GridItem
-          name="PM10"
-          value={lastValue?.pm10}
-          unit="µg/m³"
-          sparklineData={values
-            .filter(e => e.pm10)
-            .map(v => ({ x: v.timestamp, y: v.pm10! }))
-            .splice(-20)}
-        />
-      </div>
-      <div className="flex w-full justify-between divide-x">
-        <GridItem
-          name="Distanz Links"
-          value={lastValue?.distance_l}
-          unit="cm"
-          sparklineData={values
-            .filter(e => e.pm1)
-            .map(v => ({ x: v.timestamp, y: v.pm1! }))
-            .splice(-20)}
-        />
-        <GridItem
-          name="Geschwindigkeit"
-          value={lastValue?.gps_spd}
-          unit="km/h"
-          sparklineData={values
-            .filter(e => e.pm1)
-            .map(v => ({ x: v.timestamp, y: v.pm1! }))
-            .splice(-20)}
-        />
-        <GridItem
-          name="Beschleunigung"
-          value={lastValue?.acceleration_x}
-          unit="m/s²"
-          sparklineData={values
-            .filter(e => e.acceleration_x)
-            .map(v => ({ x: v.timestamp, y: v.acceleration_x! }))
-            .splice(-20)}
-        />
-      </div>
+      {/* <div className="absolute left-0 top-0 h-full w-full bg-white bg-opacity-50 backdrop-blur">
+        Hello World
+      </div> */}
     </div>
   )
 }
