@@ -28,11 +28,11 @@ function getSensorKeyFromTitle(
   if (lowerCaseTitle.includes('pm4')) return 'pm4'
   if (lowerCaseTitle.includes('pm2')) return 'pm2_5'
   if (lowerCaseTitle.includes('pm1')) return 'pm1'
+  if (lowerCaseTitle.includes('distan')) return 'distance_l'
   if (lowerCaseTitle.includes('x')) return 'acceleration_x'
   if (lowerCaseTitle.includes('y')) return 'acceleration_y'
   if (lowerCaseTitle.includes('z')) return 'acceleration_z'
   if (lowerCaseTitle.includes('geschwin')) return 'gps_spd'
-  if (lowerCaseTitle.includes('distan')) return 'distance_l'
 }
 
 export default function match(senseBox: BoxEntity, data: senseBoxDataRecord) {
