@@ -28,7 +28,7 @@ export default function MeasurementsGrid() {
     <div className="flex h-full w-full flex-col justify-around p-1">
       <div
         className={cn(
-          'relative flex h-full w-full flex-col',
+          'relative flex w-full flex-col',
           !selectedBox || values.length === 0 ? '' : 'divide-y',
         )}
       >
