@@ -25,7 +25,7 @@ export default function DeviceMapWrapper() {
 
   return (
     <div className="flex h-full w-full portrait:flex-col">
-      <div className="portrait:border-b-2 landscape:border-r-2">
+      <div className="portrait:border-b landscape:border-r-2">
         <MeasurementsGrid />
       </div>
       <div className="relative h-full w-full">
