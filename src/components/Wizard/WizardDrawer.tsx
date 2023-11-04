@@ -12,13 +12,15 @@ import { useEffect, useState } from 'react'
 import { useAuthStore } from '@/lib/store/useAuthStore'
 import { signout } from '@/lib/api/openSenseMapClient'
 import { toast } from '../ui/use-toast'
+import { useUIStore } from '@/lib/store/useUIStore'
 
 export default function WizardDrawer({
   trigger,
 }: {
   trigger?: React.ReactNode
 }) {
-  const [open, setOpen] = useState(false)
+  const { showWizardDrawer: open, setShowWizardDrawer: setOpen } = useUIStore()
+
   const { selectedBox, isLoggedIn } = useAuthStore()
 
   // fix for disappearing map
@@ -96,7 +98,7 @@ export default function WizardDrawer({
 function DrawerWizardFooter({ setOpen }: { setOpen: (open: boolean) => void }) {
   const { isLoggedIn } = useAuthStore()
   return (
-    <div className="mt-auto border-t bg-muted p-4 pb-safe">
+    <div className="mt-auto border-t bg-muted p-4 pb-safe-or-4">
       <div className="mx-auto flex max-w-md justify-end gap-6">
         <a
           className="gap-0.25 flex items-center text-xs text-muted-foreground"
