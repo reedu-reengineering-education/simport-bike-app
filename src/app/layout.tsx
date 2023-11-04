@@ -1,13 +1,12 @@
 import { TopBar } from '@/components/ui/TopBar'
 import '../styles/globals.css'
 import type { Metadata, Viewport } from 'next'
-import { Inter } from 'next/font/google'
 import { cn } from '@/lib/utils'
 import { Toaster } from '@/components/ui/toaster'
 import { ThemeProvider } from './ThemeProvider'
 import AuthChecker from './AuthChecker'
 
-const inter = Inter({ subsets: ['latin'] })
+import { GeistSans, GeistMono } from 'geist/font'
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -28,7 +27,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="h-full w-full" suppressHydrationWarning>
-      <body className={cn(inter.className, 'h-full w-full')}>
+      <body className={cn(GeistMono.className, 'h-full w-full')}>
         <AuthChecker />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div
