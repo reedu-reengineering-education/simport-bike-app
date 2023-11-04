@@ -15,11 +15,13 @@ import useUploadToOpenSenseMap from '@/lib/useUploadToOpenSenseMap'
 import WizardDrawer from '../Wizard/WizardDrawer'
 import { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
+import { useUIStore } from '@/lib/store/useUIStore'
 
 export default function MeasurementsGrid() {
   const { values: allValues, connect, isConnected, disconnect } = useSenseBox()
   const { selectedBox } = useAuthStore()
   const { isRecording, start, stop, isLoading } = useUploadToOpenSenseMap()
+  const { setShowWizardDrawer } = useUIStore()
 
   const values = allValues.filter((_, i) => i > allValues.length - 20)
   const lastValue = values.at(-1)
@@ -156,14 +158,15 @@ export default function MeasurementsGrid() {
           </Button>
         )}
         {!selectedBox ? (
-          <WizardDrawer
-            trigger={
-              <Button size={'sm'} className="w-full" variant={'secondary'}>
-                <UserCog2 className="mr-2 h-5" />
-                Setup
-              </Button>
-            }
-          />
+          <Button
+            size={'sm'}
+            className="w-full"
+            variant={'secondary'}
+            onClick={() => setShowWizardDrawer(true)}
+          >
+            <UserCog2 className="mr-2 h-5" />
+            Setup
+          </Button>
         ) : isConnected ? (
           !isRecording ? (
             <Button

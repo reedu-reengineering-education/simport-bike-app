@@ -34,13 +34,11 @@ export default function OpenSenseMapLogin() {
   const { toast } = useToast()
 
   const email = useAuthStore(state => state.email)
-  const password = useAuthStore(state => state.password)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email,
-      password,
     },
   })
 

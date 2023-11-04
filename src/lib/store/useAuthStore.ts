@@ -33,8 +33,6 @@ export interface Sensor {
 interface AuthStoreInterface {
   email: string
   setEmail: (email: string) => void
-  password: string
-  setPassword: (password: string) => void
   token: string
   setToken: (token: string) => void
   refreshToken: string
@@ -52,8 +50,6 @@ export const useAuthStore = create<AuthStoreInterface>()(
     set => ({
       email: '',
       setEmail: email => set({ email }),
-      password: '',
-      setPassword: password => set({ password }),
       token: '',
       setToken: token => set({ token }),
       refreshToken: '',
@@ -64,7 +60,6 @@ export const useAuthStore = create<AuthStoreInterface>()(
         if (!isLoggedIn) {
           set({
             email: '',
-            password: '',
             token: '',
             refreshToken: '',
             boxes: { boxes_count: 0 },

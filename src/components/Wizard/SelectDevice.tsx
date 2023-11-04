@@ -7,6 +7,7 @@ import WizardSlide from './WizardSlide'
 import { Separator } from '../ui/separator'
 import { CheckCircle, Circle } from 'lucide-react'
 import CreateBikeBoxDialog from './CreateBikeBoxDialog'
+import { cn } from '@/lib/utils'
 
 export default function SelectDevice() {
   const { boxes } = useAuthStore(state => state.boxes)
@@ -20,24 +21,24 @@ export default function SelectDevice() {
       <CreateBikeBoxDialog />
       <ScrollArea className="flex h-60 w-full flex-col gap-2">
         {boxes &&
-          boxes.map(box => (
-            <>
-              <div
-                aria-label="Toggle"
-                key={box._id}
-                onClick={e => setSelectedBox(box)}
-                className={cx('flex h-12 w-full items-center')}
-              >
-                {selectedBox?._id === box._id && (
-                  <CheckCircle className={cx('mr-2 h-5 w-5 text-green-500')} />
-                )}
-                {selectedBox?._id !== box._id && (
-                  <Circle className={cx('mr-2 h-5 w-5')} />
-                )}
-                {box.name}
-              </div>
-              <Separator className="my-2" />
-            </>
+          boxes.map((box, i) => (
+            <div
+              aria-label="Toggle"
+              key={box._id}
+              onClick={_ => setSelectedBox(box)}
+              className={cn(
+                'flex h-12 w-full items-center',
+                i !== boxes.length - 1 && 'border-b', // exclude last item
+              )}
+            >
+              {selectedBox?._id === box._id && (
+                <CheckCircle className={cx('mr-2 h-5 w-5 text-green-500')} />
+              )}
+              {selectedBox?._id !== box._id && (
+                <Circle className={cx('mr-2 h-5 w-5')} />
+              )}
+              {box.name}
+            </div>
           ))}
       </ScrollArea>
 

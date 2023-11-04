@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Button } from '../ui/button'
-import { Loader2, Plus } from 'lucide-react'
+import { InfoIcon, Loader2, Plus } from 'lucide-react'
 import { useState } from 'react'
 import {
   Form,
@@ -81,7 +81,7 @@ export default function CreateBikeBoxDialog() {
           <Plus className="mr-2 w-5" /> Neue senseBox:bike hinzufügen
         </Button>
       </DialogTrigger>
-      <DialogContent className="px-2">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle className="mb-2">Neue senseBox:bike</DialogTitle>
           <Form {...form}>
@@ -103,6 +103,10 @@ export default function CreateBikeBoxDialog() {
                   </FormItem>
                 )}
               />
+              <DialogDescription className="flex items-center">
+                <InfoIcon className="mr-2 h-5 md:mr-4" />
+                Die Position der senseBox:bike wird automatisch ermittelt
+              </DialogDescription>
               <Button type="submit" disabled={loading}>
                 {loading && <Loader2 className="mr-2 w-5 animate-spin" />}
                 Speichern

@@ -168,7 +168,7 @@ export default function SettingsDrawer() {
 
 function SettingsDrawerFooter() {
   return (
-    <div className="mt-auto border-t bg-muted p-4 pb-safe">
+    <div className="mt-auto border-t bg-muted p-4 pb-safe-or-4">
       <div className="mx-auto flex max-w-md justify-end gap-6">
         <a
           className="gap-0.25 flex items-center text-xs text-muted-foreground"
