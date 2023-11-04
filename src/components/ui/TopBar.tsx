@@ -17,7 +17,7 @@ import SettingsDrawer from '../Device/SettingsDrawer'
 
 const TopBar = () => {
   return (
-    <div className="sticky top-0 flex w-full items-center justify-between border-b border-muted px-4 pb-2 pt-3 landscape:px-safe">
+    <div className="sticky top-0 flex w-full items-center justify-between border-b border-muted px-4 pb-2 pt-3 landscape:px-safe-or-4">
       <h1 className="text-xl font-semibold">senseBox:bike</h1>
       <div className="flex gap-4">
         <WizardDrawer />

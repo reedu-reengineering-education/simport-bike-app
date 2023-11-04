@@ -29,7 +29,7 @@ export function Toaster() {
           </Toast>
         )
       })}
-      <ToastViewport className="m-safe" />
+      <ToastViewport className="m-safe-or-4" />
     </ToastProvider>
   )
 }
