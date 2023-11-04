@@ -29,8 +29,8 @@ axiosApiInstance.interceptors.response.use(
     const originalRequest = error.config
     if (error?.response?.status === 403 && !originalRequest._retry) {
       originalRequest._retry = true
-      const access_token = await refreshAccessToken()
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + access_token
+      const accessToken = await refreshAccessToken()
+      axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
       return axiosApiInstance(originalRequest)
     }
     return Promise.reject(error)
@@ -39,13 +39,18 @@ axiosApiInstance.interceptors.response.use(
 
 const refreshAccessToken = async () => {
   const refreshToken = useAuthStore.getState().refreshToken
-  const response = await axiosApiInstance.post('/users/refresh-auth', {
-    token: refreshToken,
-  })
+  const response = await axiosApiInstanceWithoutInterceptor.post(
+    '/users/refresh-auth',
+    {
+      token: refreshToken,
+    },
+  )
   if (response.status === 200) {
     const { token } = response.data
     useAuthStore.getState().setToken(token)
     return token
+  } else {
+    throw new Error(response.data.message)
   }
 }
 
@@ -64,7 +69,6 @@ export async function signin(username: string, password: string) {
       useAuthStore.getState().setToken(token)
       useAuthStore.getState().setRefreshToken(refreshToken)
       useAuthStore.getState().setEmail(username)
-      useAuthStore.getState().setPassword(password)
       useAuthStore.getState().setIsLoggedIn(true)
       return response.data
     } else {
@@ -101,7 +105,6 @@ export async function signout() {
     useAuthStore.getState().setToken('')
     useAuthStore.getState().setRefreshToken('')
     useAuthStore.getState().setEmail('')
-    useAuthStore.getState().setPassword('')
     useAuthStore.getState().setIsLoggedIn(false)
     return true
   } else {
@@ -120,11 +123,15 @@ export type UploadData = {
 }[]
 
 export async function uploadData(box: BoxEntity, data: UploadData) {
-  const response = await axiosApiInstance.post(`/boxes/${box._id}/data`, data, {
-    headers: {
-      Authorization: box.access_token,
+  const response = await axiosApiInstanceWithoutInterceptor.post(
+    `/boxes/${box._id}/data`,
+    data,
+    {
+      headers: {
+        Authorization: box.access_token,
+      },
     },
-  })
+  )
   if (response.status === 201) {
     return true
   } else {
