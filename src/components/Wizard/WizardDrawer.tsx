@@ -13,6 +13,7 @@ import { useAuthStore } from '@/lib/store/useAuthStore'
 import { signout } from '@/lib/api/openSenseMapClient'
 import { toast } from '../ui/use-toast'
 import { useUIStore } from '@/lib/store/useUIStore'
+import LoginOrRegister from './LoginOrRegister'
 
 export default function WizardDrawer({
   trigger,
@@ -73,7 +74,7 @@ export default function WizardDrawer({
                   <Welcome />
                 </SwiperSlide> */}
                 <SwiperSlide>
-                  <OpenSenseMapLogin />
+                  <LoginOrRegister />
                 </SwiperSlide>
                 <SwiperSlide>
                   <SelectDevice />

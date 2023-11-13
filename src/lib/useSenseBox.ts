@@ -71,6 +71,8 @@ export default function useSenseBox(timestampInterval: number = 500) {
       return
     }
 
+    if (!isConnected) return
+
     BackgroundGeolocation.addWatcher(
       {
         backgroundMessage: 'Cancel to prevent battery drain.',
@@ -107,11 +109,17 @@ export default function useSenseBox(timestampInterval: number = 500) {
         id: watcherId,
       })
     }
-  }, [useSenseBoxGPS])
+  }, [useSenseBoxGPS, isConnected])
 
   // listen to the BLE characteristics
   useEffect(() => {
-    if (!isConnected) return
+    if (!isConnected) {
+      if (!watcherId) return
+
+      BackgroundGeolocation.removeWatcher({
+        id: watcherId,
+      })
+    }
 
     listen(BLE_SENSEBOX_SERVICE, BLE_TEMPERATURE_CHARACTERISTIC, data => {
       const [temperature] = parsePackages(data)
@@ -135,9 +143,32 @@ export default function useSenseBox(timestampInterval: number = 500) {
         acceleration_z,
       })
     })
-    listen(BLE_SENSEBOX_SERVICE, BLE_GPS_CHARACTERISTIC, data => {
+    listen(BLE_SENSEBOX_SERVICE, BLE_GPS_CHARACTERISTIC, async data => {
       const [gps_lat, gps_lng, gps_spd] = parsePackages(data)
-      pushDataToProcess({ gps_lat, gps_lng, gps_spd })
+
+      try {
+        const { location } = await BackgroundGeolocation.processLocation({
+          location: {
+            latitude: gps_lat,
+            longitude: gps_lng,
+            speed: gps_spd,
+            accuracy: 0,
+            simulated: false,
+            altitude: null,
+            bearing: null,
+            altitudeAccuracy: null,
+            time: new Date().getTime(),
+          },
+        })
+
+        pushDataToProcess({
+          gps_lat: location.latitude,
+          gps_lng: location.longitude,
+          gps_spd: location.speed ?? 0,
+        } as senseBoxDataRecord)
+      } catch (e) {
+        console.error(e)
+      }
     })
     listen(BLE_SENSEBOX_SERVICE, BLE_DISTANCE_CHARACTERISTIC, data => {
       const [distance_l] = parsePackages(data)

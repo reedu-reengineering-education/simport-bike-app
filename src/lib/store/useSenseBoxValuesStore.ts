@@ -21,6 +21,8 @@ interface senseBoxValuesStore {
   values: senseBoxDataRecord[]
   setValues: (values: senseBoxDataRecord[]) => void
   addValues: (values: senseBoxDataRecord[]) => void
+  uploadStart: Date | undefined
+  setUploadStart: (uploadStart: Date | undefined) => void
 }
 
 export const useSenseBoxValuesStore = create<senseBoxValuesStore>(set => ({
@@ -30,4 +32,6 @@ export const useSenseBoxValuesStore = create<senseBoxValuesStore>(set => ({
     set(state => ({
       values: [...state.values, ...values],
     })),
+  uploadStart: undefined,
+  setUploadStart: uploadStart => set({ uploadStart }),
 }))
