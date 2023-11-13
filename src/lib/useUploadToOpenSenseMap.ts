@@ -7,10 +7,9 @@ import {
 import match from './senseBoxSensorIdMatcher'
 import { uploadData } from './api/openSenseMapClient'
 import { useUploadStore } from './store/useUploadStore'
-import { toast } from '@/components/ui/use-toast'
-import { AxiosError } from 'axios'
+import { useSettingsStore } from './store/useSettingsStore'
 
-const useUploadToOpenSenseMap = (interval: number = 10000) => {
+const useUploadToOpenSenseMap = () => {
   const [isLoading, setIsLoading] = useState(false)
   const selectedBox = useAuthStore(state => state.selectedBox)
   const values = useSenseBoxValuesStore(state => state.values)
@@ -23,15 +22,28 @@ const useUploadToOpenSenseMap = (interval: number = 10000) => {
   lastUploadRef.current = lastUpload
   const setLastUpload = useUploadStore(state => state.setLastUpload)
 
-  // useEffect(() => {
-  //   return () => {
-  //     console.log('in effect cleanup')
-  //     clearInterval(intervalId)
-  //     setIntervalId(undefined)
-  //   }
-  // }, [intervalId])
+  const interval_in_s = useSettingsStore(state => state.uploadInterval)
+  const interval = interval_in_s * 1000
+
+  const [uploadStart, setUploadStart] = useState<Date>()
+
+  useEffect(() => {
+    if (!intervalId) {
+      return
+    }
+
+    stop()
+    start()
+
+    return () => {
+      console.log('in effect cleanup')
+      clearInterval(intervalId)
+      setIntervalId(undefined)
+    }
+  }, [interval])
 
   function start() {
+    setUploadStart(new Date())
     const intervalId = setInterval(() => {
       uploadToOpenSenseMap()
     }, interval)
@@ -41,6 +53,8 @@ const useUploadToOpenSenseMap = (interval: number = 10000) => {
   function stop() {
     clearInterval(intervalId)
     setIntervalId(undefined)
+    setUploadStart(undefined)
+    uploadToOpenSenseMap() // upload last data
   }
 
   async function uploadToOpenSenseMap() {
@@ -61,11 +75,12 @@ const useUploadToOpenSenseMap = (interval: number = 10000) => {
 
     let filteredData = data
 
-    if (lastUploadRef.current) {
+    if (lastUploadRef.current && uploadStart) {
       filteredData = data.filter(
         record =>
+          new Date(record.createdAt).getTime() > uploadStart.getTime() &&
           new Date(record.createdAt).getTime() >
-          lastUploadRef.current!.getTime(),
+            lastUploadRef.current!.getTime(),
       )
     }
 
