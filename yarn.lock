@@ -183,10 +183,10 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.53.0.tgz#bea56f2ed2b5baea164348ff4d5a879f6f81f20d"
   integrity sha512-Kn7K8dx/5U6+cT1yEhpX1w4PCSg0M+XyRILPgvwcEBjerFWCwQj5sbr3/VmxqV0JGHCBCzyd6LxypEuehypY1w==
 
-"@felixerdy/background-geolocation@1.2.15":
-  version "1.2.15"
-  resolved "https://registry.yarnpkg.com/@felixerdy/background-geolocation/-/background-geolocation-1.2.15.tgz#ed37812eec753ed0e12bbe6372bcf4c641a68f8e"
-  integrity sha512-WwE/3NXFCpk4jRe351//ViCbCt72H/I4oXxs1MDMk2Y3JXdmywuKFOFoX+U+ybMj3tpUvxC5SjirCcO783Ze3g==
+"@felixerdy/background-geolocation@1.2.16":
+  version "1.2.16"
+  resolved "https://registry.yarnpkg.com/@felixerdy/background-geolocation/-/background-geolocation-1.2.16.tgz#b670fa381307548b2c0f06d6fc7daa0fe7606f23"
+  integrity sha512-E5Iyi0F8N4G+D4BcG4/ts22KSlWJ1/Ga/xDBX/b3ZN98jV7otlzGey6dHaUFve17glCyCMAkyQMWjevkubr0TA==
 
 "@floating-ui/core@^1.4.2":
   version "1.5.0"
@@ -847,6 +847,21 @@
     "@radix-ui/react-use-controllable-state" "1.0.1"
     "@radix-ui/react-use-previous" "1.0.1"
     "@radix-ui/react-use-size" "1.0.1"
+
+"@radix-ui/react-tabs@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@radix-ui/react-tabs/-/react-tabs-1.0.4.tgz#993608eec55a5d1deddd446fa9978d2bc1053da2"
+  integrity sha512-egZfYY/+wRNCflXNHx+dePvnz9FbmssDTJBtgRfDY7e8SE5oIo3Py2eCB1ckAbh1Q7cQ/6yJZThJ++sgbxibog==
+  dependencies:
+    "@babel/runtime" "^7.13.10"
+    "@radix-ui/primitive" "1.0.1"
+    "@radix-ui/react-context" "1.0.1"
+    "@radix-ui/react-direction" "1.0.1"
+    "@radix-ui/react-id" "1.0.1"
+    "@radix-ui/react-presence" "1.0.1"
+    "@radix-ui/react-primitive" "1.0.3"
+    "@radix-ui/react-roving-focus" "1.0.4"
+    "@radix-ui/react-use-controllable-state" "1.0.1"
 
 "@radix-ui/react-toast@^1.1.4":
   version "1.1.5"

@@ -78,30 +78,6 @@ export class SenseBoxDataParser {
           b.distance_l !== undefined,
       )
 
-    // const bucketsProcessedLocation = await Promise.all(
-    //   buckets.map(async b => {
-    //     const processedLocation = await BackgroundGeolocation.processLocation({
-    //       location: {
-    //         latitude: b.gps_lat!,
-    //         longitude: b.gps_lng!,
-    //         speed: b.gps_spd!,
-    //         accuracy: 0,
-    //         simulated: false,
-    //         altitude: null,
-    //         bearing: null,
-    //         altitudeAccuracy: null,
-    //         time: b.timestamp.getTime(),
-    //       },
-    //     })
-    //     return {
-    //       ...b,
-    //       gps_lat: processedLocation.latitude ?? 0,
-    //       gps_lng: processedLocation.longitude ?? 0,
-    //       gps_spd: processedLocation.speed ?? 0,
-    //     } as senseBoxDataRecord
-    //   }),
-    // )
-
     useSenseBoxValuesStore.getState().addValues(buckets)
 
     const completeTimestamps = buckets.map(b => b.timestamp)

@@ -6,6 +6,7 @@ import {
   Bluetooth,
   BluetoothOff,
   Circle,
+  Loader2Icon,
   Square,
   UploadCloud,
   UserCog2,
@@ -135,10 +136,16 @@ export default function MeasurementsGrid() {
                 Bitte verknüpfen Sie eine senseBox über den Setup-Button.
               </p>
             )}
-            {selectedBox && (
+            {selectedBox && !isConnected && (
               <p className="text-center text-sm">
                 Sie können sich nun mit der senseBox verbinden und die Messwerte
                 aufzeichnen
+              </p>
+            )}
+            {selectedBox && isConnected && (
+              <p className="flex items-center text-center text-sm">
+                <Loader2Icon className="mr-2 h-4 w-4 animate-spin" /> Warten auf
+                Messwerte
               </p>
             )}
           </div>
