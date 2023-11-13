@@ -26,7 +26,7 @@ const TopBar = () => {
           <DropdownMenuTrigger>
             <Bars3Icon className="h-6 w-6" />
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="mr-2 mt-4">
+          <DropdownMenuContent className="mt-4 mr-safe-or-2">
             <DropdownMenuItem>
               <LockClosedIcon className="mr-2 h-6 w-6" /> Privacy Policy
             </DropdownMenuItem>
