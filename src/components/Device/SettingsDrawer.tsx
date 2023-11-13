@@ -116,6 +116,7 @@ export default function SettingsDrawer() {
                               <FormControl>
                                 <div className="flex items-center gap-2">
                                   <Slider
+                                    className="py-2"
                                     onValueChange={e => field.onChange(e[0])}
                                     defaultValue={[field.value]}
                                     min={10}
