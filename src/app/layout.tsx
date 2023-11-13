@@ -6,7 +6,7 @@ import { Toaster } from '@/components/ui/toaster'
 import { ThemeProvider } from './ThemeProvider'
 import AuthChecker from './AuthChecker'
 
-import { GeistSans, GeistMono } from 'geist/font'
+import { GeistMono } from 'geist/font/mono'
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -27,13 +27,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="h-full w-full" suppressHydrationWarning>
-      <body className={cn(GeistMono.className, 'h-full w-full')}>
+      <body className={cn(GeistMono.className, '!h-full w-full')}>
         <AuthChecker />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div
-            vaul-drawer-wrapper=""
-            className="flex h-full max-h-full w-full flex-col px-safe pt-safe landscape:px-0"
-          >
+          <div className="flex h-full max-h-full w-full flex-col px-safe pt-safe landscape:px-0">
             <header>
               <TopBar />
             </header>

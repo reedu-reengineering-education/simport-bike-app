@@ -25,7 +25,10 @@ const useUploadToOpenSenseMap = () => {
   const interval_in_s = useSettingsStore(state => state.uploadInterval)
   const interval = interval_in_s * 1000
 
-  const [uploadStart, setUploadStart] = useState<Date>()
+  const uploadStart = useSenseBoxValuesStore(state => state.uploadStart)
+  const setUploadStart = useSenseBoxValuesStore(state => state.setUploadStart)
+  const uploadStartRef = useRef<typeof uploadStart>()
+  uploadStartRef.current = uploadStart
 
   useEffect(() => {
     if (!intervalId) {
@@ -75,13 +78,17 @@ const useUploadToOpenSenseMap = () => {
 
     let filteredData = data
 
-    if (lastUploadRef.current && uploadStart) {
+    console.log(uploadStartRef.current, lastUploadRef.current)
+
+    if (lastUploadRef.current && uploadStartRef.current) {
       filteredData = data.filter(
         record =>
-          new Date(record.createdAt).getTime() > uploadStart.getTime() &&
+          new Date(record.createdAt).getTime() >
+            uploadStartRef.current!.getTime() &&
           new Date(record.createdAt).getTime() >
             lastUploadRef.current!.getTime(),
       )
+      console.log('filteredData', filteredData)
     }
 
     if (filteredData.length === 0) {
