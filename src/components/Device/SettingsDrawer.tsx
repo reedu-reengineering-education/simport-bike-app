@@ -37,7 +37,7 @@ import { useEffect, useState } from 'react'
 
 const formSchema = z.object({
   uploadInterval: z.number().min(1).max(60),
-  switchUseDeviceGPS: z.boolean(),
+  switchUseSmartphoneGPS: z.boolean(),
   switchLiveMode: z.boolean(),
 })
 
@@ -50,7 +50,7 @@ export default function SettingsDrawer() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       uploadInterval: uploadInterval,
-      switchUseDeviceGPS: useDeviceGPS,
+      switchUseSmartphoneGPS: !useDeviceGPS,
       switchLiveMode: false,
     },
   })
@@ -66,7 +66,7 @@ export default function SettingsDrawer() {
     // )
     useSettingsStore.setState({
       uploadInterval: values.uploadInterval,
-      useSenseBoxGPS: values.switchUseDeviceGPS,
+      useSenseBoxGPS: !values.switchUseSmartphoneGPS,
     })
   }
   const [open, setOpen] = useState(false)
@@ -131,14 +131,14 @@ export default function SettingsDrawer() {
                           )}
                         />
                         <FormField
-                          name="switchUseDeviceGPS"
+                          name="switchUseSmartphoneGPS"
                           control={form.control}
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Use senseBox GPS</FormLabel>
+                              <FormLabel>Smartphone GPS</FormLabel>
                               <FormDescription>
-                                Das GPS vom Smartphone benutzen oder von der
-                                senseBox:bike
+                                Anstelle des senseBox GPS Moduls das GPS des
+                                Smartphones verwenden
                               </FormDescription>
                               <FormControl>
                                 <Switch
