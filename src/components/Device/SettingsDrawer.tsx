@@ -68,6 +68,7 @@ export default function SettingsDrawer() {
       uploadInterval: values.uploadInterval,
       useSenseBoxGPS: !values.switchUseSmartphoneGPS,
     })
+    setOpen(false)
   }
   const [open, setOpen] = useState(false)
 
