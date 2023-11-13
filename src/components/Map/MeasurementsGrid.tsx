@@ -12,10 +12,10 @@ import {
 } from 'lucide-react'
 import { useAuthStore } from '@/lib/store/useAuthStore'
 import useUploadToOpenSenseMap from '@/lib/useUploadToOpenSenseMap'
-import WizardDrawer from '../Wizard/WizardDrawer'
 import { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
 import { useUIStore } from '@/lib/store/useUIStore'
+import colors from 'tailwindcss/colors'
 
 export default function MeasurementsGrid() {
   const { values: allValues, connect, isConnected, disconnect } = useSenseBox()
@@ -27,30 +27,30 @@ export default function MeasurementsGrid() {
   const lastValue = values.at(-1)
 
   return (
-    <div className="flex h-full w-full flex-col justify-around p-1">
+    <div className="flex h-full w-full flex-col justify-around p-1 landscape:pb-safe">
       <div
         className={cn(
           'relative flex w-full flex-col',
           !selectedBox || values.length === 0 ? '' : 'divide-y',
         )}
       >
-        <div className="flex w-full justify-between divide-x">
+        <div className="flex w-full flex-wrap justify-between gap-1">
           <GridItem
-            name="Temperatur"
-            value={lastValue?.temperature}
-            unit="°C"
-            areaProps={{
-              data: values.map(v => ({ x: v.timestamp, y: v.temperature })),
+            name="Geschwindigkeit"
+            value={lastValue?.gps_spd}
+            unit="km/h"
+            chartProps={{
+              data: values.map(v => ({ x: v.timestamp, y: v.gps_spd })),
               index: 'x',
               categories: ['y'],
             }}
           />
           <GridItem
-            name="Geschwindigkeit"
-            value={lastValue?.gps_spd}
-            unit="km/h"
-            areaProps={{
-              data: values.map(v => ({ x: v.timestamp, y: v.gps_spd })),
+            name="Temperatur"
+            value={lastValue?.temperature}
+            unit="°C"
+            chartProps={{
+              data: values.map(v => ({ x: v.timestamp, y: v.temperature })),
               index: 'x',
               categories: ['y'],
             }}
@@ -59,14 +59,12 @@ export default function MeasurementsGrid() {
             name="Luftfeuchtigkeit"
             value={lastValue?.humidity}
             unit="%"
-            areaProps={{
+            chartProps={{
               data: values.map(v => ({ x: v.timestamp, y: v.humidity })),
               index: 'x',
               categories: ['y'],
             }}
           />
-        </div>
-        <div className="flex w-full justify-between divide-x">
           <GridItem
             name="Feinstaub"
             value={[
@@ -77,7 +75,7 @@ export default function MeasurementsGrid() {
             ]}
             labels={['PM1', 'PM2.5', 'PM4', 'PM10']}
             unit="µg/m³"
-            areaProps={{
+            chartProps={{
               data: values
                 .filter(e => e.pm1)
                 .map(v => ({
@@ -96,15 +94,16 @@ export default function MeasurementsGrid() {
             name="Distanz Links"
             value={lastValue?.distance_l}
             unit="cm"
-            areaProps={{
+            chartProps={{
               data: values.map(v => ({ x: v.timestamp, y: v.distance_l })),
               index: 'x',
               categories: ['y'],
             }}
+            decimals={0}
           />
 
           <GridItem
-            name="Beschl."
+            name="Beschleunigung"
             value={[
               lastValue?.acceleration_x,
               lastValue?.acceleration_y,
@@ -112,7 +111,7 @@ export default function MeasurementsGrid() {
             ]}
             unit="m/s²"
             labels={['X', 'Y', 'Z']}
-            areaProps={{
+            chartProps={{
               data: values.map(v => ({
                 x: v.timestamp,
                 acceleration_x: v.acceleration_x,
@@ -209,13 +208,15 @@ function GridItem({
   value,
   labels,
   unit,
-  areaProps,
+  chartProps,
+  decimals = 2,
 }: {
   name: string
   value: number | (number | undefined)[] | undefined
   labels?: string[]
   unit: string
-  areaProps: AreaChartProps
+  chartProps: AreaChartProps
+  decimals?: number
 }) {
   const [selectedValue, setSelectedValue] = useState<number>()
   const [labelIndex, setLabelIndex] = useState<number>()
@@ -245,45 +246,50 @@ function GridItem({
 
   return (
     <div
-      className="relative flex w-full flex-1 flex-col justify-between overflow-hidden p-2"
+      className="relative flex min-w-[33%] max-w-[50%] flex-1 flex-col justify-between overflow-hidden rounded-md bg-muted/25 px-4 py-3"
       onClick={() => {
         if (labelIndex !== undefined && labels && labels.length > 0) {
           setLabelIndex((labelIndex + 1) % labels!.length)
         }
       }}
     >
-      {areaProps && areaProps.data.length > 2 && (
-        <div className="pointer-events-none absolute left-0 top-0 h-full w-full">
+      {chartProps && chartProps.data.length > 2 && (
+        <div className="pointer-events-none absolute -left-6 -right-6 top-0 h-full">
           <AreaChart
             className="h-full w-full opacity-50"
             showXAxis={false}
             showYAxis={false}
             showLegend={false}
             showGridLines={false}
-            curveType="natural"
+            curveType="monotone"
             showTooltip={false}
             colors={['slate']}
-            {...areaProps}
+            {...chartProps}
           />
         </div>
       )}
       <div className="z-10 flex gap-1">
-        <p className="text-xs font-semibold">{name}</p>
+        <p className="whitespace-nowrap text-sm font-semibold">{name}</p>
         {labels && labels.length > 0 && (
-          <span className="rounded-full bg-primary px-1 py-0.5 text-[8px] font-semibold text-accent">
+          <span
+            className="h-fit rounded-full px-1 py-0.5 text-[8px] font-semibold text-accent"
+            style={{
+              backgroundColor: colors[chartProps.colors![labelIndex!]][500],
+            }}
+          >
             {labels[labelIndex!]}
           </span>
         )}
       </div>
-      <div className="z-10 flex flex-col text-2xl">
+      <div className="z-10 flex max-w-0 items-baseline gap-2 text-3xl">
         {selectedValue === undefined && (
           <div className="my-1.5 h-5 animate-pulse rounded-full bg-accent" />
         )}
         {selectedValue !== undefined ? (
-          <AnimatedNumber decimals={2}>{selectedValue}</AnimatedNumber>
+          <AnimatedNumber decimals={decimals}>{selectedValue}</AnimatedNumber>
         ) : null}
+        <p className="text-xs font-semibold">{unit}</p>
       </div>
-      <p className="z-10 text-xs font-semibold">{unit}</p>
     </div>
   )
 }
