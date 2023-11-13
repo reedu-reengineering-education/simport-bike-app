@@ -276,10 +276,10 @@ function GridItem({
         </div>
       )}
       <div className="z-10 flex gap-1">
-        <p className="whitespace-nowrap text-sm font-semibold">{name}</p>
+        <p className="whitespace-nowrap text-sm">{name}</p>
         {labels && labels.length > 0 && labelIndex !== undefined && (
           <span
-            className="h-fit rounded-full px-1 py-0.5 text-[8px] font-semibold text-accent"
+            className="h-fit rounded-full px-1 py-0.5 text-[8px] text-accent"
             style={{
               backgroundColor: colors[chartProps.colors![labelIndex]][500],
             }}
@@ -295,7 +295,7 @@ function GridItem({
         {selectedValue !== undefined ? (
           <AnimatedNumber decimals={decimals}>{selectedValue}</AnimatedNumber>
         ) : null}
-        <p className="text-xs font-semibold">{unit}</p>
+        <p className="text-xs">{unit}</p>
       </div>
     </div>
   )

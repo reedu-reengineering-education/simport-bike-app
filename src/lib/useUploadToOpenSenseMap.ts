@@ -78,8 +78,6 @@ const useUploadToOpenSenseMap = () => {
 
     let filteredData = data
 
-    console.log(uploadStartRef.current, lastUploadRef.current)
-
     if (lastUploadRef.current && uploadStartRef.current) {
       filteredData = data.filter(
         record =>
@@ -88,7 +86,6 @@ const useUploadToOpenSenseMap = () => {
           new Date(record.createdAt).getTime() >
             lastUploadRef.current!.getTime(),
       )
-      console.log('filteredData', filteredData)
     }
 
     if (filteredData.length === 0) {
