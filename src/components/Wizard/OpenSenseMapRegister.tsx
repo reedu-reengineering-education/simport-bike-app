@@ -3,7 +3,6 @@ import { useSwiper } from 'swiper/react'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { useState } from 'react'
-import useOpenSenseMapAuth from '@/lib/useOpenSenseMapAuth'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod' // import * as z from "zod";
 import { useForm } from 'react-hook-form'
@@ -17,20 +16,26 @@ import {
   FormMessage,
 } from '../ui/form'
 import { useToast } from '../ui/use-toast'
-import Spinner from '../ui/Spinner'
 import { useAuthStore } from '@/lib/store/useAuthStore'
 import WizardSlide from './WizardSlide'
 import { Loader2Icon } from 'lucide-react'
+import { register } from '@/lib/api/openSenseMapClient'
 
-const formSchema = z.object({
-  email: z.string().email(),
-  password: z.string(),
-})
+const formSchema = z
+  .object({
+    name: z.string().min(3).max(40),
+    email: z.string().email(),
+    password: z.string(),
+    passwordConfirm: z.string(),
+  })
+  .refine(data => data.password === data.passwordConfirm, {
+    message: "Passwords don't match",
+    path: ['passwordConfirm'],
+  })
 
-export default function OpenSenseMapLogin() {
+export default function OpenSenseMapRegister() {
   const swiper = useSwiper()
   const [loading, setLoading] = useState(false)
-  const { login } = useOpenSenseMapAuth()
   const { toast } = useToast()
 
   const email = useAuthStore(state => state.email)
@@ -45,10 +50,10 @@ export default function OpenSenseMapLogin() {
   const handleLogin = async (values: z.infer<typeof formSchema>) => {
     setLoading(true)
     try {
-      await login(values.email, values.password)
+      await register(values.name, values.email, values.password)
       swiper.slideNext()
     } catch (e) {
-      toast({ variant: 'destructive', title: 'Login fehlgeschlagen' })
+      toast({ variant: 'destructive', title: 'Registrierung fehlgeschlagen' })
     } finally {
       setLoading(false)
     }
@@ -56,11 +61,22 @@ export default function OpenSenseMapLogin() {
 
   return (
     <WizardSlide className="flex h-full flex-col content-center justify-center gap-4">
-      <p className="mb-4 font-medium">
-        Bitte loggen Sie sich mit Ihrem openSenseMap-Account ein
-      </p>
+      <p className="mb-4 font-medium">Neuer openSenseMap Account</p>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleLogin)} className="space-y-8">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input type="text" placeholder="Name" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="email"
@@ -87,10 +103,23 @@ export default function OpenSenseMapLogin() {
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="passwordConfirm"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Passwort wiederholen</FormLabel>
+                <FormControl>
+                  <Input type="password" placeholder="Passwort" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
           <Button disabled={loading} type="submit">
             {loading && <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />}
-            Anmelden
+            Registrieren
           </Button>
         </form>
       </Form>

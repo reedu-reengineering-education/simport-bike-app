@@ -1,11 +1,13 @@
 import axios from 'axios'
 import { BoxEntity, BoxResponse, useAuthStore } from '../store/useAuthStore'
 
+const OSEM_BASE_URL = 'https://api.opensensemap.org'
+
 const axiosApiInstance = axios.create({
-  baseURL: 'https://api.opensensemap.org',
+  baseURL: OSEM_BASE_URL,
 })
 const axiosApiInstanceWithoutInterceptor = axios.create({
-  baseURL: 'https://api.opensensemap.org',
+  baseURL: OSEM_BASE_URL,
 })
 
 // Request interceptor for API calls
@@ -70,6 +72,32 @@ export async function signin(username: string, password: string) {
       useAuthStore.getState().setToken(token)
       useAuthStore.getState().setRefreshToken(refreshToken)
       useAuthStore.getState().setEmail(username)
+      useAuthStore.getState().setIsLoggedIn(true)
+      return response.data
+    } else {
+      throw new Error(response.data.message)
+    }
+  } catch (error) {
+    throw error
+  }
+}
+
+export async function register(name: string, email: string, password: string) {
+  try {
+    // dont use the axiosApiInstance here, because we dont want to send the token
+    const response = await axiosApiInstanceWithoutInterceptor.post(
+      '/users/register',
+      {
+        name: name,
+        email: email,
+        password: password,
+      },
+    )
+    if (response.status === 201) {
+      const { token, refreshToken } = response.data
+      useAuthStore.getState().setToken(token)
+      useAuthStore.getState().setRefreshToken(refreshToken)
+      useAuthStore.getState().setEmail(email)
       useAuthStore.getState().setIsLoggedIn(true)
       return response.data
     } else {
