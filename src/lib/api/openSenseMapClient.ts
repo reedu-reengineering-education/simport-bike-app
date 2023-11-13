@@ -46,8 +46,9 @@ const refreshAccessToken = async () => {
     },
   )
   if (response.status === 200) {
-    const { token } = response.data
+    const { token, refreshToken } = response.data
     useAuthStore.getState().setToken(token)
+    useAuthStore.getState().setRefreshToken(refreshToken)
     return token
   } else {
     throw new Error(response.data.message)
