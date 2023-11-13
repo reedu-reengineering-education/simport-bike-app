@@ -270,11 +270,11 @@ function GridItem({
       )}
       <div className="z-10 flex gap-1">
         <p className="whitespace-nowrap text-sm font-semibold">{name}</p>
-        {labels && labels.length > 0 && (
+        {labels && labels.length > 0 && labelIndex !== undefined && (
           <span
             className="h-fit rounded-full px-1 py-0.5 text-[8px] font-semibold text-accent"
             style={{
-              backgroundColor: colors[chartProps.colors![labelIndex!]][500],
+              backgroundColor: colors[chartProps.colors![labelIndex]][500],
             }}
           >
             {labels[labelIndex!]}
