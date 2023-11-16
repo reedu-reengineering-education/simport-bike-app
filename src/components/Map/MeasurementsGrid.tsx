@@ -18,7 +18,11 @@ import colors from 'tailwindcss/colors'
 import AnimatedNumber from '../ui/animated-number'
 import { Button } from '../ui/button'
 
-export default function MeasurementsGrid() {
+export default function MeasurementsGrid({
+  layoutFull,
+}: {
+  layoutFull?: boolean
+}) {
   const { values: allValues, connect, isConnected, disconnect } = useSenseBox()
   const { selectedBox } = useAuthStore()
   const { isRecording, start, stop, isLoading } = useUploadToOpenSenseMap()
@@ -28,14 +32,74 @@ export default function MeasurementsGrid() {
   const lastValue = values.at(-1)
 
   return (
-    <div className="flex h-full w-full flex-col justify-around p-1 landscape:pb-safe">
+    <div className="flex w-full flex-col justify-around p-1 landscape:pb-safe">
+      <div className="flex w-full justify-between gap-2 p-2 pb-safe-or-4">
+        {!isConnected ? (
+          <Button size={'sm'} className="w-full" onClick={() => connect()}>
+            <Bluetooth className="mr-2 h-4" />
+            Verbinden
+          </Button>
+        ) : (
+          <Button size={'sm'} className="w-full" onClick={() => disconnect()}>
+            <BluetoothOff className="mr-2 h-4" />
+            Trennen
+          </Button>
+        )}
+        {!selectedBox ? (
+          <Button
+            size={'sm'}
+            className="w-full"
+            variant={'secondary'}
+            onClick={() => setShowWizardDrawer(true)}
+          >
+            <UserCog2 className="mr-2 h-5" />
+            Setup
+          </Button>
+        ) : isConnected ? (
+          !isRecording ? (
+            <Button
+              size={'sm'}
+              className="w-full"
+              onClick={() => start()}
+              variant={'secondary'}
+            >
+              <Circle className="mr-2 h-5 fill-red-500 text-red-500" />
+              Aufzeichnen
+            </Button>
+          ) : (
+            <>
+              <Button
+                size={'sm'}
+                className="w-full"
+                onClick={() => stop()}
+                variant={'secondary'}
+              >
+                {isLoading && (
+                  <UploadCloud className="mr-2 h-5 animate-pulse opacity-50" />
+                )}
+                {!isLoading && (
+                  <Square className="mr-2 h-5 fill-red-500 text-red-500" />
+                )}
+                Stop
+              </Button>
+            </>
+          )
+        ) : (
+          <></>
+        )}
+      </div>
       <div
         className={cn(
           'relative flex w-full flex-col',
           !selectedBox || values.length === 0 ? '' : 'divide-y',
         )}
       >
-        <div className="flex w-full flex-wrap justify-between gap-1">
+        <div
+          className={cn(
+            'grid w-full gap-1',
+            layoutFull ? 'grid-cols-1' : 'grid-cols-2',
+          )}
+        >
           <GridItem
             name="Geschwindigkeit"
             value={lastValue?.gps_spd}
@@ -151,61 +215,6 @@ export default function MeasurementsGrid() {
           </div>
         )}
       </div>
-      <div className="flex w-full justify-between gap-2 p-2">
-        {!isConnected ? (
-          <Button size={'sm'} className="w-full" onClick={() => connect()}>
-            <Bluetooth className="mr-2 h-4" />
-            Verbinden
-          </Button>
-        ) : (
-          <Button size={'sm'} className="w-full" onClick={() => disconnect()}>
-            <BluetoothOff className="mr-2 h-4" />
-            Trennen
-          </Button>
-        )}
-        {!selectedBox ? (
-          <Button
-            size={'sm'}
-            className="w-full"
-            variant={'secondary'}
-            onClick={() => setShowWizardDrawer(true)}
-          >
-            <UserCog2 className="mr-2 h-5" />
-            Setup
-          </Button>
-        ) : isConnected ? (
-          !isRecording ? (
-            <Button
-              size={'sm'}
-              className="w-full"
-              onClick={() => start()}
-              variant={'secondary'}
-            >
-              <Circle className="mr-2 h-5 fill-red-500 text-red-500" />
-              Aufzeichnen
-            </Button>
-          ) : (
-            <>
-              <Button
-                size={'sm'}
-                className="w-full"
-                onClick={() => stop()}
-                variant={'secondary'}
-              >
-                {isLoading && (
-                  <UploadCloud className="mr-2 h-5 animate-pulse opacity-50" />
-                )}
-                {!isLoading && (
-                  <Square className="mr-2 h-5 fill-red-500 text-red-500" />
-                )}
-                Stop
-              </Button>
-            </>
-          )
-        ) : (
-          <></>
-        )}
-      </div>
     </div>
   )
 }
@@ -253,7 +262,7 @@ function GridItem({
 
   return (
     <div
-      className="relative flex min-w-[33%] max-w-[50%] flex-1 flex-col justify-between overflow-hidden rounded-md bg-muted/40 px-4 py-3"
+      className="relative flex flex-1 flex-col justify-between overflow-hidden rounded-md bg-muted/40 px-4 py-3"
       onClick={() => {
         if (labelIndex !== undefined && labels && labels.length > 0) {
           setLabelIndex((labelIndex + 1) % labels!.length)
