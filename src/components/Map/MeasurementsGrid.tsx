@@ -217,6 +217,7 @@ function GridItem({
   unit,
   chartProps,
   decimals = 2,
+  chartType = 'area',
 }: {
   name: string
   value: number | (number | undefined)[] | undefined
@@ -224,6 +225,7 @@ function GridItem({
   unit: string
   chartProps: SparkAreaChartProps
   decimals?: number
+  chartType?: 'bar' | 'area'
 }) {
   const [selectedValue, setSelectedValue] = useState<number>()
   const [labelIndex, setLabelIndex] = useState<number>()

@@ -2,6 +2,8 @@ import {
   senseBoxDataRecord,
   useSenseBoxValuesStore,
 } from './store/useSenseBoxValuesStore'
+import { useTrackRecordStore } from './store/useTrackRecordStore'
+import { useUploadStore } from './store/useUploadStore'
 
 export class SenseBoxDataParser {
   private static instance: SenseBoxDataParser
@@ -78,6 +80,9 @@ export class SenseBoxDataParser {
       )
 
     useSenseBoxValuesStore.getState().addValues(buckets)
+    if (useUploadStore.getState().isRecording) {
+      useTrackRecordStore.getState().addMeasurements(buckets)
+    }
 
     const completeTimestamps = buckets.map(b => b.timestamp)
 

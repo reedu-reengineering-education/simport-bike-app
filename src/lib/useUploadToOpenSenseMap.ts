@@ -5,6 +5,9 @@ import match from './senseBoxSensorIdMatcher'
 import { uploadData } from './api/openSenseMapClient'
 import { useUploadStore } from './store/useUploadStore'
 import { useSettingsStore } from './store/useSettingsStore'
+import { useTracksStore } from './store/useTracksStore'
+import { useTrackRecordStore } from './store/useTrackRecordStore'
+import { v4 as uuidv4 } from 'uuid'
 
 const useUploadToOpenSenseMap = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -15,6 +18,7 @@ const useUploadToOpenSenseMap = () => {
 
   const [intervalId, setIntervalId] = useState<NodeJS.Timeout>()
   const lastUpload = useUploadStore(state => state.lastUpload)
+  const setRecording = useUploadStore(state => state.setRecording)
   const lastUploadRef = useRef<typeof lastUpload>()
   lastUploadRef.current = lastUpload
   const setLastUpload = useUploadStore(state => state.setLastUpload)
@@ -27,13 +31,23 @@ const useUploadToOpenSenseMap = () => {
   const uploadStartRef = useRef<typeof uploadStart>()
   uploadStartRef.current = uploadStart
 
+  const {
+    setStart,
+    setEnd,
+    measurements,
+    start: recordStart,
+    end,
+    reset,
+  } = useTrackRecordStore()
+  const addTrack = useTracksStore(state => state.addTrack)
+
   useEffect(() => {
     if (!intervalId) {
       return
     }
 
-    stop()
-    start()
+    stop(true)
+    start(true)
 
     return () => {
       console.log('in effect cleanup')
@@ -42,19 +56,36 @@ const useUploadToOpenSenseMap = () => {
     }
   }, [interval])
 
-  function start() {
+  function start(intervalChange?: boolean) {
     setUploadStart(new Date())
     const intervalId = setInterval(() => {
       uploadToOpenSenseMap()
     }, interval)
     setIntervalId(intervalId)
+
+    if (!intervalChange) {
+      setRecording(true)
+      setStart(new Date())
+    }
   }
 
-  function stop() {
+  function stop(intervalChange?: boolean) {
     clearInterval(intervalId)
     setIntervalId(undefined)
     setUploadStart(undefined)
     uploadToOpenSenseMap() // upload last data
+
+    if (!intervalChange) {
+      setRecording(false)
+      setEnd(new Date())
+      addTrack({
+        id: uuidv4(),
+        start: recordStart!,
+        end: end!,
+        measurements,
+      })
+      reset()
+    }
   }
 
   async function uploadToOpenSenseMap() {
