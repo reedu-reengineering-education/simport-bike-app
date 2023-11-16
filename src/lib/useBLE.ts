@@ -1,11 +1,15 @@
+import { toast } from '@/components/ui/use-toast'
 import {
   BleClient,
   RequestBleDeviceOptions,
 } from '@capacitor-community/bluetooth-le'
+import { Haptics } from '@capacitor/haptics'
 import { useBLEStore } from './store/useBLEStore'
+import { useSenseBoxValuesStore } from './store/useSenseBoxValuesStore'
 
 export default function useBLEDevice(options: RequestBleDeviceOptions) {
   const { device, setDevice, connected, setConnected } = useBLEStore()
+  const { reset } = useSenseBoxValuesStore()
 
   /**
    * Connect to a BLE device
@@ -14,12 +18,25 @@ export default function useBLEDevice(options: RequestBleDeviceOptions) {
     try {
       await BleClient.initialize()
       const device = await BleClient.requestDevice(options)
-      await BleClient.connect(device.deviceId)
+      await BleClient.connect(device.deviceId, () => {
+        toast({
+          variant: 'default',
+          title: 'Bluetooth Verbindung getrennt',
+        })
+        Haptics.vibrate()
+        setDevice(undefined)
+        setConnected(false)
+      })
       setConnected(true)
       setDevice(device)
+      reset()
       return device
-    } catch (e) {
-      throw e
+    } catch (e: any) {
+      toast({
+        variant: 'default',
+        title: 'Bluetooth Verbindung fehlgeschlagen',
+        description: e?.message,
+      })
     }
   }
 

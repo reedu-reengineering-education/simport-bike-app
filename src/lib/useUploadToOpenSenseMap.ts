@@ -1,9 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useAuthStore } from './store/useAuthStore'
-import {
-  senseBoxDataRecord,
-  useSenseBoxValuesStore,
-} from './store/useSenseBoxValuesStore'
+import { useSenseBoxValuesStore } from './store/useSenseBoxValuesStore'
 import match from './senseBoxSensorIdMatcher'
 import { uploadData } from './api/openSenseMapClient'
 import { useUploadStore } from './store/useUploadStore'

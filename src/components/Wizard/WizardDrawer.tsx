@@ -6,9 +6,8 @@ import { Navigation } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
-import OpenSenseMapLogin from '@/components/Wizard/OpenSenseMapLogin'
 import SelectDevice from '@/components/Wizard/SelectDevice'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useAuthStore } from '@/lib/store/useAuthStore'
 import { signout } from '@/lib/api/openSenseMapClient'
 import { toast } from '../ui/use-toast'
@@ -32,7 +31,11 @@ export default function WizardDrawer({
   }, [open])
 
   return (
-    <Drawer.Root open={open} onClose={() => setOpen(false)}>
+    <Drawer.Root
+      open={open}
+      onClose={() => setOpen(false)}
+      shouldScaleBackground
+    >
       <Drawer.Trigger
         onClick={() => setOpen(true)}
         className="w-full focus:outline-none"
@@ -58,7 +61,7 @@ export default function WizardDrawer({
       </Drawer.Trigger>
       <Drawer.Portal>
         <Drawer.Overlay className="fixed inset-0 z-20 bg-black/60" />
-        <Drawer.Content className="fixed bottom-0 left-0 right-0 z-30 mt-24 flex max-h-[75%] flex-col rounded-t-lg border-t bg-background focus:outline-none">
+        <Drawer.Content className="fixed bottom-0 left-0 right-0 z-30 mt-24 flex max-h-[85%] flex-col rounded-t-lg border-t bg-background focus:outline-none">
           <div className="flex-1 overflow-auto rounded-t-[10px] p-4">
             <div className="mx-auto mb-8 h-1.5 w-12 flex-shrink-0 rounded-full bg-muted" />
             <div className="mx-auto max-w-md">
