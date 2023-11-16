@@ -3,7 +3,6 @@
 import { MapProps, MapRef, Map as ReactMap } from 'react-map-gl/maplibre'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import { forwardRef } from 'react'
-import { useTheme } from 'next-themes'
 import { useThemeDetector } from '@/lib/useThemeDetector'
 
 const Map = forwardRef<MapRef, MapProps>(

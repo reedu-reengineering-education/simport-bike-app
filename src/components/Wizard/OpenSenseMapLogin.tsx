@@ -10,14 +10,12 @@ import { useForm } from 'react-hook-form'
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '../ui/form'
 import { useToast } from '../ui/use-toast'
-import Spinner from '../ui/Spinner'
 import { useAuthStore } from '@/lib/store/useAuthStore'
 import WizardSlide from './WizardSlide'
 import { Loader2Icon } from 'lucide-react'

@@ -11,7 +11,6 @@ import {
   useSenseBoxValuesStore,
 } from './store/useSenseBoxValuesStore'
 import { useSettingsStore } from './store/useSettingsStore'
-import { set } from 'react-hook-form'
 import { SenseBoxDataParser } from './SenseBoxDataParser'
 
 const BLE_SENSEBOX_SERVICE = 'CF06A218-F68E-E0BE-AD04-8EBC1EB0BC84'

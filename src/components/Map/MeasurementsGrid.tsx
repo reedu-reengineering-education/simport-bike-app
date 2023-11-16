@@ -1,7 +1,9 @@
+import { useAuthStore } from '@/lib/store/useAuthStore'
+import { useUIStore } from '@/lib/store/useUIStore'
 import useSenseBox from '@/lib/useSenseBox'
-import { AreaChart, AreaChartProps } from '@tremor/react'
-import AnimatedNumber from '../ui/animated-number'
-import { Button } from '../ui/button'
+import useUploadToOpenSenseMap from '@/lib/useUploadToOpenSenseMap'
+import { cn } from '@/lib/utils'
+import { SparkAreaChart, SparkAreaChartProps } from '@tremor/react'
 import {
   Bluetooth,
   BluetoothOff,
@@ -11,12 +13,10 @@ import {
   UploadCloud,
   UserCog2,
 } from 'lucide-react'
-import { useAuthStore } from '@/lib/store/useAuthStore'
-import useUploadToOpenSenseMap from '@/lib/useUploadToOpenSenseMap'
 import { useEffect, useState } from 'react'
-import { cn } from '@/lib/utils'
-import { useUIStore } from '@/lib/store/useUIStore'
 import colors from 'tailwindcss/colors'
+import AnimatedNumber from '../ui/animated-number'
+import { Button } from '../ui/button'
 
 export default function MeasurementsGrid() {
   const { values: allValues, connect, isConnected, disconnect } = useSenseBox()
@@ -222,7 +222,7 @@ function GridItem({
   value: number | (number | undefined)[] | undefined
   labels?: string[]
   unit: string
-  chartProps: AreaChartProps
+  chartProps: SparkAreaChartProps
   decimals?: number
 }) {
   const [selectedValue, setSelectedValue] = useState<number>()
@@ -253,7 +253,7 @@ function GridItem({
 
   return (
     <div
-      className="relative flex min-w-[33%] max-w-[50%] flex-1 flex-col justify-between overflow-hidden rounded-md bg-muted/25 px-4 py-3"
+      className="relative flex min-w-[33%] max-w-[50%] flex-1 flex-col justify-between overflow-hidden rounded-md bg-muted/40 px-4 py-3"
       onClick={() => {
         if (labelIndex !== undefined && labels && labels.length > 0) {
           setLabelIndex((labelIndex + 1) % labels!.length)
@@ -262,14 +262,9 @@ function GridItem({
     >
       {chartProps && chartProps.data.length > 2 && (
         <div className="pointer-events-none absolute -left-6 -right-6 top-0 h-full">
-          <AreaChart
-            className="h-full w-full opacity-50"
-            showXAxis={false}
-            showYAxis={false}
-            showLegend={false}
-            showGridLines={false}
+          <SparkAreaChart
+            className="h-full w-full opacity-30"
             curveType="monotone"
-            showTooltip={false}
             colors={['slate']}
             {...chartProps}
           />

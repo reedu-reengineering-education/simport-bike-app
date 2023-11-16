@@ -1,20 +1,7 @@
 'use client'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog'
+
 import { zodResolver } from '@hookform/resolvers/zod'
-import {
-  Cog,
-  ExternalLinkIcon,
-  Settings2Icon,
-  SettingsIcon,
-  UserCog2,
-} from 'lucide-react'
+import { Cog, ExternalLinkIcon } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import {
@@ -31,7 +18,6 @@ import { useSettingsStore } from '@/lib/store/useSettingsStore'
 import { Button } from '../ui/button'
 import { DialogClose } from '@radix-ui/react-dialog'
 import useSenseBox, { BackgroundGeolocation } from '@/lib/useSenseBox'
-import { numbersToDataView } from '@capacitor-community/bluetooth-le'
 import { Drawer } from 'vaul'
 import { useEffect, useState } from 'react'
 
@@ -83,9 +69,12 @@ export default function SettingsDrawer() {
     <Drawer.Root open={open} onClose={() => setOpen(false)}>
       <Drawer.Trigger
         onClick={() => setOpen(true)}
-        className="focus:outline-none"
+        className="h-full focus:outline-none"
+        asChild
       >
-        <Cog className="w-6" />
+        <div className="h-full w-6">
+          <Cog />
+        </div>
       </Drawer.Trigger>
       <Drawer.Portal>
         <Drawer.Overlay className="fixed inset-0 z-20 bg-black/60" />

@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useAuthStore } from './store/useAuthStore'
 import {
-  senseBoxDataRecord,
   useSenseBoxValuesStore,
 } from './store/useSenseBoxValuesStore'
 import match from './senseBoxSensorIdMatcher'

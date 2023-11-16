@@ -27,10 +27,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="h-full w-full" suppressHydrationWarning>
-      <body className={cn(GeistMono.className, '!h-full w-full')}>
+      <body className={cn(GeistMono.className, '!h-full w-full antialiased')}>
         <AuthChecker />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="flex h-full max-h-full w-full flex-col px-safe pt-safe landscape:px-0">
+          <div
+            className="flex h-full max-h-full w-full flex-col px-safe pt-safe landscape:px-0"
+            vaul-data-wrapper=""
+          >
             <header>
               <TopBar />
             </header>

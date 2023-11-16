@@ -1,13 +1,12 @@
 import { useAuthStore } from '@/lib/store/useAuthStore'
-import { ScrollArea } from '../ui/scroll-area'
-import { Button } from '../ui/button'
-import { cx } from 'class-variance-authority'
-import { useSwiper } from 'swiper/react'
-import WizardSlide from './WizardSlide'
-import { Separator } from '../ui/separator'
-import { CheckCircle, Circle } from 'lucide-react'
-import CreateBikeBoxDialog from './CreateBikeBoxDialog'
 import { cn } from '@/lib/utils'
+import { cx } from 'class-variance-authority'
+import { CheckCircle, Circle } from 'lucide-react'
+import { useSwiper } from 'swiper/react'
+import { Button } from '../ui/button'
+import { ScrollArea } from '../ui/scroll-area'
+import CreateBikeBoxDialog from './CreateBikeBoxDialog'
+import WizardSlide from './WizardSlide'
 
 export default function SelectDevice() {
   const { boxes } = useAuthStore(state => state.boxes)
@@ -19,7 +18,7 @@ export default function SelectDevice() {
     <WizardSlide className="flex h-full w-full flex-col items-center justify-center gap-4">
       <p className="mb-4 font-medium">Box auswählen</p>
       <CreateBikeBoxDialog />
-      <ScrollArea className="flex h-60 w-full flex-col gap-2">
+      <ScrollArea className="flex max-h-[15rem] w-full flex-col gap-2">
         {boxes &&
           boxes.map((box, i) => (
             <div

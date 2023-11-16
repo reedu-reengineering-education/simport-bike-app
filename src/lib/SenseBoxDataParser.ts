@@ -1,4 +1,3 @@
-import { registerPlugin } from '@capacitor/core'
 import {
   senseBoxDataRecord,
   useSenseBoxValuesStore,

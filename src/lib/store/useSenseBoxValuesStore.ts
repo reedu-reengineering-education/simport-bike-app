@@ -19,10 +19,11 @@ export type senseBoxDataRecord = {
 
 interface senseBoxValuesStore {
   values: senseBoxDataRecord[]
-  setValues: (values: senseBoxDataRecord[]) => void
-  addValues: (values: senseBoxDataRecord[]) => void
+  setValues: (_values: senseBoxDataRecord[]) => void
+  addValues: (_values: senseBoxDataRecord[]) => void
+  reset: () => void
   uploadStart: Date | undefined
-  setUploadStart: (uploadStart: Date | undefined) => void
+  setUploadStart: (_uploadStart: Date | undefined) => void
 }
 
 export const useSenseBoxValuesStore = create<senseBoxValuesStore>(set => ({
@@ -34,4 +35,5 @@ export const useSenseBoxValuesStore = create<senseBoxValuesStore>(set => ({
     })),
   uploadStart: undefined,
   setUploadStart: uploadStart => set({ uploadStart }),
+  reset: () => set({ values: [], uploadStart: undefined }),
 }))

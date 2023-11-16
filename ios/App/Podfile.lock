@@ -8,6 +8,8 @@ PODS:
   - CapacitorCordova (5.5.1)
   - CapacitorGeolocation (5.0.6):
     - Capacitor
+  - CapacitorHaptics (5.0.6):
+    - Capacitor
   - CapacitorPreferences (5.0.6):
     - Capacitor
   - FelixerdyBackgroundGeolocation (0.0.1):
@@ -19,6 +21,7 @@ DEPENDENCIES:
   - "CapacitorCommunityBluetoothLe (from `../../node_modules/@capacitor-community/bluetooth-le`)"
   - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
   - "CapacitorGeolocation (from `../../node_modules/@capacitor/geolocation`)"
+  - "CapacitorHaptics (from `../../node_modules/@capacitor/haptics`)"
   - "CapacitorPreferences (from `../../node_modules/@capacitor/preferences`)"
   - "FelixerdyBackgroundGeolocation (from `../../node_modules/@felixerdy/background-geolocation`)"
 
@@ -33,6 +36,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/ios"
   CapacitorGeolocation:
     :path: "../../node_modules/@capacitor/geolocation"
+  CapacitorHaptics:
+    :path: "../../node_modules/@capacitor/haptics"
   CapacitorPreferences:
     :path: "../../node_modules/@capacitor/preferences"
   FelixerdyBackgroundGeolocation:
@@ -44,9 +49,10 @@ SPEC CHECKSUMS:
   CapacitorCommunityBluetoothLe: 86ca83c89199336039bad94f45f8363114ae1464
   CapacitorCordova: e128cc7688c070ca0bfa439898a5f609da8dbcfe
   CapacitorGeolocation: 7be5f77abc205c0efe319fff8587a7183e7b0240
+  CapacitorHaptics: 1fffc1217c7e64a472d7845be50fb0c2f7d4204c
   CapacitorPreferences: f03954bcb0ff09c792909e46bff88e3183c16b10
   FelixerdyBackgroundGeolocation: 1e6a92a836b58a62b20e0eb6b78bff201265deb8
 
-PODFILE CHECKSUM: cd5890a32fa9a1bf24ccec4e54b55f6d47a564c8
+PODFILE CHECKSUM: bba8950299207db0030e4a5579a05b0a869d2434
 
 COCOAPODS: 1.14.0

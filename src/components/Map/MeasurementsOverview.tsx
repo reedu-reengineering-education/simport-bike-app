@@ -8,7 +8,6 @@ import {
 import { SpaceIcon } from 'lucide-react'
 import { Card, CardContent } from '../ui/card'
 import RecordButton from './RecordButton'
-import PreviewModal from '../Device/PreviewModal'
 import { senseBoxDataRecord } from '@/lib/store/useSenseBoxValuesStore'
 
 export default function MeasurementsOverview({

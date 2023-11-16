@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
 } from '@/components/ui/dropdown-menu'
-import { InfoIcon, UserCog2 } from 'lucide-react'
+import { InfoIcon } from 'lucide-react'
 import WizardDrawer from '../Wizard/WizardDrawer'
 import SettingsDrawer from '../Device/SettingsDrawer'
 

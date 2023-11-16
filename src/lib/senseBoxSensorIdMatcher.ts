@@ -1,4 +1,3 @@
-import { UploadData } from './api/openSenseMapClient'
 import { BoxEntity } from './store/useAuthStore'
 import { senseBoxDataRecord } from './store/useSenseBoxValuesStore'
 
