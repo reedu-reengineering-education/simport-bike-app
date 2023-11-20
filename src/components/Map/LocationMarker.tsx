@@ -1,16 +1,14 @@
 import { Location } from '@felixerdy/background-geolocation'
 import { Source, Layer } from 'react-map-gl/maplibre'
 
-// @ts-ignore
-import circle from '@turf/circle'
+import { point, circle } from '@turf/turf'
 
 export default function LocationMarker({ location }: { location: Location }) {
   const circlePoly = circle(
-    [location?.longitude, location?.latitude],
-    location.accuracy,
-    {
-      units: 'meters',
-    },
+    point([location?.longitude, location?.latitude]),
+    location.accuracy / 1000,
+    64,
+    'kilometers',
   )
 
   return (
@@ -41,6 +39,7 @@ export default function LocationMarker({ location }: { location: Location }) {
             'circle-color': '#007cbf',
             'circle-stroke-width': 2,
             'circle-stroke-color': '#fff',
+            'circle-pitch-alignment': 'map',
           }}
         />
       </Source>

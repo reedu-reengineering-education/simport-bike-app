@@ -56,6 +56,18 @@ const useUploadToOpenSenseMap = () => {
     }
   }, [interval])
 
+  useEffect(() => {
+    if (end) {
+      addTrack({
+        id: uuidv4(),
+        start: recordStart?.toISOString()!,
+        end: end.toISOString()!,
+        measurements,
+      })
+      reset()
+    }
+  }, [end])
+
   function start(intervalChange?: boolean) {
     setUploadStart(new Date())
     const intervalId = setInterval(() => {
@@ -78,13 +90,6 @@ const useUploadToOpenSenseMap = () => {
     if (!intervalChange) {
       setRecording(false)
       setEnd(new Date())
-      addTrack({
-        id: uuidv4(),
-        start: recordStart!,
-        end: end!,
-        measurements,
-      })
-      reset()
     }
   }
 
