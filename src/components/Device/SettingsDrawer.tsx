@@ -1,9 +1,18 @@
 'use client'
 
+import { useSettingsStore } from '@/lib/store/useSettingsStore'
+import { useUIStore } from '@/lib/store/useUIStore'
+import useSenseBox, { BackgroundGeolocation } from '@/lib/useSenseBox'
+import { App } from '@capacitor/app'
+import { PluginListenerHandle } from '@capacitor/core'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { DialogClose } from '@radix-ui/react-dialog'
 import { Cog, ExternalLinkIcon } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { Drawer } from 'vaul'
 import * as z from 'zod'
+import { Button } from '../ui/button'
 import {
   Form,
   FormControl,
@@ -14,23 +23,31 @@ import {
 } from '../ui/form'
 import { Slider } from '../ui/slider'
 import { Switch } from '../ui/switch'
-import { useSettingsStore } from '@/lib/store/useSettingsStore'
-import { Button } from '../ui/button'
-import { DialogClose } from '@radix-ui/react-dialog'
-import useSenseBox, { BackgroundGeolocation } from '@/lib/useSenseBox'
-import { Drawer } from 'vaul'
-import { useEffect, useState } from 'react'
 
 const formSchema = z.object({
   uploadInterval: z.number().min(1).max(60),
   switchUseSmartphoneGPS: z.boolean(),
   switchLiveMode: z.boolean(),
+  switchReducedMotion: z.boolean(),
 })
 
 export default function SettingsDrawer() {
   const uploadInterval = useSettingsStore(state => state.uploadInterval)
   const useDeviceGPS = useSettingsStore(state => state.useSenseBoxGPS)
+  const { reducedMotion, setReducedMotion } = useUIStore()
   const { send } = useSenseBox()
+
+  useEffect(() => {
+    let listener: PluginListenerHandle | undefined
+
+    App.addListener('backButton', () => {
+      setOpen(false)
+    }).then(l => (listener = l))
+
+    return () => {
+      if (listener) listener.remove()
+    }
+  }, [])
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -38,6 +55,7 @@ export default function SettingsDrawer() {
       uploadInterval: uploadInterval,
       switchUseSmartphoneGPS: !useDeviceGPS,
       switchLiveMode: false,
+      switchReducedMotion: reducedMotion,
     },
   })
 
@@ -54,6 +72,7 @@ export default function SettingsDrawer() {
       uploadInterval: values.uploadInterval,
       useSenseBoxGPS: !values.switchUseSmartphoneGPS,
     })
+    setReducedMotion(values.switchReducedMotion)
     setOpen(false)
   }
   const [open, setOpen] = useState(false)
@@ -79,9 +98,9 @@ export default function SettingsDrawer() {
       <Drawer.Portal>
         <Drawer.Overlay className="fixed inset-0 z-20 bg-black/60" />
         <Drawer.Content className="fixed bottom-0 left-0 right-0 z-30 mt-24 flex max-h-[75%] flex-col rounded-t-lg border-t bg-background focus:outline-none">
+          <div className="mx-auto my-4 h-1.5 w-12 flex-shrink-0 rounded-full bg-muted" />
           <div className="flex-1 overflow-auto rounded-t-[10px] p-4">
-            <div className="mx-auto mb-8 h-1.5 w-12 flex-shrink-0 rounded-full bg-muted" />
-            <div className="mx-auto max-w-md">
+            <div className="mx-auto max-w-md overflow-y-auto">
               <p className="mb-4 font-medium">Einstellungen</p>
               <Button onClick={() => BackgroundGeolocation.openSettings()}>
                 Geolocation Settings
@@ -130,6 +149,24 @@ export default function SettingsDrawer() {
                               <FormDescription>
                                 Anstelle des senseBox GPS Moduls das GPS des
                                 Smartphones verwenden
+                              </FormDescription>
+                              <FormControl>
+                                <Switch
+                                  checked={field.value}
+                                  onCheckedChange={field.onChange}
+                                />
+                              </FormControl>
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          name="switchReducedMotion"
+                          control={form.control}
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Reduced Motion</FormLabel>
+                              <FormDescription>
+                                Enable this setting to reduce animations
                               </FormDescription>
                               <FormControl>
                                 <Switch

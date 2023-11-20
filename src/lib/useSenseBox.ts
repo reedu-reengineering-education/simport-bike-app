@@ -1,17 +1,17 @@
-import { useEffect, useRef, useState } from 'react'
+import { registerPlugin } from '@capacitor/core'
 import {
   BackgroundGeolocationPlugin,
   Location,
 } from '@felixerdy/background-geolocation'
-import { registerPlugin } from '@capacitor/core'
+import { useEffect, useRef, useState } from 'react'
 
-import useBLEDevice from './useBLE'
+import { SenseBoxDataParser } from './SenseBoxDataParser'
 import {
   senseBoxDataRecord,
   useSenseBoxValuesStore,
 } from './store/useSenseBoxValuesStore'
 import { useSettingsStore } from './store/useSettingsStore'
-import { SenseBoxDataParser } from './SenseBoxDataParser'
+import useBLEDevice from './useBLE'
 
 const BLE_SENSEBOX_SERVICE = 'CF06A218-F68E-E0BE-AD04-8EBC1EB0BC84'
 const BLE_TEMPERATURE_CHARACTERISTIC = '2CDF2174-35BE-FDC4-4CA2-6FD173F8B3A8'
@@ -144,6 +144,16 @@ export default function useSenseBox(timestampInterval: number = 500) {
     })
     listen(BLE_SENSEBOX_SERVICE, BLE_GPS_CHARACTERISTIC, async data => {
       const [gps_lat, gps_lng, gps_spd] = parsePackages(data)
+
+      // use smartphone GPS. no need to process the senseBox GPS data
+      if (!useSenseBoxGPSRef.current) {
+        pushDataToProcess({
+          gps_lat,
+          gps_lng,
+          gps_spd,
+        })
+        return
+      }
 
       try {
         const { location } = await BackgroundGeolocation.processLocation({

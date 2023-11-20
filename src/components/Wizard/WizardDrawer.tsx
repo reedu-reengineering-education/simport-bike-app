@@ -1,17 +1,19 @@
-import { Drawer } from 'vaul'
-import { AlertOctagon, Check, ExternalLinkIcon, UserCog2 } from 'lucide-react'
 import ConnectionSelection from '@/components/Wizard/ConnectionSelection'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation } from 'swiper/modules'
+import SelectDevice from '@/components/Wizard/SelectDevice'
+import { signout } from '@/lib/api/openSenseMapClient'
+import { useAuthStore } from '@/lib/store/useAuthStore'
+import { useUIStore } from '@/lib/store/useUIStore'
+import { App } from '@capacitor/app'
+import { PluginListenerHandle } from '@capacitor/core'
+import { AlertOctagon, Check, ExternalLinkIcon, UserCog2 } from 'lucide-react'
+import { useEffect } from 'react'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
-import SelectDevice from '@/components/Wizard/SelectDevice'
-import { useEffect } from 'react'
-import { useAuthStore } from '@/lib/store/useAuthStore'
-import { signout } from '@/lib/api/openSenseMapClient'
+import { Navigation } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Drawer } from 'vaul'
 import { toast } from '../ui/use-toast'
-import { useUIStore } from '@/lib/store/useUIStore'
 import LoginOrRegister from './LoginOrRegister'
 
 export default function WizardDrawer({
@@ -29,6 +31,18 @@ export default function WizardDrawer({
       document.body.style.height = '100%'
     }
   }, [open])
+
+  useEffect(() => {
+    let listener: PluginListenerHandle | undefined
+
+    App.addListener('backButton', () => {
+      setOpen(false)
+    }).then(l => (listener = l))
+
+    return () => {
+      if (listener) listener.remove()
+    }
+  }, [])
 
   return (
     <Drawer.Root
