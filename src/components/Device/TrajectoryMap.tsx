@@ -1,6 +1,6 @@
 'use client'
 
-import { useUIStore } from '@/lib/store/useUIStore'
+import { useSettingsStore } from '@/lib/store/useSettingsStore'
 import useSenseBox from '@/lib/useSenseBox'
 import { bearing, point } from '@turf/turf'
 import { LngLatLike } from 'maplibre-gl'
@@ -12,7 +12,7 @@ import MapComponent from '../Map/Map'
 
 export default function TrajectoryMap() {
   const { values } = useSenseBox()
-  const { reducedMotion } = useUIStore()
+  const reducedMotion = useSettingsStore(state => state.reducedMotion)
 
   const mapRef = useRef<MapRef>(null)
 

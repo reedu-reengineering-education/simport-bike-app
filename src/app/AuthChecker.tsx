@@ -3,11 +3,11 @@
 import { getUser } from '@/lib/api/openSenseMapClient'
 import { useAuthStore } from '@/lib/store/useAuthStore'
 import { App } from '@capacitor/app'
-import { useEffect } from 'react'
 import debounce from 'lodash.debounce'
+import { useEffect } from 'react'
 
 export default function AuthChecker() {
-  const { setIsLoggedIn } = useAuthStore()
+  const setIsLoggedIn = useAuthStore(state => state.setIsLoggedIn)
 
   const debouncedAuthCheck = debounce(async () => {
     try {

@@ -1,6 +1,7 @@
 'use client'
 
 import { useAuthStore } from '@/lib/store/useAuthStore'
+import { useSettingsStore } from '@/lib/store/useSettingsStore'
 import { useUIStore } from '@/lib/store/useUIStore'
 import useSenseBox from '@/lib/useSenseBox'
 import useUploadToOpenSenseMap from '@/lib/useUploadToOpenSenseMap'
@@ -22,9 +23,9 @@ import { Button } from '../ui/button'
 
 export default function MeasurementsGrid() {
   const { values: allValues, connect, isConnected, disconnect } = useSenseBox()
-  const { selectedBox } = useAuthStore()
+  const selectedBox = useAuthStore(state => state.selectedBox)
   const { isRecording, start, stop, isLoading } = useUploadToOpenSenseMap()
-  const { setShowWizardDrawer } = useUIStore()
+  const setShowWizardDrawer = useUIStore(state => state.setShowWizardDrawer)
 
   const values = allValues.filter((_, i) => i > allValues.length - 20)
   const lastValue = values.at(-1)
@@ -208,7 +209,6 @@ function GridItem({
   unit,
   chartProps,
   decimals = 2,
-  chartType = 'area',
 }: {
   name: string
   value: number | (number | undefined)[] | undefined
@@ -216,12 +216,11 @@ function GridItem({
   unit: string
   chartProps: SparkAreaChartProps
   decimals?: number
-  chartType?: 'bar' | 'area'
 }) {
   const [selectedValue, setSelectedValue] = useState<number>()
   const [labelIndex, setLabelIndex] = useState<number>()
 
-  const { reducedMotion } = useUIStore()
+  const reducedMotion = useSettingsStore(state => state.reducedMotion)
 
   useEffect(() => {
     if (value !== undefined && !Array.isArray(value)) {

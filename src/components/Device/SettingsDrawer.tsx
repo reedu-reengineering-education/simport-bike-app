@@ -1,8 +1,7 @@
 'use client'
 
 import { useSettingsStore } from '@/lib/store/useSettingsStore'
-import { useUIStore } from '@/lib/store/useUIStore'
-import useSenseBox, { BackgroundGeolocation } from '@/lib/useSenseBox'
+import { BackgroundGeolocation } from '@/lib/useSenseBox'
 import { App } from '@capacitor/app'
 import { PluginListenerHandle } from '@capacitor/core'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -34,8 +33,10 @@ const formSchema = z.object({
 export default function SettingsDrawer() {
   const uploadInterval = useSettingsStore(state => state.uploadInterval)
   const useDeviceGPS = useSettingsStore(state => state.useSenseBoxGPS)
-  const { reducedMotion, setReducedMotion } = useUIStore()
-  const { send } = useSenseBox()
+  const reducedMotion = useSettingsStore(state => state.reducedMotion)
+  const setReducedMotion = useSettingsStore(state => state.setReducedMotion)
+
+  // const { send } = useSenseBox()
 
   useEffect(() => {
     let listener: PluginListenerHandle | undefined

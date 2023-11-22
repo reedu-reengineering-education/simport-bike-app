@@ -4,9 +4,11 @@ import { capPreferencesStorage } from './capPreferencesZustandStorage'
 
 interface SettingsStoreInterface {
   uploadInterval: number
-  setUploadInterval: (uploadInterval: number) => void
+  setUploadInterval: (_uploadInterval: number) => void
   useSenseBoxGPS: boolean
-  setUseSenseBoxGPS: (useSenseBoxGPS: boolean) => void
+  setUseSenseBoxGPS: (_useSenseBoxGPS: boolean) => void
+  reducedMotion: boolean
+  setReducedMotion: (_reducedMotion: boolean) => void
 }
 
 export const useSettingsStore = create<SettingsStoreInterface>()(
@@ -16,6 +18,9 @@ export const useSettingsStore = create<SettingsStoreInterface>()(
       setUploadInterval: uploadInterval => set({ uploadInterval }),
       useSenseBoxGPS: true,
       setUseSenseBoxGPS: useSenseBoxGPS => set({ useSenseBoxGPS }),
+      reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)')
+        .matches,
+      setReducedMotion: reducedMotion => set({ reducedMotion }),
     }),
     {
       name: 'settings-storage',

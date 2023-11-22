@@ -16,7 +16,7 @@ import DeleteTrackDialog from './DeleteTrackDialog'
 import { getBBox, getDistance } from './track-lib'
 
 export default function TrackWrapper() {
-  const { tracks } = useTracksStore()
+  const tracks = useTracksStore(state => state.tracks)
 
   return (
     <div className="flex h-full w-full flex-col gap-2">

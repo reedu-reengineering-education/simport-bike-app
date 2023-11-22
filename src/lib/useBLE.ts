@@ -8,8 +8,11 @@ import { useBLEStore } from './store/useBLEStore'
 import { useSenseBoxValuesStore } from './store/useSenseBoxValuesStore'
 
 export default function useBLEDevice(options: RequestBleDeviceOptions) {
-  const { device, setDevice, connected, setConnected } = useBLEStore()
-  const { reset } = useSenseBoxValuesStore()
+  const device = useBLEStore(state => state.device)
+  const setDevice = useBLEStore(state => state.setDevice)
+  const connected = useBLEStore(state => state.connected)
+  const setConnected = useBLEStore(state => state.setConnected)
+  const reset = useSenseBoxValuesStore(state => state.reset)
 
   /**
    * Connect to a BLE device
@@ -61,7 +64,7 @@ export default function useBLEDevice(options: RequestBleDeviceOptions) {
   const listen = async (
     service: string,
     characteristic: string,
-    callback: (value: DataView) => void,
+    callback: (_value: DataView) => void,
   ) => {
     if (!device) return
 

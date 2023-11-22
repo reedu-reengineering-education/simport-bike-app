@@ -1,6 +1,6 @@
 'use client'
 
-import { useUIStore } from '@/lib/store/useUIStore'
+import { useSettingsStore } from '@/lib/store/useSettingsStore'
 import { animated, useSpring } from '@react-spring/web'
 
 type AnimatedNumberProps = React.HTMLAttributes<HTMLSpanElement> & {
@@ -13,7 +13,7 @@ export default function AnimatedNumber({
   decimals,
   ...props
 }: AnimatedNumberProps) {
-  const { reducedMotion } = useUIStore()
+  const reducedMotion = useSettingsStore(state => state.reducedMotion)
 
   const springProps = useSpring({ val: children, from: { val: 0 } })
 

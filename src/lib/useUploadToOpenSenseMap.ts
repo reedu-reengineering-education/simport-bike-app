@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
+import { v4 as uuidv4 } from 'uuid'
+import { uploadData } from './api/openSenseMapClient'
+import match from './senseBoxSensorIdMatcher'
 import { useAuthStore } from './store/useAuthStore'
 import { useSenseBoxValuesStore } from './store/useSenseBoxValuesStore'
-import match from './senseBoxSensorIdMatcher'
-import { uploadData } from './api/openSenseMapClient'
-import { useUploadStore } from './store/useUploadStore'
 import { useSettingsStore } from './store/useSettingsStore'
-import { useTracksStore } from './store/useTracksStore'
 import { useTrackRecordStore } from './store/useTrackRecordStore'
-import { v4 as uuidv4 } from 'uuid'
+import { useTracksStore } from './store/useTracksStore'
+import { useUploadStore } from './store/useUploadStore'
 
 const useUploadToOpenSenseMap = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -31,14 +31,12 @@ const useUploadToOpenSenseMap = () => {
   const uploadStartRef = useRef<typeof uploadStart>()
   uploadStartRef.current = uploadStart
 
-  const {
-    setStart,
-    setEnd,
-    measurements,
-    start: recordStart,
-    end,
-    reset,
-  } = useTrackRecordStore()
+  const setStart = useTrackRecordStore(state => state.setStart)
+  const setEnd = useTrackRecordStore(state => state.setEnd)
+  const measurements = useTrackRecordStore(state => state.measurements)
+  const recordStart = useTrackRecordStore(state => state.start)
+  const end = useTrackRecordStore(state => state.end)
+  const reset = useTrackRecordStore(state => state.reset)
   const addTrack = useTracksStore(state => state.addTrack)
 
   useEffect(() => {

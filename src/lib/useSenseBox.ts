@@ -22,8 +22,8 @@ const BLE_ACCELERATION_CHARACTERISTIC = 'B944AF10-F495-4560-968F-2F0D18CAB522'
 const BLE_GPS_CHARACTERISTIC = '8EDF8EBB-1246-4329-928D-EE0C91DB2389'
 const BLE_DISTANCE_CHARACTERISTIC = 'B3491B60-C0F3-4306-A30D-49C91F37A62B'
 
-const BLE_CONFIG_SERVICE = '29BD0A85-51E4-4D3C-914E-126541EB2A5E'
-const BLE_CONFIG_CHARACTERISTIC = '60B1D5CE-3539-44D2-BB35-FF2DAABE17FF'
+const _BLE_CONFIG_SERVICE = '29BD0A85-51E4-4D3C-914E-126541EB2A5E'
+const _BLE_CONFIG_CHARACTERISTIC = '60B1D5CE-3539-44D2-BB35-FF2DAABE17FF'
 
 export const BackgroundGeolocation =
   registerPlugin<BackgroundGeolocationPlugin>('BackgroundGeolocation')
@@ -48,8 +48,8 @@ export default function useSenseBox(timestampInterval: number = 500) {
   const { isConnected, connect, listen, send, disconnect } = useBLEDevice({
     namePrefix: 'senseBox',
   })
-  const { values } = useSenseBoxValuesStore()
-  const { useSenseBoxGPS } = useSettingsStore()
+  const values = useSenseBoxValuesStore(state => state.values)
+  const useSenseBoxGPS = useSettingsStore(state => state.useSenseBoxGPS)
   const useSenseBoxGPSRef = useRef<boolean>()
   useSenseBoxGPSRef.current = useSenseBoxGPS
 

@@ -21,9 +21,11 @@ export default function WizardDrawer({
 }: {
   trigger?: React.ReactNode
 }) {
-  const { showWizardDrawer: open, setShowWizardDrawer: setOpen } = useUIStore()
+  const open = useUIStore(state => state.showWizardDrawer)
+  const setOpen = useUIStore(state => state.setShowWizardDrawer)
 
-  const { selectedBox, isLoggedIn } = useAuthStore()
+  const selectedBox = useAuthStore(state => state.selectedBox)
+  const isLoggedIn = useAuthStore(state => state.isLoggedIn)
 
   // fix for disappearing map
   useEffect(() => {
@@ -109,8 +111,12 @@ export default function WizardDrawer({
   )
 }
 
-function DrawerWizardFooter({ setOpen }: { setOpen: (open: boolean) => void }) {
-  const { isLoggedIn } = useAuthStore()
+function DrawerWizardFooter({
+  setOpen,
+}: {
+  setOpen: (_open: boolean) => void
+}) {
+  const isLoggedIn = useAuthStore(state => state.isLoggedIn)
   return (
     <div className="mt-auto border-t bg-muted p-4 pb-safe-or-4">
       <div className="mx-auto flex max-w-md justify-end gap-6">

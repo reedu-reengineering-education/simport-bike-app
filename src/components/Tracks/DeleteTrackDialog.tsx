@@ -19,7 +19,7 @@ export default function DeleteTrackDialog({ track }: { track: Track }) {
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  const { removeTrack } = useTracksStore()
+  const removeTrack = useTracksStore(state => state.removeTrack)
 
   async function onSubmit() {
     try {
