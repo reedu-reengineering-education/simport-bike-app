@@ -25,4 +25,6 @@
     <string name="capacitor_background_geolocation_notification_icon">
         drawable/ic_tracking
     </string>
+
+    <string name="mapTilesUrl">https://api.maptiler.com/maps/streets-v2/style.json?key=DT8RRRX6sOuzQrcuhKuE</string>
 </resources>
