@@ -1,6 +1,7 @@
 import { toast } from '@/components/ui/use-toast'
 import {
   BleClient,
+  BleDevice,
   RequestBleDeviceOptions,
 } from '@capacitor-community/bluetooth-le'
 import { Haptics } from '@capacitor/haptics'
@@ -17,11 +18,25 @@ export default function useBLEDevice(options: RequestBleDeviceOptions) {
   /**
    * Connect to a BLE device
    */
-  const connect = async () => {
+  const connect = async (deviceId?: string) => {
     try {
       await BleClient.initialize()
-      const device = await BleClient.requestDevice(options)
-      await BleClient.connect(device.deviceId, () => {
+
+      let myDeviceId: string
+      let device: BleDevice
+
+      if (deviceId) {
+        myDeviceId = deviceId
+        // alert(myDeviceId)
+        const [myDevice] = await BleClient.getDevices([deviceId])
+        alert(myDevice.name)
+        device = myDevice
+      } else {
+        device = await BleClient.requestDevice(options)
+        myDeviceId = device.deviceId
+      }
+
+      await BleClient.connect(myDeviceId, () => {
         toast({
           variant: 'default',
           title: 'Bluetooth Verbindung getrennt',
