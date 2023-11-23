@@ -19,7 +19,9 @@ export default function useBLEDevice(options: RequestBleDeviceOptions) {
    */
   const connect = async () => {
     try {
-      await BleClient.initialize()
+      await BleClient.initialize({
+        androidNeverForLocation: true,
+      })
       const device = await BleClient.requestDevice(options)
       await BleClient.connect(device.deviceId, () => {
         toast({

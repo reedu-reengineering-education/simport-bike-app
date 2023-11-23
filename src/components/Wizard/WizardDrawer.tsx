@@ -3,111 +3,69 @@ import SelectDevice from '@/components/Wizard/SelectDevice'
 import { signout } from '@/lib/api/openSenseMapClient'
 import { useAuthStore } from '@/lib/store/useAuthStore'
 import { useUIStore } from '@/lib/store/useUIStore'
-import { App } from '@capacitor/app'
-import { PluginListenerHandle } from '@capacitor/core'
 import { AlertOctagon, Check, ExternalLinkIcon, UserCog2 } from 'lucide-react'
-import { useEffect } from 'react'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import { Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Drawer } from 'vaul'
+import SliderDrawer from '../ui/slider-drawer'
 import { toast } from '../ui/use-toast'
 import LoginOrRegister from './LoginOrRegister'
 
-export default function WizardDrawer({
-  trigger,
-}: {
-  trigger?: React.ReactNode
-}) {
+export default function WizardDrawer() {
   const open = useUIStore(state => state.showWizardDrawer)
   const setOpen = useUIStore(state => state.setShowWizardDrawer)
 
   const selectedBox = useAuthStore(state => state.selectedBox)
   const isLoggedIn = useAuthStore(state => state.isLoggedIn)
 
-  // fix for disappearing map
-  useEffect(() => {
-    if (open) {
-      document.body.style.height = '100%'
-    }
-  }, [open])
-
-  useEffect(() => {
-    let listener: PluginListenerHandle | undefined
-
-    App.addListener('backButton', () => {
-      setOpen(false)
-    }).then(l => (listener = l))
-
-    return () => {
-      if (listener) listener.remove()
-    }
-  }, [])
-
   return (
-    <Drawer.Root
+    <SliderDrawer
       open={open}
+      onOpenChange={setOpen}
       onClose={() => setOpen(false)}
-      shouldScaleBackground
+      trigger={
+        <div className="relative">
+          <UserCog2 className="w-6" />
+          {(!isLoggedIn || !selectedBox) && (
+            <div className="absolute -right-1 -top-1 rounded-full bg-amber-400 p-0.5">
+              <AlertOctagon className="h-2 w-2 text-background" />
+            </div>
+          )}
+          {selectedBox && (
+            <div className="absolute -right-1 -top-1 rounded-full bg-green-500 p-0.5">
+              <Check className="h-2 w-2 text-background" />
+            </div>
+          )}
+        </div>
+      }
+      footer={<DrawerWizardFooter setOpen={setOpen} />}
     >
-      <Drawer.Trigger
-        onClick={() => setOpen(true)}
-        className="w-full focus:outline-none"
-        asChild
-      >
-        {trigger ? (
-          trigger
-        ) : (
-          <div className="relative">
-            <UserCog2 className="w-6" />
-            {(!isLoggedIn || !selectedBox) && (
-              <div className="absolute -right-1 -top-1 rounded-full bg-amber-400 p-0.5">
-                <AlertOctagon className="h-2 w-2 text-background" />
-              </div>
-            )}
-            {selectedBox && (
-              <div className="absolute -right-1 -top-1 rounded-full bg-green-500 p-0.5">
-                <Check className="h-2 w-2 text-background" />
-              </div>
-            )}
-          </div>
-        )}
-      </Drawer.Trigger>
-      <Drawer.Portal>
-        <Drawer.Overlay className="fixed inset-0 z-20 bg-black/60" />
-        <Drawer.Content className="fixed bottom-0 left-0 right-0 z-30 mt-24 flex max-h-[85%] flex-col rounded-t-lg border-t bg-background focus:outline-none">
-          <div className="flex-1 overflow-auto rounded-t-[10px] p-4">
-            <div className="mx-auto mb-8 h-1.5 w-12 flex-shrink-0 rounded-full bg-muted" />
-            <div className="mx-auto max-w-md">
-              <Swiper
-                initialSlide={isLoggedIn ? (selectedBox ? 2 : 1) : 0}
-                spaceBetween={48}
-                modules={[Navigation]}
-                slidesPerView={1}
-                threshold={20}
-                allowTouchMove={false}
-              >
-                {/* <SwiperSlide>
+      <div className="mx-auto max-w-md">
+        <Swiper
+          initialSlide={isLoggedIn ? (selectedBox ? 2 : 1) : 0}
+          spaceBetween={48}
+          modules={[Navigation]}
+          slidesPerView={1}
+          threshold={20}
+          allowTouchMove={false}
+        >
+          {/* <SwiperSlide>
                   <Welcome />
                 </SwiperSlide> */}
-                <SwiperSlide>
-                  <LoginOrRegister />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <SelectDevice />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <ConnectionSelection onClose={() => setOpen(false)} />
-                </SwiperSlide>
-              </Swiper>
-            </div>
-          </div>
-          <DrawerWizardFooter setOpen={setOpen} />
-        </Drawer.Content>
-      </Drawer.Portal>
-    </Drawer.Root>
+          <SwiperSlide>
+            <LoginOrRegister />
+          </SwiperSlide>
+          <SwiperSlide>
+            <SelectDevice />
+          </SwiperSlide>
+          <SwiperSlide>
+            <ConnectionSelection onClose={() => setOpen(false)} />
+          </SwiperSlide>
+        </Swiper>
+      </div>
+    </SliderDrawer>
   )
 }
 

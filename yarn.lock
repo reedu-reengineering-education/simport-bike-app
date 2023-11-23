@@ -76,6 +76,11 @@
     tslib "2.6.2"
     yargs "17.7.2"
 
+"@capacitor/browser@^5.1.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@capacitor/browser/-/browser-5.1.0.tgz#2389638c09716d815765f9622b5f3c71e21d7b6f"
+  integrity sha512-7togqchk2Tvq4SmLaWhcrd4x48ES/GEZsceM+29aun7WhxQEVcDU0cJsVdSU2LNFwNhWgPV2GW90etVd1B3OdQ==
+
 "@capacitor/cli@^5.3.0":
   version "5.5.0"
   resolved "https://registry.yarnpkg.com/@capacitor/cli/-/cli-5.5.0.tgz#3d2c85cca7456dc156a00a421feb7b63062597c2"
