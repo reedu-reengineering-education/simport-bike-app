@@ -6,6 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { Browser } from '@capacitor/browser'
 import {
   Bars3Icon,
   BeakerIcon,
@@ -50,7 +51,14 @@ const TopBar = () => {
                 <WaypointsIcon className="mr-2 h-6 w-6" /> Tracks
               </DropdownMenuItem>
             </Link>
-            <DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={async () =>
+                await Browser.open({
+                  url: 'https://sensebox.de/sensebox-bike-privacy-policy/',
+                  presentationStyle: 'popover',
+                })
+              }
+            >
               <LockClosedIcon className="mr-2 h-6 w-6" /> Privacy Policy
             </DropdownMenuItem>
             <DropdownMenuItem>
