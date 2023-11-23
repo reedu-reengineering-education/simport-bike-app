@@ -6,6 +6,7 @@ import {
 import { useEffect, useRef, useState } from 'react'
 
 import { SenseBoxDataParser } from './SenseBoxDataParser'
+import { usePermissionsStore } from './store/usePermissionsStore'
 import {
   senseBoxDataRecord,
   useSenseBoxValuesStore,
@@ -61,6 +62,12 @@ export default function useSenseBox(timestampInterval: number = 500) {
   const locationRef = useRef<Location>()
   locationRef.current = location
 
+  const setShowGeolocationPermissionsDrawer = usePermissionsStore(
+    state => state.setShowGeolocationPermissionsDrawer,
+  )
+  const geolocationPermissionGranted = usePermissionsStore(
+    state => state.geolocationPermissionGranted,
+  )
   useEffect(() => {
     if (useSenseBoxGPS) {
       if (watcherId)
@@ -71,6 +78,11 @@ export default function useSenseBox(timestampInterval: number = 500) {
     }
 
     if (!isConnected) return
+
+    if (!geolocationPermissionGranted) {
+      setShowGeolocationPermissionsDrawer(true)
+      return
+    }
 
     BackgroundGeolocation.addWatcher(
       {
@@ -108,7 +120,7 @@ export default function useSenseBox(timestampInterval: number = 500) {
         id: watcherId,
       })
     }
-  }, [useSenseBoxGPS, isConnected])
+  }, [useSenseBoxGPS, isConnected, geolocationPermissionGranted])
 
   // listen to the BLE characteristics
   useEffect(() => {
