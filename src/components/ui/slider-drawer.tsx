@@ -12,13 +12,11 @@ interface SliderDrawerProps extends DialogProps {
   footer?: React.ReactNode
   children: React.ReactNode | React.ReactNode[]
   onClose?: () => void
-  maxHeight?: number
 }
 
 export default function SliderDrawer({
   trigger,
   children,
-  maxHeight = 75,
   footer,
   ...props
 }: SliderDrawerProps) {
@@ -69,10 +67,10 @@ export default function SliderDrawer({
           onClick={() => setOpen(false)}
         />
         <Drawer.Content
-          className={`fixed bottom-0 left-0 right-0 z-30 mt-24 flex max-h-[${maxHeight}%] flex-col rounded-t-lg border-t bg-background focus:outline-none`}
+          className={`fixed bottom-0 left-0 right-0 z-30 mt-24 flex max-h-[85%] flex-col rounded-t-lg border-t bg-background focus:outline-none`}
         >
           <div className="mx-auto my-4 h-1.5 w-12 flex-shrink-0 rounded-full bg-muted" />
-          <div className="flex-1 overflow-auto rounded-t-[10px] p-4">
+          <div className="flex-1 overflow-y-scroll rounded-t-md p-4">
             {children}
           </div>
           {footer && footer}

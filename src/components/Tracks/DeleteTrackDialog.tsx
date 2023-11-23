@@ -37,7 +37,9 @@ export default function DeleteTrackDialog({ track }: { track: Track }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant={'destructive'}>Löschen</Button>
+        <Button variant={'destructive'} className="flex-1">
+          Löschen
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
