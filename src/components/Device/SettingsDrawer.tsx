@@ -1,7 +1,7 @@
 'use client'
 
+import useBackgroundGeolocationPlugin from '@/lib/store/useBackgroundGeolocationPlugin'
 import { useSettingsStore } from '@/lib/store/useSettingsStore'
-import { BackgroundGeolocation } from '@/lib/useSenseBox'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { DialogClose } from '@radix-ui/react-dialog'
 import { Cog } from 'lucide-react'
@@ -22,6 +22,7 @@ import SliderDrawer from '../ui/slider-drawer'
 import { Switch } from '../ui/switch'
 
 const formSchema = z.object({
+  switchUseSIMPORTToolkit: z.boolean(),
   uploadInterval: z.number().min(1).max(60),
   switchUseSmartphoneGPS: z.boolean(),
   switchLiveMode: z.boolean(),
@@ -33,12 +34,16 @@ export default function SettingsDrawer() {
   const useDeviceGPS = useSettingsStore(state => state.useSenseBoxGPS)
   const reducedMotion = useSettingsStore(state => state.reducedMotion)
   const setReducedMotion = useSettingsStore(state => state.setReducedMotion)
+  const useSIMPORTToolkit = useSettingsStore(state => state.useSIMPORTToolkit)
+
+  const { BackgroundGeolocationPlugin } = useBackgroundGeolocationPlugin()
 
   // const { send } = useSenseBox()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      switchUseSIMPORTToolkit: useSIMPORTToolkit,
       uploadInterval: uploadInterval,
       switchUseSmartphoneGPS: !useDeviceGPS,
       switchLiveMode: false,
@@ -56,6 +61,7 @@ export default function SettingsDrawer() {
     //   ]),
     // )
     useSettingsStore.setState({
+      useSIMPORTToolkit: values.switchUseSIMPORTToolkit,
       uploadInterval: values.uploadInterval,
       useSenseBoxGPS: !values.switchUseSmartphoneGPS,
     })
@@ -75,9 +81,7 @@ export default function SettingsDrawer() {
     >
       <div className="mx-auto max-w-md overflow-y-auto">
         <p className="mb-4 font-medium">Einstellungen</p>
-        <Button onClick={() => BackgroundGeolocation.openSettings()}>
-          Geolocation Settings
-        </Button>
+
         <div className="flex flex-col justify-end gap-2 py-4">
           <Form {...form}>
             <form
@@ -86,6 +90,32 @@ export default function SettingsDrawer() {
             >
               <div>
                 <div className="space-y-4">
+                  <FormField
+                    name="switchUseSIMPORTToolkit"
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>SIMPORT Toolkit</FormLabel>
+                        <FormDescription>
+                          Das SIMPORT Toolkit verwenden um die Positionsdaten zu
+                          verschleiern
+                        </FormDescription>
+                        <FormControl>
+                          <Switch
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  {form.watch().switchUseSIMPORTToolkit && (
+                    <Button
+                      onClick={() => BackgroundGeolocationPlugin.openSettings()}
+                    >
+                      Geolocation Settings
+                    </Button>
+                  )}
                   <FormField
                     name="uploadInterval"
                     control={form.control}

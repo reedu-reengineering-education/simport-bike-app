@@ -3,6 +3,8 @@ import { createJSONStorage, persist } from 'zustand/middleware'
 import { capPreferencesStorage } from './capPreferencesZustandStorage'
 
 interface SettingsStoreInterface {
+  useSIMPORTToolkit: boolean
+  setUseSIMPORTToolkit: (_useSIMPORTToolkit: boolean) => void
   uploadInterval: number
   setUploadInterval: (_uploadInterval: number) => void
   useSenseBoxGPS: boolean
@@ -14,6 +16,8 @@ interface SettingsStoreInterface {
 export const useSettingsStore = create<SettingsStoreInterface>()(
   persist(
     set => ({
+      useSIMPORTToolkit: false,
+      setUseSIMPORTToolkit: useSIMPORTToolkit => set({ useSIMPORTToolkit }),
       uploadInterval: 10,
       setUploadInterval: uploadInterval => set({ uploadInterval }),
       useSenseBoxGPS: true,

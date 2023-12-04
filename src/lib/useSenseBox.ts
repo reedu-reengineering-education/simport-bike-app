@@ -1,11 +1,8 @@
-import { registerPlugin } from '@capacitor/core'
-import {
-  BackgroundGeolocationPlugin,
-  Location,
-} from '@felixerdy/background-geolocation'
+import { Location } from '@capacitor-community/background-geolocation'
 import { useEffect, useRef, useState } from 'react'
 
 import { SenseBoxDataParser } from './SenseBoxDataParser'
+import useBackgroundGeolocationPlugin from './store/useBackgroundGeolocationPlugin'
 import { usePermissionsStore } from './store/usePermissionsStore'
 import {
   senseBoxDataRecord,
@@ -13,6 +10,7 @@ import {
 } from './store/useSenseBoxValuesStore'
 import { useSettingsStore } from './store/useSettingsStore'
 import useBLEDevice from './useBLE'
+import { usePrevious } from './usePrevious'
 
 const BLE_SENSEBOX_SERVICE = 'CF06A218-F68E-E0BE-AD04-8EBC1EB0BC84'
 const BLE_TEMPERATURE_CHARACTERISTIC = '2CDF2174-35BE-FDC4-4CA2-6FD173F8B3A8'
@@ -25,9 +23,6 @@ const BLE_DISTANCE_CHARACTERISTIC = 'B3491B60-C0F3-4306-A30D-49C91F37A62B'
 
 const _BLE_CONFIG_SERVICE = '29BD0A85-51E4-4D3C-914E-126541EB2A5E'
 const _BLE_CONFIG_CHARACTERISTIC = '60B1D5CE-3539-44D2-BB35-FF2DAABE17FF'
-
-export const BackgroundGeolocation =
-  registerPlugin<BackgroundGeolocationPlugin>('BackgroundGeolocation')
 
 /**
  * Parses the data received from the SenseBox and returns an array of values.
@@ -62,6 +57,11 @@ export default function useSenseBox(timestampInterval: number = 500) {
   const locationRef = useRef<Location>()
   locationRef.current = location
 
+  const { BackgroundGeolocationPlugin: BackgroundGeolocation } =
+    useBackgroundGeolocationPlugin()
+
+  const prevGeolocation = usePrevious(BackgroundGeolocation)
+
   const setShowGeolocationPermissionsDrawer = usePermissionsStore(
     state => state.setShowGeolocationPermissionsDrawer,
   )
@@ -69,20 +69,26 @@ export default function useSenseBox(timestampInterval: number = 500) {
     state => state.geolocationPermissionGranted,
   )
   useEffect(() => {
-    if (useSenseBoxGPS) {
-      if (watcherId)
+    if (watcherId) {
+      console.log(prevGeolocation)
+      if (prevGeolocation) {
+        prevGeolocation
+          .removeWatcher({ id: watcherId })
+          .then(() => setWatcherId(undefined))
+      } else {
         BackgroundGeolocation.removeWatcher({ id: watcherId }).then(() =>
           setWatcherId(undefined),
         )
-      return
+      }
     }
-
     if (!isConnected) return
 
     if (!geolocationPermissionGranted) {
       setShowGeolocationPermissionsDrawer(true)
       return
     }
+
+    console.log(BackgroundGeolocation)
 
     BackgroundGeolocation.addWatcher(
       {
@@ -120,7 +126,12 @@ export default function useSenseBox(timestampInterval: number = 500) {
         id: watcherId,
       })
     }
-  }, [useSenseBoxGPS, isConnected, geolocationPermissionGranted])
+  }, [
+    useSenseBoxGPS,
+    isConnected,
+    geolocationPermissionGranted,
+    BackgroundGeolocation,
+  ])
 
   // listen to the BLE characteristics
   useEffect(() => {
@@ -187,8 +198,12 @@ export default function useSenseBox(timestampInterval: number = 500) {
           gps_lng: location.longitude,
           gps_spd: location.speed ?? 0,
         } as senseBoxDataRecord)
-      } catch (e) {
-        console.error(e)
+      } catch (error) {
+        // toast({
+        //   variant: 'default',
+        //   title: 'GPS Daten konnten nicht verarbeitet werden',
+        //   description: error?.message ?? '',
+        // })
       }
     })
     listen(BLE_SENSEBOX_SERVICE, BLE_DISTANCE_CHARACTERISTIC, data => {

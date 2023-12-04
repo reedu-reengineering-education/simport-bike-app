@@ -41,6 +41,11 @@
   dependencies:
     regenerator-runtime "^0.14.0"
 
+"@capacitor-community/background-geolocation@^1.2.15":
+  version "1.2.15"
+  resolved "https://registry.yarnpkg.com/@capacitor-community/background-geolocation/-/background-geolocation-1.2.15.tgz#97e260e2be42f7637b524f9c398bba6d45f2aa9b"
+  integrity sha512-9cHk9VxIGK0DKxcDZurJ9wAV16my3zFmp5HpxFzyg8g209t+qvSoCnTh726m9k2k2/8JuevZ6xHwgEPeEpLrug==
+
 "@capacitor-community/bluetooth-le@^3.1.1":
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/@capacitor-community/bluetooth-le/-/bluetooth-le-3.1.1.tgz#3d9b6c96ad9f57b2d115d356fbf1cb71fcf4b7e6"
@@ -203,10 +208,9 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.54.0.tgz#4fab9a2ff7860082c304f750e94acd644cf984cf"
   integrity sha512-ut5V+D+fOoWPgGGNj83GGjnntO39xDy6DWxO0wb7Jp3DcMX0TfIqdzHF85VTQkerdyGmuuMD9AKAo5KiNlf/AQ==
 
-"@felixerdy/background-geolocation@1.2.19":
+"@felixerdy/background-geolocation@felixerdy/background-geolocation#fix/rename-plugin":
   version "1.2.19"
-  resolved "https://registry.yarnpkg.com/@felixerdy/background-geolocation/-/background-geolocation-1.2.19.tgz#56dd45252863a4c9703e6b93f54b1b9049aabefa"
-  integrity sha512-+HZsaXWES6lTB4Z589PERO66buYHHmaGqRu1CofHifzOPzMBxsWi5t/gak7jNj16OGvHCOJ+N798PVikhyvi8A==
+  resolved "https://codeload.github.com/felixerdy/background-geolocation/tar.gz/f70752045574deb9a054f5d6af66592e5de5c38b"
 
 "@floating-ui/core@^1.4.2":
   version "1.5.0"
