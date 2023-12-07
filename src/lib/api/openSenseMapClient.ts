@@ -1,3 +1,4 @@
+import { CapacitorHttp } from '@capacitor/core'
 import axios from 'axios'
 import { BoxEntity, BoxResponse, useAuthStore } from '../store/useAuthStore'
 
@@ -152,15 +153,14 @@ export type UploadData = {
 }[]
 
 export async function uploadData(box: BoxEntity, data: UploadData) {
-  const response = await axiosApiInstanceWithoutInterceptor.post(
-    `/boxes/${box._id}/data`,
-    data,
-    {
-      headers: {
-        Authorization: box.access_token,
-      },
+  const response = await CapacitorHttp.post({
+    url: `${OSEM_BASE_URL}/boxes/${box._id}/data`,
+    headers: {
+      Authorization: box.access_token,
+      'Content-Type': 'application/json',
     },
-  )
+    data,
+  })
   if (response.status === 201) {
     return true
   } else {
