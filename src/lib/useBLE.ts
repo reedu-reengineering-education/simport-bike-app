@@ -18,25 +18,34 @@ export default function useBLEDevice(options: RequestBleDeviceOptions) {
   /**
    * Connect to a BLE device
    */
-  const connect = async (deviceId?: string) => {
+  const connect = async (name?: string) => {
     try {
-      await BleClient.initialize()
+      await BleClient.initialize({
+        androidNeverForLocation: true,
+      })
 
-      let myDeviceId: string
       let device: BleDevice
 
-      if (deviceId) {
-        myDeviceId = deviceId
-        // alert(myDeviceId)
-        const [myDevice] = await BleClient.getDevices([deviceId])
-        alert(myDevice.name)
-        device = myDevice
+      if (name) {
+        device = await new Promise(async (resolve, reject) => {
+          try {
+            await BleClient.requestLEScan(
+              {
+                name,
+              },
+              result => {
+                resolve(result.device)
+              },
+            )
+          } catch (e) {
+            reject(e)
+          }
+        })
       } else {
         device = await BleClient.requestDevice(options)
-        myDeviceId = device.deviceId
       }
 
-      await BleClient.connect(myDeviceId, () => {
+      await BleClient.connect(device.deviceId, () => {
         toast({
           variant: 'default',
           title: 'Bluetooth Verbindung getrennt',

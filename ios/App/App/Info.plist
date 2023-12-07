@@ -58,5 +58,9 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>The app enables the scanning of QR code to connect to senseBox:bike.</string>
+	<key>UIFileSharingEnabled</key>
+	<true/>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
 </dict>
 </plist>

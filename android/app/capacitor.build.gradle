@@ -12,9 +12,12 @@ dependencies {
     implementation project(':capacitor-community-bluetooth-le')
     implementation project(':capacitor-mlkit-barcode-scanning')
     implementation project(':capacitor-app')
+    implementation project(':capacitor-browser')
+    implementation project(':capacitor-filesystem')
     implementation project(':capacitor-geolocation')
     implementation project(':capacitor-haptics')
     implementation project(':capacitor-preferences')
+    implementation project(':capacitor-share')
     implementation project(':felixerdy-background-geolocation')
 
 }
