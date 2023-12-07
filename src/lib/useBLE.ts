@@ -1,6 +1,7 @@
 import { toast } from '@/components/ui/use-toast'
 import {
   BleClient,
+  BleDevice,
   RequestBleDeviceOptions,
 } from '@capacitor-community/bluetooth-le'
 import { Haptics } from '@capacitor/haptics'
@@ -17,12 +18,47 @@ export default function useBLEDevice(options: RequestBleDeviceOptions) {
   /**
    * Connect to a BLE device
    */
-  const connect = async () => {
+  const connect = async (name?: string) => {
     try {
       await BleClient.initialize({
         androidNeverForLocation: true,
       })
-      const device = await BleClient.requestDevice(options)
+
+      let device: BleDevice
+
+      if (name) {
+        device = await new Promise(async (resolve, reject) => {
+          try {
+            toast({
+              variant: 'default',
+              title: 'Suche nach Gerät...',
+              description: name,
+            })
+            const timeout = setTimeout(async () => {
+              await BleClient.stopLEScan()
+              reject('Timeout')
+            }, 10000)
+            await BleClient.requestLEScan(
+              {
+                name,
+              },
+              result => {
+                console.log(result)
+                clearTimeout(timeout)
+                resolve(result.device)
+              },
+            )
+          } catch (e) {
+            console.log(e)
+            reject(e)
+          }
+        })
+      } else {
+        device = await BleClient.requestDevice(options)
+      }
+
+      console.log(device)
+
       await BleClient.connect(device.deviceId, () => {
         toast({
           variant: 'default',

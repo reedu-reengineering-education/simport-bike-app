@@ -18,6 +18,7 @@ import {
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import colors from 'tailwindcss/colors'
+import ConnectWithCamera from '../Device/ConnectWithCamera'
 import AnimatedNumber from '../ui/animated-number'
 import { Button } from '../ui/button'
 
@@ -145,10 +146,13 @@ export default function MeasurementsGrid() {
       </div>
       <div className="flex w-full justify-between gap-2 p-2">
         {!isConnected ? (
-          <Button size={'sm'} className="w-full" onClick={() => connect()}>
-            <Bluetooth className="mr-2 h-4" />
-            Verbinden
-          </Button>
+          <div className="flex w-full gap-1">
+            <Button size={'sm'} className="w-full" onClick={() => connect()}>
+              <Bluetooth className="mr-2 h-4" />
+              Verbinden
+            </Button>
+            <ConnectWithCamera />
+          </div>
         ) : (
           <Button size={'sm'} className="w-full" onClick={() => disconnect()}>
             <BluetoothOff className="mr-2 h-4" />

@@ -55,6 +55,11 @@
   dependencies:
     "@types/web-bluetooth" "^0.0.16"
 
+"@capacitor-mlkit/barcode-scanning@^5.3.0":
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/@capacitor-mlkit/barcode-scanning/-/barcode-scanning-5.3.0.tgz#8570c344e1587c97a777d4391a81bacc9c635484"
+  integrity sha512-ML1nEzcvegeOTu3AxufWYwLmvxkkeKbToyTuMHmpFlIYn69qVdAzwGrN39Kh3+jUwZ4cLy7KTCf27/p6ShT8ag==
+
 "@capacitor/android@^5.5.1":
   version "5.5.1"
   resolved "https://registry.yarnpkg.com/@capacitor/android/-/android-5.5.1.tgz#128dc5ab00f68c80d64ea18e961876b34b4ed859"
