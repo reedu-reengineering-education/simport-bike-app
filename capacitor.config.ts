@@ -19,11 +19,11 @@ const config: CapacitorConfig = {
   appName: 'senseBox:Bike',
   webDir: 'out',
   server,
-  plugins: {
-    CapacitorHttp: {
-      enabled: true,
-    },
-  },
+  // plugins: {
+  //   CapacitorHttp: {
+  //     enabled: true,
+  //   },
+  // },
 }
 
 export default config
