@@ -14,6 +14,8 @@ import {
 import { useSettingsStore } from './store/useSettingsStore'
 import useBLEDevice from './useBLE'
 
+import { PushNotifications } from '@capacitor/push-notifications'
+
 const BLE_SENSEBOX_SERVICE = 'CF06A218-F68E-E0BE-AD04-8EBC1EB0BC84'
 const BLE_TEMPERATURE_CHARACTERISTIC = '2CDF2174-35BE-FDC4-4CA2-6FD173F8B3A8'
 
@@ -78,6 +80,8 @@ export default function useSenseBox(timestampInterval: number = 500) {
     }
 
     if (!isConnected) return
+
+    PushNotifications.requestPermissions()
 
     if (!geolocationPermissionGranted) {
       setShowGeolocationPermissionsDrawer(true)

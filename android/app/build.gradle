@@ -3,14 +3,11 @@ apply plugin: 'com.android.application'
 android {
     namespace "de.reedu.senseboxbike"
     compileSdkVersion rootProject.ext.compileSdkVersion
-    dataBinding {
-        enabled = true
-    }
     defaultConfig {
         applicationId "de.reedu.senseboxbike"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 7
+        versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
@@ -18,7 +15,6 @@ android {
              // Default: https://android.googlesource.com/platform/frameworks/base/+/282e181b58cf72b6ca770dc7ca5f91f135444502/tools/aapt/AaptAssets.cpp#61
             ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
-        compileSdkPreview = "UpsideDownCake"
     }
     buildTypes {
         release {

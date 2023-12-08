@@ -12,6 +12,7 @@ const server: CapacitorConfig['server'] =
     ? {}
     : {
         url: `http://${ipAddress}:3000`,
+        cleartext: true,
       }
 
 const config: CapacitorConfig = {
@@ -19,6 +20,9 @@ const config: CapacitorConfig = {
   appName: 'senseBox:Bike',
   webDir: 'out',
   server,
+  android: {
+    useLegacyBridge: true,
+  },
   // plugins: {
   //   CapacitorHttp: {
   //     enabled: true,
