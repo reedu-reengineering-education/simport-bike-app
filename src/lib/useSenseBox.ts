@@ -161,14 +161,12 @@ export default function useSenseBox(timestampInterval: number = 500) {
     listen(BLE_SENSEBOX_SERVICE, BLE_GPS_CHARACTERISTIC, async data => {
       const [gps_lat, gps_lng, gps_spd] = parsePackages(data)
 
-      // use smartphone GPS. no need to process the senseBox GPS data
-      if (!useSenseBoxGPSRef.current) {
+      if (useSenseBoxGPSRef.current) {
         pushDataToProcess({
           gps_lat,
           gps_lng,
           gps_spd,
         })
-        return
       }
 
       // try {
