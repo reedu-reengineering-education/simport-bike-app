@@ -22,7 +22,8 @@ export default function TrajectoryMap() {
       latestValue &&
       latestValue.gps_lat &&
       latestValue.gps_lng &&
-      mapRef.current
+      mapRef.current &&
+      !mapRef.current?.isMoving()
     ) {
       const center = [latestValue.gps_lng, latestValue.gps_lat] as LngLatLike
       const zoom =
