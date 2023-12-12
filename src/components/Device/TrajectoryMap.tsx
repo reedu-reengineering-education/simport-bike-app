@@ -1,5 +1,6 @@
 'use client'
 
+import { useMapViewportState } from '@/lib/store/useMapViewportStore'
 import { useSettingsStore } from '@/lib/store/useSettingsStore'
 import useSenseBox from '@/lib/useSenseBox'
 import { bearing, point } from '@turf/turf'
@@ -13,6 +14,9 @@ import MapComponent from '../Map/Map'
 export default function TrajectoryMap() {
   const { values } = useSenseBox()
   const reducedMotion = useSettingsStore(state => state.reducedMotion)
+
+  const initialViewState = useMapViewportState(state => state.viewport)
+  const setViewport = useMapViewportState(state => state.setViewport)
 
   const mapRef = useRef<MapRef>(null)
 
@@ -63,7 +67,11 @@ export default function TrajectoryMap() {
   }, [values])
 
   return (
-    <MapComponent ref={mapRef}>
+    <MapComponent
+      ref={mapRef}
+      initialViewState={initialViewState}
+      onMove={({ viewState }) => setViewport(viewState)}
+    >
       {values && values.length > 0 && (
         <>
           <LocationHistory values={values} />
