@@ -8,6 +8,7 @@ import { useSettingsStore } from './store/useSettingsStore'
 import { useTrackRecordStore } from './store/useTrackRecordStore'
 import { useTracksStore } from './store/useTracksStore'
 import { useUploadStore } from './store/useUploadStore'
+import useSenseBox from './useSenseBox'
 
 const useUploadToOpenSenseMap = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -39,6 +40,8 @@ const useUploadToOpenSenseMap = () => {
   const reset = useTrackRecordStore(state => state.reset)
   const addTrack = useTracksStore(state => state.addTrack)
 
+  const { isConnected } = useSenseBox()
+
   useEffect(() => {
     if (!intervalId) {
       return
@@ -65,6 +68,13 @@ const useUploadToOpenSenseMap = () => {
       reset()
     }
   }, [end])
+
+  useEffect(() => {
+    // when the connection is lost, stop uploading
+    if (!isConnected && intervalId) {
+      stop()
+    }
+  }, [isConnected])
 
   function start(intervalChange?: boolean) {
     setUploadStart(new Date())

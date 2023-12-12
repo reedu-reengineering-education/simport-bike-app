@@ -11,7 +11,7 @@ export default function TrackWrapper() {
   const tracks = useTracksStore(state => state.tracks)
 
   return (
-    <div className="flex h-full w-full flex-col gap-2">
+    <div className="flex w-full flex-col gap-2">
       {tracks.length === 0 && (
         <div
           className={cn(
