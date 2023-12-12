@@ -1,4 +1,4 @@
-import { Location } from '@capacitor-community/background-geolocation'
+import { Location } from '@felixerdy/background-geolocation'
 import { Layer, Source } from 'react-map-gl/maplibre'
 
 import { circle, point } from '@turf/turf'

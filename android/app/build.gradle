@@ -3,6 +3,9 @@ apply plugin: 'com.android.application'
 android {
     namespace "de.reedu.senseboxbike"
     compileSdkVersion rootProject.ext.compileSdkVersion
+    dataBinding {
+        enabled = true
+    }
     defaultConfig {
         applicationId "de.reedu.senseboxbike"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -15,6 +18,7 @@ android {
              // Default: https://android.googlesource.com/platform/frameworks/base/+/282e181b58cf72b6ca770dc7ca5f91f135444502/tools/aapt/AaptAssets.cpp#61
             ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
+        compileSdkPreview = "UpsideDownCake"
     }
     buildTypes {
         release {
@@ -28,6 +32,7 @@ repositories {
     flatDir{
         dirs '../capacitor-cordova-android-plugins/src/main/libs', 'libs'
     }
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
