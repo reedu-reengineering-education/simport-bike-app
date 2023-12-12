@@ -208,7 +208,7 @@ export default function useSenseBox(timestampInterval: number = 500) {
         ...data,
         gps_lat: locationRef.current?.latitude,
         gps_lng: locationRef.current?.longitude,
-        gps_spd: locationRef.current?.speed ?? 0,
+        gps_spd: (locationRef.current?.speed ?? 0) * 3.6,
       }
     }
 
