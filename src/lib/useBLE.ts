@@ -43,7 +43,6 @@ export default function useBLEDevice(options: RequestBleDeviceOptions) {
                 name,
               },
               result => {
-                console.log(result)
                 clearTimeout(timeout)
                 resolve(result.device)
               },
@@ -56,8 +55,6 @@ export default function useBLEDevice(options: RequestBleDeviceOptions) {
       } else {
         device = await BleClient.requestDevice(options)
       }
-
-      console.log(device)
 
       await BleClient.connect(device.deviceId, () => {
         toast({

@@ -1,7 +1,7 @@
-import { Location } from '@felixerdy/background-geolocation'
-import { Source, Layer } from 'react-map-gl/maplibre'
+import { Location } from '@capacitor-community/background-geolocation'
+import { Layer, Source } from 'react-map-gl/maplibre'
 
-import { point, circle } from '@turf/turf'
+import { circle, point } from '@turf/turf'
 
 export default function LocationMarker({ location }: { location: Location }) {
   const circlePoly = circle(

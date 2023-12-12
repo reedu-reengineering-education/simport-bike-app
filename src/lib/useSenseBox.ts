@@ -1,8 +1,8 @@
-import { registerPlugin } from '@capacitor/core'
 import {
   BackgroundGeolocationPlugin,
   Location,
-} from '@felixerdy/background-geolocation'
+} from '@capacitor-community/background-geolocation'
+import { registerPlugin } from '@capacitor/core'
 import { useEffect, useRef, useState } from 'react'
 
 import { SenseBoxDataParser } from './SenseBoxDataParser'
@@ -13,6 +13,8 @@ import {
 } from './store/useSenseBoxValuesStore'
 import { useSettingsStore } from './store/useSettingsStore'
 import useBLEDevice from './useBLE'
+
+import { PushNotifications } from '@capacitor/push-notifications'
 
 const BLE_SENSEBOX_SERVICE = 'CF06A218-F68E-E0BE-AD04-8EBC1EB0BC84'
 const BLE_TEMPERATURE_CHARACTERISTIC = '2CDF2174-35BE-FDC4-4CA2-6FD173F8B3A8'
@@ -78,6 +80,8 @@ export default function useSenseBox(timestampInterval: number = 500) {
     }
 
     if (!isConnected) return
+
+    PushNotifications.requestPermissions()
 
     if (!geolocationPermissionGranted) {
       setShowGeolocationPermissionsDrawer(true)
@@ -167,29 +171,29 @@ export default function useSenseBox(timestampInterval: number = 500) {
         return
       }
 
-      try {
-        const { location } = await BackgroundGeolocation.processLocation({
-          location: {
-            latitude: gps_lat,
-            longitude: gps_lng,
-            speed: gps_spd,
-            accuracy: 0,
-            simulated: false,
-            altitude: null,
-            bearing: null,
-            altitudeAccuracy: null,
-            time: new Date().getTime(),
-          },
-        })
+      // try {
+      //   const { location } = await BackgroundGeolocation.processLocation({
+      //     location: {
+      //       latitude: gps_lat,
+      //       longitude: gps_lng,
+      //       speed: gps_spd,
+      //       accuracy: 0,
+      //       simulated: false,
+      //       altitude: null,
+      //       bearing: null,
+      //       altitudeAccuracy: null,
+      //       time: new Date().getTime(),
+      //     },
+      //   })
 
-        pushDataToProcess({
-          gps_lat: location.latitude,
-          gps_lng: location.longitude,
-          gps_spd: location.speed ?? 0,
-        } as senseBoxDataRecord)
-      } catch (e) {
-        console.error(e)
-      }
+      //   pushDataToProcess({
+      //     gps_lat: location.latitude,
+      //     gps_lng: location.longitude,
+      //     gps_spd: location.speed ?? 0,
+      //   } as senseBoxDataRecord)
+      // } catch (e) {
+      //   console.error(e)
+      // }
     })
     listen(BLE_SENSEBOX_SERVICE, BLE_DISTANCE_CHARACTERISTIC, data => {
       const [distance_l] = parsePackages(data)

@@ -4,7 +4,8 @@
     <string name="title_activity_main">senseBox:Bike</string>
     <string name="package_name">de.reedu.senseboxbike</string>
     <string name="custom_url_scheme">de.reedu.senseboxbike</string>
-    <!--
+
+     <!--
         The channel name for the background notification. This will be visible
         when the user presses & holds the notification. It defaults to
         "Background Tracking".
@@ -23,8 +24,6 @@
         creating the image asset in Android Studio.
     -->
     <string name="capacitor_background_geolocation_notification_icon">
-        drawable/ic_tracking
+        drawable/sensebox_bike_transparent
     </string>
-
-    <string name="mapTilesUrl">https://api.maptiler.com/maps/streets-v2/style.json?key=DT8RRRX6sOuzQrcuhKuE</string>
 </resources>

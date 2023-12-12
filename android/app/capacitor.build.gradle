@@ -9,6 +9,7 @@ android {
 
 apply from: "../capacitor-cordova-android-plugins/cordova.variables.gradle"
 dependencies {
+    implementation project(':capacitor-community-background-geolocation')
     implementation project(':capacitor-community-bluetooth-le')
     implementation project(':capacitor-mlkit-barcode-scanning')
     implementation project(':capacitor-app')
@@ -17,8 +18,8 @@ dependencies {
     implementation project(':capacitor-geolocation')
     implementation project(':capacitor-haptics')
     implementation project(':capacitor-preferences')
+    implementation project(':capacitor-push-notifications')
     implementation project(':capacitor-share')
-    implementation project(':felixerdy-background-geolocation')
 
 }
 

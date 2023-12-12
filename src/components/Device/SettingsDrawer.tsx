@@ -1,7 +1,6 @@
 'use client'
 
 import { useSettingsStore } from '@/lib/store/useSettingsStore'
-import { BackgroundGeolocation } from '@/lib/useSenseBox'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { DialogClose } from '@radix-ui/react-dialog'
 import { Cog } from 'lucide-react'
@@ -75,9 +74,9 @@ export default function SettingsDrawer() {
     >
       <div className="mx-auto max-w-md overflow-y-auto">
         <p className="mb-4 font-medium">Einstellungen</p>
-        <Button onClick={() => BackgroundGeolocation.openSettings()}>
+        {/* <Button onClick={() => BackgroundGeolocation.openSettings()}>
           Geolocation Settings
-        </Button>
+        </Button> */}
         <div className="flex flex-col justify-end gap-2 py-4">
           <Form {...form}>
             <form

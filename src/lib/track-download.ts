@@ -20,9 +20,9 @@ export default async function downloadTrack(id: Track['id']) {
     'acceleration_y',
     'acceleration_z',
     'distance_l',
-    'gps_spd',
-    'gps_lat',
-    'gps_lng',
+    'speed',
+    'latitude',
+    'longitude',
   ]
   const csvBody = track.measurements
     .map(measurement => {

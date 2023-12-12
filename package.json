@@ -11,6 +11,7 @@
     "export": "yarn build && NODE_ENV=production npx cap sync"
   },
   "dependencies": {
+    "@capacitor-community/background-geolocation": "^1.2.15",
     "@capacitor-community/bluetooth-le": "^3.1.1",
     "@capacitor-mlkit/barcode-scanning": "^5.3.0",
     "@capacitor/android": "^5.5.1",
@@ -22,8 +23,8 @@
     "@capacitor/haptics": "^5.0.6",
     "@capacitor/ios": "^5.5.1",
     "@capacitor/preferences": "^5.0.6",
+    "@capacitor/push-notifications": "^5.1.0",
     "@capacitor/share": "^5.0.6",
-    "@felixerdy/background-geolocation": "1.2.19",
     "@heroicons/react": "^2.0.18",
     "@hookform/resolvers": "^3.3.1",
     "@radix-ui/react-dialog": "^1.0.4",
