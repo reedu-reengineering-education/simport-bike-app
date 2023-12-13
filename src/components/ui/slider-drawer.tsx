@@ -51,6 +51,7 @@ export default function SliderDrawer({
       onClose={() => setOpen(false)}
       {...props}
       open={open}
+      shouldScaleBackground
     >
       {trigger && (
         <Drawer.Trigger

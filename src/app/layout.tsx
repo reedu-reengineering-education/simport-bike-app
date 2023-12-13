@@ -1,10 +1,10 @@
 import { TopBar } from '@/components/ui/TopBar'
-import '../styles/globals.css'
-import type { Metadata, Viewport } from 'next'
-import { cn } from '@/lib/utils'
 import { Toaster } from '@/components/ui/toaster'
-import { ThemeProvider } from './ThemeProvider'
+import { cn } from '@/lib/utils'
+import type { Metadata, Viewport } from 'next'
+import '../styles/globals.css'
 import AuthChecker from './AuthChecker'
+import { ThemeProvider } from './ThemeProvider'
 
 import { GeistMono } from 'geist/font/mono'
 
@@ -30,8 +30,8 @@ export default function RootLayout({
         <AuthChecker />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div
-            className="flex h-full max-h-full w-full flex-col px-safe pt-safe landscape:px-0"
-            vaul-data-wrapper=""
+            className="flex h-full max-h-full w-full flex-col bg-background px-safe pt-safe landscape:px-0"
+            vaul-drawer-wrapper=""
           >
             <header>
               <TopBar />
