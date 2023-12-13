@@ -8,7 +8,9 @@ import { Button } from '../ui/button'
 import TrackDetail from './TrackDetail'
 
 export default function TrackWrapper() {
-  const tracks = useTracksStore(state => state.tracks)
+  const tracks = useTracksStore(state => state.tracks).filter(
+    t => t.measurements.length > 0,
+  )
 
   return (
     <div className="flex w-full flex-col gap-2">

@@ -59,12 +59,14 @@ const useUploadToOpenSenseMap = () => {
 
   useEffect(() => {
     if (end) {
-      addTrack({
-        id: uuidv4(),
-        start: recordStart?.toISOString()!,
-        end: end.toISOString()!,
-        measurements,
-      })
+      if (measurements.length > 0) {
+        addTrack({
+          id: uuidv4(),
+          start: recordStart?.toISOString()!,
+          end: end.toISOString()!,
+          measurements,
+        })
+      }
       reset()
     }
   }, [end])
