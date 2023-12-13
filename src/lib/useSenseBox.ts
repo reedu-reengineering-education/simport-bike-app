@@ -5,6 +5,7 @@ import {
 import { registerPlugin } from '@capacitor/core'
 import { useEffect, useRef, useState } from 'react'
 
+import { KeepAwake } from '@capacitor-community/keep-awake'
 import { SenseBoxDataParser } from './SenseBoxDataParser'
 import { usePermissionsStore } from './store/usePermissionsStore'
 import {
@@ -125,6 +126,19 @@ export default function useSenseBox(timestampInterval: number = 500) {
       })
     }
   }, [useSenseBoxGPS, isConnected, geolocationPermissionGranted])
+
+  useEffect(() => {
+    if (isConnected) {
+      KeepAwake.keepAwake()
+      return
+    }
+
+    KeepAwake.isKeptAwake().then(isKeptAwake => {
+      if (isKeptAwake) {
+        KeepAwake.allowSleep()
+      }
+    })
+  }, [isConnected])
 
   // listen to the BLE characteristics
   useEffect(() => {
