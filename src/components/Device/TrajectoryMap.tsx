@@ -6,7 +6,7 @@ import useSenseBox from '@/lib/useSenseBox'
 import { bearing, point } from '@turf/turf'
 import { LngLatLike } from 'maplibre-gl'
 import { useEffect, useRef } from 'react'
-import { MapRef } from 'react-map-gl/dist/esm/exports-maplibre'
+import { MapRef } from 'react-map-gl'
 import LocationHistory from '../Map/LocationHistory'
 import LocationMarker from '../Map/LocationMarker'
 import MapComponent from '../Map/Map'
@@ -44,10 +44,10 @@ export default function TrajectoryMap() {
           point([valueBefore.gps_lng, valueBefore.gps_lat]),
           point([latestValue.gps_lng, latestValue.gps_lat]),
         )
-        pitch = 60
+        pitch = 50
       } else {
         mapBearing = 0
-        pitch = 0
+        pitch = 50
       }
 
       if (reducedMotion) {
@@ -61,6 +61,7 @@ export default function TrajectoryMap() {
           zoom,
           bearing: mapBearing,
           pitch,
+          padding: { top: 0, bottom: 200, left: 0, right: 0 },
         })
       }
     }
@@ -71,6 +72,7 @@ export default function TrajectoryMap() {
       ref={mapRef}
       initialViewState={initialViewState}
       onMove={({ viewState }) => setViewport(viewState)}
+      reuseMaps
     >
       {values && values.length > 0 && (
         <>
