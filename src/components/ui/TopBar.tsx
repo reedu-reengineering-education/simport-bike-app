@@ -29,26 +29,26 @@ const TopBar = () => {
   const isHome = pathname === '/'
 
   return (
-    <div className="sticky top-0 flex w-full items-center justify-between border-b border-muted px-4 pb-2 pt-3 landscape:px-safe-or-4">
+    <div className="sticky top-0 z-10 flex w-full items-center justify-between px-4 pb-3 pt-4 shadow landscape:px-safe-or-4">
       <div className="flex items-center gap-2">
         {!isHome && (
           <Link href="/">
-            <ArrowLeftIcon className="h-6 w-6" />
+            <ArrowLeftIcon className="h-7 w-7" />
           </Link>
         )}
         <h1 className="text-xl">{titles[pathname]}</h1>
       </div>
-      <div className="flex gap-4">
+      <div className="flex gap-6">
         <WizardDrawer />
         <SettingsDrawer />
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <Bars3Icon className="h-6 w-6" />
+            <Bars3Icon className="h-7 w-7" />
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="mt-4 mr-safe-or-2">
+          <DropdownMenuContent className="mt-4 p-2 mr-safe-or-2">
             <Link href="/tracks">
               <DropdownMenuItem>
-                <WaypointsIcon className="mr-2 h-6 w-6" /> Tracks
+                <WaypointsIcon className="mr-2 h-7 w-7" /> Tracks
               </DropdownMenuItem>
             </Link>
             <DropdownMenuItem
@@ -59,13 +59,13 @@ const TopBar = () => {
                 })
               }
             >
-              <LockClosedIcon className="mr-2 h-6 w-6" /> Privacy Policy
+              <LockClosedIcon className="mr-2 h-7 w-7" /> Privacy Policy
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <BeakerIcon className="mr-2 h-6 w-6" /> Über diese App
+              <BeakerIcon className="mr-2 h-7 w-7" /> Über diese App
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <InfoIcon className="mr-2 h-6 w-6" /> Hilfe
+              <InfoIcon className="mr-2 h-7 w-7" /> Hilfe
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
