@@ -58,7 +58,6 @@
   }
 }
 
-.mapboxgl-ctrl-bottom-left,
-.mapboxgl-ctrl-bottom-right {
-  padding-bottom: env(safe-area-inset-bottom) !important;
-}
+/* .maplibregl-ctrl-attrib {
+  margin-bottom: max(env(safe-area-inset-bottom), 0.5rem) !important;
+} */
