@@ -6,12 +6,19 @@ import useSenseBox from '@/lib/useSenseBox'
 import { bearing, point } from '@turf/turf'
 import { LngLatLike } from 'maplibre-gl'
 import { useEffect, useRef } from 'react'
-import { MapRef } from 'react-map-gl/dist/esm/exports-maplibre'
+import {
+  AttributionControl,
+  MapRef,
+} from 'react-map-gl/dist/esm/exports-maplibre'
 import LocationHistory from '../Map/LocationHistory'
 import LocationMarker from '../Map/LocationMarker'
 import MapComponent from '../Map/Map'
 
-export default function TrajectoryMap() {
+export default function TrajectoryMap({
+  paddingBottom,
+}: {
+  paddingBottom?: number
+}) {
   const { values } = useSenseBox()
   const reducedMotion = useSettingsStore(state => state.reducedMotion)
 
@@ -55,12 +62,26 @@ export default function TrajectoryMap() {
         mapRef.current?.setZoom(zoom)
         mapRef.current?.setBearing(mapBearing)
         mapRef.current?.setPitch(pitch)
+        mapRef.current?.setPadding({
+          top: 0,
+          bottom:
+            mapRef.current.getContainer().clientHeight * (paddingBottom || 0),
+          left: 0,
+          right: 0,
+        })
       } else {
         mapRef.current?.flyTo({
           center,
           zoom,
           bearing: mapBearing,
           pitch,
+          padding: {
+            top: 0,
+            bottom:
+              mapRef.current.getContainer().clientHeight * (paddingBottom || 0),
+            left: 0,
+            right: 0,
+          },
         })
       }
     }
@@ -71,7 +92,9 @@ export default function TrajectoryMap() {
       ref={mapRef}
       initialViewState={initialViewState}
       onMove={({ viewState }) => setViewport(viewState)}
+      attributionControl={false}
     >
+      <AttributionControl position="top-left" />
       {values && values.length > 0 && (
         <>
           <LocationHistory values={values} />

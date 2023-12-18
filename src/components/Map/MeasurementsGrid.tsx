@@ -1,7 +1,4 @@
-'use client'
-
 import { useAuthStore } from '@/lib/store/useAuthStore'
-import { useSettingsStore } from '@/lib/store/useSettingsStore'
 import { useUIStore } from '@/lib/store/useUIStore'
 import useSenseBox from '@/lib/useSenseBox'
 import useUploadToOpenSenseMap from '@/lib/useUploadToOpenSenseMap'
@@ -18,141 +15,30 @@ import {
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import colors from 'tailwindcss/colors'
-import ConnectWithCamera from '../Device/ConnectWithCamera'
 import AnimatedNumber from '../ui/animated-number'
 import { Button } from '../ui/button'
 
-export default function MeasurementsGrid() {
+export default function MeasurementsGrid({
+  layoutFull,
+}: {
+  layoutFull?: boolean
+}) {
   const { values: allValues, connect, isConnected, disconnect } = useSenseBox()
-  const selectedBox = useAuthStore(state => state.selectedBox)
+  const { selectedBox } = useAuthStore()
   const { isRecording, start, stop, isLoading } = useUploadToOpenSenseMap()
-  const setShowWizardDrawer = useUIStore(state => state.setShowWizardDrawer)
+  const { setShowWizardDrawer } = useUIStore()
 
   const values = allValues.filter((_, i) => i > allValues.length - 20)
   const lastValue = values.at(-1)
 
   return (
-    <div className="flex h-full w-full flex-col justify-around p-1 landscape:pb-safe">
-      <div
-        className={cn(
-          'relative flex w-full flex-col',
-          !selectedBox || values.length === 0 ? '' : 'divide-y',
-        )}
-      >
-        {values.length > 0 && (
-          <div className="flex w-full flex-wrap justify-between gap-1">
-            <GridItem
-              name="Geschwindigkeit"
-              value={lastValue?.gps_spd}
-              unit="km/h"
-              chartProps={{
-                data: values.map(v => ({ x: v.timestamp, y: v.gps_spd })),
-                index: 'x',
-                categories: ['y'],
-              }}
-            />
-            <GridItem
-              name="Temperatur"
-              value={lastValue?.temperature}
-              unit="°C"
-              chartProps={{
-                data: values.map(v => ({ x: v.timestamp, y: v.temperature })),
-                index: 'x',
-                categories: ['y'],
-              }}
-            />
-            <GridItem
-              name="Luftfeuchtigkeit"
-              value={lastValue?.humidity}
-              unit="%"
-              chartProps={{
-                data: values.map(v => ({ x: v.timestamp, y: v.humidity })),
-                index: 'x',
-                categories: ['y'],
-              }}
-            />
-            <GridItem
-              name="Feinstaub"
-              value={[
-                lastValue?.pm1,
-                lastValue?.pm2_5,
-                lastValue?.pm4,
-                lastValue?.pm10,
-              ]}
-              labels={['PM1', 'PM2.5', 'PM4', 'PM10']}
-              unit="µg/m³"
-              chartProps={{
-                data: values
-                  .filter(e => e.pm1)
-                  .map(v => ({
-                    x: v.timestamp,
-                    pm1: v.pm1,
-                    pm2_5: v.pm2_5,
-                    pm4: v.pm4,
-                    pm10: v.pm10,
-                  })),
-                index: 'x',
-                categories: ['pm1', 'pm2_5', 'pm4', 'pm10'],
-                colors: ['indigo', 'cyan', 'amber', 'emerald'],
-              }}
-            />
-            <GridItem
-              name="Distanz Links"
-              value={lastValue?.distance_l}
-              unit="cm"
-              chartProps={{
-                data: values.map(v => ({ x: v.timestamp, y: v.distance_l })),
-                index: 'x',
-                categories: ['y'],
-              }}
-              decimals={0}
-            />
-
-            <GridItem
-              name="Beschleunigung"
-              value={[
-                lastValue?.acceleration_x,
-                lastValue?.acceleration_y,
-                lastValue?.acceleration_z,
-              ]}
-              unit="m/s²"
-              labels={['X', 'Y', 'Z']}
-              chartProps={{
-                data: values.map(v => ({
-                  x: v.timestamp,
-                  acceleration_x: v.acceleration_x,
-                  acceleration_y: v.acceleration_y,
-                  acceleration_z: v.acceleration_z,
-                })),
-                index: 'x',
-                categories: [
-                  'acceleration_x',
-                  'acceleration_y',
-                  'acceleration_z',
-                ],
-                colors: ['indigo', 'cyan', 'amber'],
-              }}
-            />
-          </div>
-        )}
-        {selectedBox && isConnected && values.length === 0 && (
-          <div className="flex h-full w-full flex-col items-center justify-center bg-background/75 p-12 backdrop-blur">
-            <p className="flex items-center text-center text-sm">
-              <Loader2Icon className="mr-2 h-4 w-4 animate-spin" /> Warten auf
-              Messwerte
-            </p>
-          </div>
-        )}
-      </div>
-      <div className="flex w-full justify-between gap-2 p-2">
+    <div className="flex w-full flex-col justify-around p-1 landscape:pb-safe">
+      <div className="flex w-full justify-between gap-2 p-2 pb-safe-or-4">
         {!isConnected ? (
-          <div className="flex w-full gap-1">
-            <Button size={'sm'} className="w-full" onClick={() => connect()}>
-              <Bluetooth className="mr-2 h-4" />
-              Verbinden
-            </Button>
-            <ConnectWithCamera />
-          </div>
+          <Button size={'sm'} className="w-full" onClick={() => connect()}>
+            <Bluetooth className="mr-2 h-4" />
+            Verbinden
+          </Button>
         ) : (
           <Button size={'sm'} className="w-full" onClick={() => disconnect()}>
             <BluetoothOff className="mr-2 h-4" />
@@ -202,6 +88,133 @@ export default function MeasurementsGrid() {
           <></>
         )}
       </div>
+      <div
+        className={cn(
+          'relative flex w-full flex-col',
+          !selectedBox || values.length === 0 ? '' : 'divide-y',
+        )}
+      >
+        <div
+          className={cn(
+            'grid w-full gap-1',
+            layoutFull ? 'grid-cols-1' : 'grid-cols-2',
+          )}
+        >
+          <GridItem
+            name="Geschwindigkeit"
+            value={lastValue?.gps_spd}
+            unit="km/h"
+            chartProps={{
+              data: values.map(v => ({ x: v.timestamp, y: v.gps_spd })),
+              index: 'x',
+              categories: ['y'],
+            }}
+          />
+          <GridItem
+            name="Temperatur"
+            value={lastValue?.temperature}
+            unit="°C"
+            chartProps={{
+              data: values.map(v => ({ x: v.timestamp, y: v.temperature })),
+              index: 'x',
+              categories: ['y'],
+            }}
+          />
+          <GridItem
+            name="Luftfeuchtigkeit"
+            value={lastValue?.humidity}
+            unit="%"
+            chartProps={{
+              data: values.map(v => ({ x: v.timestamp, y: v.humidity })),
+              index: 'x',
+              categories: ['y'],
+            }}
+          />
+          <GridItem
+            name="Feinstaub"
+            value={[
+              lastValue?.pm1,
+              lastValue?.pm2_5,
+              lastValue?.pm4,
+              lastValue?.pm10,
+            ]}
+            labels={['PM1', 'PM2.5', 'PM4', 'PM10']}
+            unit="µg/m³"
+            chartProps={{
+              data: values
+                .filter(e => e.pm1)
+                .map(v => ({
+                  x: v.timestamp,
+                  pm1: v.pm1,
+                  pm2_5: v.pm2_5,
+                  pm4: v.pm4,
+                  pm10: v.pm10,
+                })),
+              index: 'x',
+              categories: ['pm1', 'pm2_5', 'pm4', 'pm10'],
+              colors: ['indigo', 'cyan', 'amber', 'emerald'],
+            }}
+          />
+          <GridItem
+            name="Distanz Links"
+            value={lastValue?.distance_l}
+            unit="cm"
+            chartProps={{
+              data: values.map(v => ({ x: v.timestamp, y: v.distance_l })),
+              index: 'x',
+              categories: ['y'],
+            }}
+            decimals={0}
+          />
+
+          <GridItem
+            name="Beschleunigung"
+            value={[
+              lastValue?.acceleration_x,
+              lastValue?.acceleration_y,
+              lastValue?.acceleration_z,
+            ]}
+            unit="m/s²"
+            labels={['X', 'Y', 'Z']}
+            chartProps={{
+              data: values.map(v => ({
+                x: v.timestamp,
+                acceleration_x: v.acceleration_x,
+                acceleration_y: v.acceleration_y,
+                acceleration_z: v.acceleration_z,
+              })),
+              index: 'x',
+              categories: [
+                'acceleration_x',
+                'acceleration_y',
+                'acceleration_z',
+              ],
+              colors: ['indigo', 'cyan', 'amber'],
+            }}
+          />
+        </div>
+        {(!selectedBox || values.length === 0) && (
+          <div className="absolute left-0 top-0 z-10 flex h-full w-full flex-col items-center justify-center bg-background/75 p-12 backdrop-blur">
+            {!selectedBox && (
+              <p className="text-center text-sm">
+                Bitte verknüpfen Sie eine senseBox über den Setup-Button.
+              </p>
+            )}
+            {selectedBox && !isConnected && (
+              <p className="text-center text-sm">
+                Sie können sich nun mit der senseBox verbinden und die Messwerte
+                aufzeichnen
+              </p>
+            )}
+            {selectedBox && isConnected && (
+              <p className="flex items-center text-center text-sm">
+                <Loader2Icon className="mr-2 h-4 w-4 animate-spin" /> Warten auf
+                Messwerte
+              </p>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   )
 }
@@ -223,8 +236,6 @@ function GridItem({
 }) {
   const [selectedValue, setSelectedValue] = useState<number>()
   const [labelIndex, setLabelIndex] = useState<number>()
-
-  const reducedMotion = useSettingsStore(state => state.reducedMotion)
 
   useEffect(() => {
     if (value !== undefined && !Array.isArray(value)) {
@@ -251,14 +262,14 @@ function GridItem({
 
   return (
     <div
-      className="relative flex min-w-[33%] max-w-[50%] flex-1 flex-col justify-between overflow-hidden rounded-md bg-muted/40 px-4 py-3"
+      className="relative flex flex-1 flex-col justify-between overflow-hidden rounded-md bg-muted/40 px-4 py-3"
       onClick={() => {
         if (labelIndex !== undefined && labels && labels.length > 0) {
           setLabelIndex((labelIndex + 1) % labels!.length)
         }
       }}
     >
-      {chartProps && chartProps.data.length > 2 && !reducedMotion && (
+      {chartProps && chartProps.data.length > 2 && (
         <div className="pointer-events-none absolute -left-6 -right-6 top-0 h-full">
           <SparkAreaChart
             className="h-full w-full opacity-30"
@@ -274,6 +285,7 @@ function GridItem({
           <span
             className="h-fit rounded-full px-1 py-0.5 text-[8px] text-accent"
             style={{
+              // @ts-ignore
               backgroundColor: colors[chartProps.colors![labelIndex]][500],
             }}
           >

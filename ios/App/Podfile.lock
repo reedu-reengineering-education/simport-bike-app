@@ -12,7 +12,7 @@ PODS:
   - CapacitorCommunityKeepAwake (4.0.0):
     - Capacitor
   - CapacitorCordova (5.6.0)
-  - CapacitorFilesystem (5.1.4):
+  - CapacitorFilesystem (5.2.0):
     - Capacitor
   - CapacitorGeolocation (5.0.6):
     - Capacitor
@@ -151,7 +151,7 @@ SPEC CHECKSUMS:
   CapacitorCommunityBluetoothLe: 86ca83c89199336039bad94f45f8363114ae1464
   CapacitorCommunityKeepAwake: f3442e3e9b666dd0162522fbd053da1fe81ede20
   CapacitorCordova: 931b48fcdbc9bc985fc2f16cec9f77c794a27729
-  CapacitorFilesystem: af704badfbc69f6f8623d9ed313e5490e3723dcb
+  CapacitorFilesystem: 02f9a9053b96e1881ba1fc98d846869413c195c2
   CapacitorGeolocation: 7be5f77abc205c0efe319fff8587a7183e7b0240
   CapacitorHaptics: 1fffc1217c7e64a472d7845be50fb0c2f7d4204c
   CapacitorMlkitBarcodeScanning: ea08ef246e5d3511d5a231a59fae36b16ad9acb3
@@ -173,4 +173,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 311cea8045d74436b17d1ac8e92d08fecc40a267
 
-COCOAPODS: 1.14.0
+COCOAPODS: 1.11.2
