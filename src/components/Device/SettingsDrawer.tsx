@@ -2,12 +2,20 @@
 
 import { useSettingsStore } from '@/lib/store/useSettingsStore'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { DialogClose } from '@radix-ui/react-dialog'
 import { Cog } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { Button } from '../ui/button'
+
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '../ui/drawer'
 import {
   Form,
   FormControl,
@@ -17,7 +25,6 @@ import {
   FormLabel,
 } from '../ui/form'
 import { Slider } from '../ui/slider'
-import SliderDrawer from '../ui/slider-drawer'
 import { Switch } from '../ui/switch'
 
 const formSchema = z.object({
@@ -64,100 +71,107 @@ export default function SettingsDrawer() {
   const [open, setOpen] = useState(false)
 
   return (
-    <SliderDrawer
+    <Drawer
       open={open}
-      trigger={
-        <div className="h-full w-6">
-          <Cog />
-        </div>
-      }
+      shouldScaleBackground
+      onOpenChange={open => setOpen(open)}
     >
-      <div className="mx-auto max-w-md overflow-y-auto">
-        <p className="mb-4 font-medium">Einstellungen</p>
-        {/* <Button onClick={() => BackgroundGeolocation.openSettings()}>
-          Geolocation Settings
-        </Button> */}
-        <div className="flex flex-col justify-end gap-2 py-4">
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(handleSubmit)}
-              className="space-y-8"
-            >
-              <div>
-                <div className="space-y-4">
-                  <FormField
-                    name="uploadInterval"
-                    control={form.control}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Upload Interval</FormLabel>
-                        <FormDescription>
-                          Upload Interval (in Sekunden) bestimmen
-                        </FormDescription>
-                        <FormControl>
-                          <div className="flex items-center gap-2">
-                            <Slider
-                              className="py-2"
-                              onValueChange={e => field.onChange(e[0])}
-                              defaultValue={[field.value]}
-                              min={10}
-                              max={60}
-                              step={10}
+      <DrawerTrigger>
+        <Button variant="secondary" size="sm" onClick={() => setOpen(true)}>
+          <Cog className="h-4" />
+        </Button>
+      </DrawerTrigger>
+      <DrawerContent>
+        <div className="mx-auto w-full max-w-sm">
+          <DrawerHeader>
+            <DrawerTitle>Einstellungen</DrawerTitle>
+          </DrawerHeader>
+          <div className="flex flex-col justify-end gap-2 p-4">
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(handleSubmit)}
+                className="space-y-8"
+              >
+                <div>
+                  <div className="space-y-4">
+                    <FormField
+                      name="uploadInterval"
+                      control={form.control}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Upload Interval</FormLabel>
+                          <FormDescription>
+                            Upload Interval (in Sekunden) bestimmen
+                          </FormDescription>
+                          <FormControl>
+                            <div className="flex items-center gap-2">
+                              <Slider
+                                className="py-2"
+                                onValueChange={e => field.onChange(e[0])}
+                                defaultValue={[field.value]}
+                                min={10}
+                                max={60}
+                                step={10}
+                              />
+                              <span className="whitespace-nowrap text-xs">
+                                {form.watch('uploadInterval')} s
+                              </span>
+                            </div>
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      name="switchUseSmartphoneGPS"
+                      control={form.control}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Smartphone GPS</FormLabel>
+                          <FormDescription>
+                            Anstelle des senseBox GPS Moduls das GPS des
+                            Smartphones verwenden
+                          </FormDescription>
+                          <FormControl>
+                            <Switch
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
                             />
-                            <span className="whitespace-nowrap text-xs">
-                              {form.watch('uploadInterval')} s
-                            </span>
-                          </div>
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    name="switchUseSmartphoneGPS"
-                    control={form.control}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Smartphone GPS</FormLabel>
-                        <FormDescription>
-                          Anstelle des senseBox GPS Moduls das GPS des
-                          Smartphones verwenden
-                        </FormDescription>
-                        <FormControl>
-                          <Switch
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    name="switchReducedMotion"
-                    control={form.control}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Reduced Motion</FormLabel>
-                        <FormDescription>
-                          Enable this setting to reduce animations
-                        </FormDescription>
-                        <FormControl>
-                          <Switch
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      name="switchReducedMotion"
+                      control={form.control}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Reduced Motion</FormLabel>
+                          <FormDescription>
+                            Enable this setting to reduce animations
+                          </FormDescription>
+                          <FormControl>
+                            <Switch
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                 </div>
-              </div>
-              <DialogClose className="float-right">
-                <Button type="submit">Speichern</Button>
-              </DialogClose>
-            </form>
-          </Form>
+                <DrawerClose className="float-right">
+                  <Button type="submit">Speichern</Button>
+                </DrawerClose>
+              </form>
+            </Form>
+          </div>
         </div>
-      </div>
-    </SliderDrawer>
+      </DrawerContent>
+      {/* <div className="mx-auto max-w-md overflow-y-auto">
+        <p className="mb-4 font-medium">Einstellungen</p>
+
+      </div> */}
+    </Drawer>
   )
 }

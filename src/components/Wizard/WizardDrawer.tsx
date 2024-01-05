@@ -9,7 +9,7 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import { Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import SliderDrawer from '../ui/slider-drawer'
+import { Drawer, DrawerContent, DrawerTrigger } from '../ui/drawer'
 import { toast } from '../ui/use-toast'
 import LoginOrRegister from './LoginOrRegister'
 
@@ -21,11 +21,13 @@ export default function WizardDrawer() {
   const isLoggedIn = useAuthStore(state => state.isLoggedIn)
 
   return (
-    <SliderDrawer
+    <Drawer
+      shouldScaleBackground
       open={open}
       onOpenChange={setOpen}
       onClose={() => setOpen(false)}
-      trigger={
+    >
+      <DrawerTrigger>
         <div className="relative">
           <UserCog2 className="w-6" />
           {(!isLoggedIn || !selectedBox) && (
@@ -39,33 +41,31 @@ export default function WizardDrawer() {
             </div>
           )}
         </div>
-      }
-      footer={<DrawerWizardFooter setOpen={setOpen} />}
-    >
-      <div className="mx-auto max-w-md">
-        <Swiper
-          initialSlide={isLoggedIn ? (selectedBox ? 2 : 1) : 0}
-          spaceBetween={48}
-          modules={[Navigation]}
-          slidesPerView={1}
-          threshold={20}
-          allowTouchMove={false}
-        >
-          {/* <SwiperSlide>
-                  <Welcome />
-                </SwiperSlide> */}
-          <SwiperSlide>
-            <LoginOrRegister />
-          </SwiperSlide>
-          <SwiperSlide>
-            <SelectDevice />
-          </SwiperSlide>
-          <SwiperSlide>
-            <ConnectionSelection onClose={() => setOpen(false)} />
-          </SwiperSlide>
-        </Swiper>
-      </div>
-    </SliderDrawer>
+      </DrawerTrigger>
+      <DrawerContent>
+        <div className="mx-auto w-full max-w-md p-4">
+          <Swiper
+            initialSlide={isLoggedIn ? (selectedBox ? 2 : 1) : 0}
+            spaceBetween={48}
+            modules={[Navigation]}
+            slidesPerView={1}
+            threshold={20}
+            allowTouchMove={false}
+          >
+            <SwiperSlide>
+              <LoginOrRegister />
+            </SwiperSlide>
+            <SwiperSlide>
+              <SelectDevice />
+            </SwiperSlide>
+            <SwiperSlide>
+              <ConnectionSelection onClose={() => setOpen(false)} />
+            </SwiperSlide>
+          </Swiper>
+        </div>
+        <DrawerWizardFooter setOpen={setOpen} />
+      </DrawerContent>
+    </Drawer>
   )
 }
 
