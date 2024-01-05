@@ -1,3 +1,4 @@
+import { isInExclusionZone } from './exclusion-zone'
 import {
   senseBoxDataRecord,
   useSenseBoxValuesStore,
@@ -5,6 +6,7 @@ import {
 import { useTrackRecordStore } from './store/useTrackRecordStore'
 import { useUploadStore } from './store/useUploadStore'
 
+import { point } from '@turf/helpers'
 export class SenseBoxDataParser {
   private static instance: SenseBoxDataParser
 
@@ -79,12 +81,17 @@ export class SenseBoxDataParser {
           b.distance_l !== undefined,
       )
 
-    useSenseBoxValuesStore.getState().addValues(buckets)
+    // filter out all records that are inside the exclusion zone
+    const filteredRecords = buckets.filter(
+      record => !isInExclusionZone(point([record.gps_lng!, record.gps_lat!])),
+    )
+
+    useSenseBoxValuesStore.getState().addValues(filteredRecords)
     if (useUploadStore.getState().isRecording) {
-      useTrackRecordStore.getState().addMeasurements(buckets)
+      useTrackRecordStore.getState().addMeasurements(filteredRecords)
     }
 
-    const completeTimestamps = buckets.map(b => b.timestamp)
+    const completeTimestamps = filteredRecords.map(b => b.timestamp)
 
     // remove all data that is already complete
     this.dataBuffer = this.dataBuffer.filter(

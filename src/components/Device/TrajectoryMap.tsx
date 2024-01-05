@@ -1,11 +1,13 @@
 'use client'
 
+import { useExclusionZoneStore } from '@/lib/store/useExclusionZoneStore'
 import { useMapViewportState } from '@/lib/store/useMapViewportStore'
 import { useSettingsStore } from '@/lib/store/useSettingsStore'
 import useSenseBox from '@/lib/useSenseBox'
 import { bearing, point } from '@turf/turf'
 import { LngLatLike } from 'maplibre-gl'
 import { useEffect, useRef } from 'react'
+import { Layer, Source } from 'react-map-gl'
 import {
   AttributionControl,
   MapRef,
@@ -24,6 +26,8 @@ export default function TrajectoryMap({
 
   const initialViewState = useMapViewportState(state => state.viewport)
   const setViewport = useMapViewportState(state => state.setViewport)
+
+  const zones = useExclusionZoneStore(state => state.zones)
 
   const mapRef = useRef<MapRef>(null)
 
@@ -113,6 +117,16 @@ export default function TrajectoryMap({
           />
         </>
       )}
+      <Source data={zones} type="geojson">
+        <Layer
+          id="exclusion-zones"
+          type="fill"
+          paint={{
+            'fill-color': '#f00',
+            'fill-opacity': 0.2,
+          }}
+        />
+      </Source>
     </MapComponent>
   )
 }

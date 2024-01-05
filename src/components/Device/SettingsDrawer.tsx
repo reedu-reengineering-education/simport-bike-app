@@ -8,6 +8,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { Button } from '../ui/button'
+
 import {
   Form,
   FormControl,
@@ -19,6 +20,7 @@ import {
 import { Slider } from '../ui/slider'
 import SliderDrawer from '../ui/slider-drawer'
 import { Switch } from '../ui/switch'
+import ExclusionZoneDialog from './ExclusionZoneDialog'
 
 const formSchema = z.object({
   uploadInterval: z.number().min(1).max(60),
@@ -74,9 +76,7 @@ export default function SettingsDrawer() {
     >
       <div className="mx-auto max-w-md overflow-y-auto">
         <p className="mb-4 font-medium">Einstellungen</p>
-        {/* <Button onClick={() => BackgroundGeolocation.openSettings()}>
-          Geolocation Settings
-        </Button> */}
+        <ExclusionZoneDialog />
         <div className="flex flex-col justify-end gap-2 py-4">
           <Form {...form}>
             <form
