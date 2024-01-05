@@ -9,11 +9,11 @@ export default function DeviceMapWrapper() {
   const [snap, setSnap] = useState(0.2)
 
   return (
-    <div className="flex h-full w-full portrait:flex-col">
+    <div className="flex h-full w-full flex-row-reverse portrait:flex-col">
       <div className="relative h-full w-full">
         <TrajectoryMap paddingBottom={snap} />
       </div>
-      <div className="portrait:border-b landscape:border-r-2">
+      <div className="hidden portrait:visible portrait:border-b">
         <Drawer.Root
           open
           modal={false}
@@ -41,6 +41,9 @@ export default function DeviceMapWrapper() {
             </Drawer.Content>
           </Drawer.Portal>
         </Drawer.Root>
+      </div>
+      <div className="portrait:hidden landscape:border-r-2">
+        <MeasurementsGrid />
       </div>
     </div>
   )
