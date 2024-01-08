@@ -63,6 +63,7 @@ export default function ExclusionZoneDialog() {
           </DialogDescription>
         </DialogHeader>
         <div className="h-96 w-full overflow-hidden rounded-md">
+          {/* @ts-ignore */}
           <Map ref={mapRef}>
             <DrawControl
               position="top-left"

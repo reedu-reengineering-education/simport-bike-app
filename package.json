@@ -70,7 +70,6 @@
     "tailwindcss-animate": "^1.0.7",
     "typescript": "5.3.3",
     "uuid": "^9.0.1",
-    "vaul": "^0.8.0",
     "zod": "^3.22.2",
     "zustand": "^4.4.7"
   },
