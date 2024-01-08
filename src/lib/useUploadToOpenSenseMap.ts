@@ -1,6 +1,8 @@
+import { point } from '@turf/helpers'
 import { useEffect, useRef, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { uploadData } from './api/openSenseMapClient'
+import { isInExclusionZone } from './exclusion-zone'
 import match from './senseBoxSensorIdMatcher'
 import { useAuthStore } from './store/useAuthStore'
 import { useSenseBoxValuesStore } from './store/useSenseBoxValuesStore'
@@ -112,6 +114,9 @@ const useUploadToOpenSenseMap = () => {
     }
 
     const data = valuesRef.current
+      .filter(
+        record => !isInExclusionZone(point([record.gps_lng!, record.gps_lat!])),
+      )
       .flatMap(record => match(selectedBox, record))
       .map(record => ({
         ...record,

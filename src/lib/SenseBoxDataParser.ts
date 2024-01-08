@@ -79,6 +79,11 @@ export class SenseBoxDataParser {
           b.distance_l !== undefined,
       )
 
+    // // filter out all records that are inside the exclusion zone
+    // const filteredRecords = buckets.filter(
+    //   record => !isInExclusionZone(point([record.gps_lng!, record.gps_lat!])),
+    // )
+
     useSenseBoxValuesStore.getState().addValues(buckets)
     if (useUploadStore.getState().isRecording) {
       useTrackRecordStore.getState().addMeasurements(buckets)

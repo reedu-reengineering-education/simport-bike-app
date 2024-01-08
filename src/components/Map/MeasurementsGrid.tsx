@@ -15,6 +15,7 @@ import {
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import colors from 'tailwindcss/colors'
+import ConnectWithCamera from '../Device/ConnectWithCamera'
 import AnimatedNumber from '../ui/animated-number'
 import { Button } from '../ui/button'
 
@@ -35,10 +36,13 @@ export default function MeasurementsGrid({
     <div className="flex w-full flex-col justify-around p-1 landscape:pb-safe">
       <div className="flex w-full justify-between gap-2 p-2 pb-safe-or-4">
         {!isConnected ? (
-          <Button size={'sm'} className="w-full" onClick={() => connect()}>
-            <Bluetooth className="mr-2 h-4" />
-            Verbinden
-          </Button>
+          <div className="flex w-full rounded-md bg-primary/25">
+            <Button size={'sm'} className="w-full" onClick={() => connect()}>
+              <Bluetooth className="mr-2 h-4" />
+              Verbinden
+            </Button>
+            <ConnectWithCamera />
+          </div>
         ) : (
           <Button size={'sm'} className="w-full" onClick={() => disconnect()}>
             <BluetoothOff className="mr-2 h-4" />
@@ -193,25 +197,12 @@ export default function MeasurementsGrid({
             }}
           />
         </div>
-        {(!selectedBox || values.length === 0) && (
-          <div className="absolute left-0 top-0 z-10 flex h-full w-full flex-col items-center justify-center bg-background/75 p-12 backdrop-blur">
-            {!selectedBox && (
-              <p className="text-center text-sm">
-                Bitte verknüpfen Sie eine senseBox über den Setup-Button.
-              </p>
-            )}
-            {selectedBox && !isConnected && (
-              <p className="text-center text-sm">
-                Sie können sich nun mit der senseBox verbinden und die Messwerte
-                aufzeichnen
-              </p>
-            )}
-            {selectedBox && isConnected && (
-              <p className="flex items-center text-center text-sm">
-                <Loader2Icon className="mr-2 h-4 w-4 animate-spin" /> Warten auf
-                Messwerte
-              </p>
-            )}
+        {selectedBox && isConnected && values.length === 0 && (
+          <div className="flex h-full w-full flex-col items-center justify-center bg-background/75 p-12 backdrop-blur">
+            <p className="flex items-center text-center text-sm">
+              <Loader2Icon className="mr-2 h-4 w-4 animate-spin" /> Warten auf
+              Messwerte
+            </p>
           </div>
         )}
       </div>

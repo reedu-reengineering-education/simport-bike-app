@@ -27,7 +27,7 @@ PODS:
     - Capacitor
   - CapacitorShare (5.0.6):
     - Capacitor
-  - GoogleDataTransport (9.2.5):
+  - GoogleDataTransport (9.3.0):
     - GoogleUtilities/Environment (~> 7.7)
     - nanopb (< 2.30910.0, >= 2.30908.0)
     - PromisesObjC (< 3.0, >= 1.2)
@@ -158,7 +158,7 @@ SPEC CHECKSUMS:
   CapacitorPreferences: f03954bcb0ff09c792909e46bff88e3183c16b10
   CapacitorPushNotifications: b31e326c6e4eb216a622041d6ca21a973f34943f
   CapacitorShare: cd41743331cb71d217c029de54b681cbd91e0fcc
-  GoogleDataTransport: 54dee9d48d14580407f8f5fbf2f496e92437a2f2
+  GoogleDataTransport: 57c22343ab29bc686febbf7cbb13bad167c2d8fe
   GoogleMLKit: 2bd0dc6253c4d4f227aad460f69215a504b2980e
   GoogleToolboxForMac: 8bef7c7c5cf7291c687cf5354f39f9db6399ad34
   GoogleUtilities: 0759d1a57ebb953965c2dfe0ba4c82e95ccc2e34
@@ -173,4 +173,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 311cea8045d74436b17d1ac8e92d08fecc40a267
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.14.3

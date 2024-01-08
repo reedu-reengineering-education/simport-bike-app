@@ -1,9 +1,15 @@
 'use client'
 
 import { usePermissionsStore } from '@/lib/store/usePermissionsStore'
-import { Drawer } from 'vaul'
 import { Button } from '../ui/button'
-import SliderDrawer from '../ui/slider-drawer'
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+} from '../ui/drawer'
 
 export default function GeolocationPermissionDrawer() {
   const showGeolocationPermissionsDrawer = usePermissionsStore(
@@ -17,30 +23,33 @@ export default function GeolocationPermissionDrawer() {
   )
 
   return (
-    <SliderDrawer
+    <Drawer
       open={showGeolocationPermissionsDrawer}
       onOpenChange={setShowGeolocationPermissionsDrawer}
     >
-      <div className="mx-auto max-w-md">
-        <Drawer.Title>Geolocation permission required</Drawer.Title>
-
-        <p className="my-6">
-          senseBox:bike erhebt Standortdaten, um deine Fahrt aufzuzeichnen und
-          deine Positionen mit Umweltdaten zu verknüpfen, auch wenn die App
-          geschlossen ist oder nicht verwendet wird.
-        </p>
-        <div className="flex w-full gap-2">
-          <Drawer.Close className="flex-1" asChild>
-            <Button variant={'secondary'}>Ablehnen</Button>
-          </Drawer.Close>
-          <Button
-            className="flex-1"
-            onClick={() => setGeolocationPermissionGranted(true)}
-          >
-            Akzeptieren
-          </Button>
+      <DrawerContent>
+        <div className="mx-auto max-w-md px-4 pb-safe">
+          <DrawerHeader>
+            <DrawerTitle>Geolocation permission required</DrawerTitle>
+            <DrawerDescription>
+              senseBox:bike erhebt Standortdaten, um deine Fahrt aufzuzeichnen
+              und deine Positionen mit Umweltdaten zu verknüpfen, auch wenn die
+              App geschlossen ist oder nicht verwendet wird.
+            </DrawerDescription>
+          </DrawerHeader>
+          <div className="flex w-full gap-2">
+            <DrawerClose className="flex-1" asChild>
+              <Button variant={'secondary'}>Ablehnen</Button>
+            </DrawerClose>
+            <Button
+              className="flex-1"
+              onClick={() => setGeolocationPermissionGranted(true)}
+            >
+              Akzeptieren
+            </Button>
+          </div>
         </div>
-      </div>
-    </SliderDrawer>
+      </DrawerContent>
+    </Drawer>
   )
 }
