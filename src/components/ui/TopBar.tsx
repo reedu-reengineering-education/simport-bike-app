@@ -6,30 +6,32 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { useUIStore } from '@/lib/store/useUIStore'
 import { Browser } from '@capacitor/browser'
 import {
   Bars3Icon,
   BeakerIcon,
   LockClosedIcon,
 } from '@heroicons/react/24/outline'
-import { ArrowLeftIcon, InfoIcon, WaypointsIcon } from 'lucide-react'
+import { ArrowLeftIcon, InfoIcon, UserCog, WaypointsIcon } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import SettingsDrawer from '../Device/SettingsDrawer'
-import WizardDrawer from '../Wizard/WizardDrawer'
+import { Button } from './button'
 
 const titles: Record<string, string> = {
-  '/': 'senseBox:bike',
+  '/': '',
   '/tracks': 'Tracks',
 }
 
 const TopBar = () => {
   const pathname = usePathname()
+  const { setShowWizardDrawer } = useUIStore()
 
   const isHome = pathname === '/'
 
   return (
-    <div className="sticky top-0 z-10 flex w-full items-center justify-between px-4 pb-3 pt-4 shadow landscape:px-safe-or-4">
+    <div className="pointer-events-auto sticky top-0 z-10 flex w-full items-center justify-between px-4 pt-2 landscape:px-safe-or-4">
       <div className="flex items-center gap-2">
         {!isHome && (
           <Link href="/">
@@ -38,19 +40,23 @@ const TopBar = () => {
         )}
         <h1 className="text-xl">{titles[pathname]}</h1>
       </div>
-      <div className="flex gap-6">
-        <WizardDrawer />
+      <div className="flex flex-col-reverse gap-4">
         <SettingsDrawer />
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <Bars3Icon className="h-7 w-7" />
+            <Button variant={'bold'} size={'icon'}>
+              <Bars3Icon className="h-7" />
+            </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="mt-4 p-2 mr-safe-or-2">
+          <DropdownMenuContent className="mt-2 p-2 mr-safe-or-2">
             <Link href="/tracks">
               <DropdownMenuItem>
                 <WaypointsIcon className="mr-2 h-7 w-7" /> Tracks
               </DropdownMenuItem>
             </Link>
+            <DropdownMenuItem onClick={() => setShowWizardDrawer(true)}>
+              <UserCog className="mr-2 h-7 w-7" /> Setup
+            </DropdownMenuItem>
             <DropdownMenuItem
               onClick={async () =>
                 await Browser.open({

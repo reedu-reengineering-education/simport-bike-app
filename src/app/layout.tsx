@@ -1,4 +1,3 @@
-import { TopBar } from '@/components/ui/TopBar'
 import { Toaster } from '@/components/ui/toaster'
 import { cn } from '@/lib/utils'
 import type { Metadata, Viewport } from 'next'
@@ -30,15 +29,11 @@ export default function RootLayout({
         <AuthChecker />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div
-            className="flex h-full max-h-full w-full flex-col bg-background px-safe pt-safe landscape:px-0"
+            className="flex h-full max-h-full w-full flex-col bg-background px-safe landscape:px-0"
             vaul-drawer-wrapper=""
           >
-            <header>
-              <TopBar />
-            </header>
-            <main className="flex-1 overflow-auto landscape:pl-safe">
-              {children}
-            </main>
+            {children}
+
             <Toaster />
           </div>
         </ThemeProvider>

@@ -36,7 +36,7 @@ export default function MeasurementsGrid({
     <div className="flex w-full flex-col justify-around p-1 landscape:pb-safe">
       <div className="flex w-full justify-between gap-2 p-2 pb-safe-or-4">
         {!isConnected ? (
-          <div className="flex w-full gap-1">
+          <div className="flex w-full rounded-md bg-primary/25">
             <Button size={'sm'} className="w-full" onClick={() => connect()}>
               <Bluetooth className="mr-2 h-4" />
               Verbinden

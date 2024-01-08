@@ -3,13 +3,13 @@ import SelectDevice from '@/components/Wizard/SelectDevice'
 import { signout } from '@/lib/api/openSenseMapClient'
 import { useAuthStore } from '@/lib/store/useAuthStore'
 import { useUIStore } from '@/lib/store/useUIStore'
-import { AlertOctagon, Check, ExternalLinkIcon, UserCog2 } from 'lucide-react'
+import { ExternalLinkIcon } from 'lucide-react'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import { Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Drawer, DrawerContent, DrawerTrigger } from '../ui/drawer'
+import { Drawer, DrawerContent, DrawerFooter } from '../ui/drawer'
 import { toast } from '../ui/use-toast'
 import LoginOrRegister from './LoginOrRegister'
 
@@ -27,7 +27,7 @@ export default function WizardDrawer() {
       onOpenChange={setOpen}
       onClose={() => setOpen(false)}
     >
-      <DrawerTrigger>
+      {/* <DrawerTrigger>
         <div className="relative">
           <UserCog2 className="w-6" />
           {(!isLoggedIn || !selectedBox) && (
@@ -41,7 +41,7 @@ export default function WizardDrawer() {
             </div>
           )}
         </div>
-      </DrawerTrigger>
+      </DrawerTrigger> */}
       <DrawerContent>
         <div className="mx-auto w-full max-w-md p-4">
           <Swiper
@@ -63,7 +63,9 @@ export default function WizardDrawer() {
             </SwiperSlide>
           </Swiper>
         </div>
-        <DrawerWizardFooter setOpen={setOpen} />
+        <DrawerFooter>
+          <DrawerWizardFooter setOpen={setOpen} />
+        </DrawerFooter>
       </DrawerContent>
     </Drawer>
   )
