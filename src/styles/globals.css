@@ -61,3 +61,8 @@
 /* .maplibregl-ctrl-attrib {
   margin-bottom: max(env(safe-area-inset-bottom), 0.5rem) !important;
 } */
+
+.maplibregl-ctrl-top-left {
+  top: 1rem !important;
+  left: 1rem !important;
+}

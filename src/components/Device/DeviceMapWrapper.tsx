@@ -51,14 +51,14 @@ export default function DeviceMapWrapper() {
             snapPoints={snapPoints}
             activeSnapPoint={snap}
             shouldScaleBackground={false}
-            setActiveSnapPoint={snap => {
-              if (!snap) return
-              if (typeof snap === 'string') {
-                setSnap(parseFloat(snap))
-              } else if (snap < snapPoints[0]) {
+            setActiveSnapPoint={cursnap => {
+              if (!cursnap) return
+              if (typeof cursnap === 'string') {
+                setSnap(parseFloat(cursnap))
+              } else if (cursnap < snapPoints[0]) {
                 setSnap(snapPoints[0])
               } else {
-                setSnap(snap)
+                setSnap(cursnap)
               }
             }}
           >

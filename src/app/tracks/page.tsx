@@ -3,11 +3,11 @@ import { Navbar } from './navbar'
 
 export default function TracksPage() {
   return (
-    <main className="h-full w-full p-safe">
+    <main className="flex h-full w-full flex-col pt-safe">
       <header>
         <Navbar />
       </header>
-      <div className="h-full w-full overflow-scroll p-4 pb-safe-or-4">
+      <div className="flex-1 overflow-scroll p-4 pb-safe">
         <TrackWrapper />
       </div>
     </main>
