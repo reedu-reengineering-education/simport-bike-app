@@ -43,7 +43,7 @@ const TopBar = () => {
       <div className="flex flex-col-reverse gap-4">
         <SettingsDrawer />
         <DropdownMenu>
-          <DropdownMenuTrigger>
+          <DropdownMenuTrigger asChild>
             <Button variant={'bold'} size={'icon'}>
               <Bars3Icon className="h-7" />
             </Button>

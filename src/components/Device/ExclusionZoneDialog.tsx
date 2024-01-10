@@ -49,7 +49,7 @@ export default function ExclusionZoneDialog() {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button variant="secondary" className="w-full">
           Private Zonen verwalten
         </Button>

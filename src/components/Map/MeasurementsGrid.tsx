@@ -1,109 +1,31 @@
 import { useAuthStore } from '@/lib/store/useAuthStore'
-import { useUIStore } from '@/lib/store/useUIStore'
 import useSenseBox from '@/lib/useSenseBox'
-import useUploadToOpenSenseMap from '@/lib/useUploadToOpenSenseMap'
 import { cn } from '@/lib/utils'
 import { SparkAreaChart, SparkAreaChartProps } from '@tremor/react'
-import {
-  Bluetooth,
-  BluetoothOff,
-  Circle,
-  Loader2Icon,
-  Square,
-  UploadCloud,
-  UserCog2,
-} from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { Loader2Icon } from 'lucide-react'
+import { forwardRef, useEffect, useState } from 'react'
 import colors from 'tailwindcss/colors'
-import ConnectWithCamera from '../Device/ConnectWithCamera'
 import AnimatedNumber from '../ui/animated-number'
-import { Button } from '../ui/button'
 
-export default function MeasurementsGrid({
-  layoutFull,
-}: {
-  layoutFull?: boolean
-}) {
-  const { values: allValues, connect, isConnected, disconnect } = useSenseBox()
-  const { selectedBox } = useAuthStore()
-  const { isRecording, start, stop, isLoading } = useUploadToOpenSenseMap()
-  const { setShowWizardDrawer } = useUIStore()
+const MeasurementsGrid = forwardRef<HTMLDivElement>(({}, ref) => {
+  const { values: allValues, isConnected } = useSenseBox()
+  const selectedBox = useAuthStore(state => state.selectedBox)
 
   const values = allValues.filter((_, i) => i > allValues.length - 20)
   const lastValue = values.at(-1)
 
   return (
-    <div className="flex w-full flex-col justify-around p-1 landscape:pb-safe">
-      <div className="flex w-full justify-between gap-2 p-2 pb-safe-or-4">
-        {!isConnected ? (
-          <div className="flex w-full rounded-md bg-primary/25">
-            <Button size={'sm'} className="w-full" onClick={() => connect()}>
-              <Bluetooth className="mr-2 h-4" />
-              Verbinden
-            </Button>
-            <ConnectWithCamera />
-          </div>
-        ) : (
-          <Button size={'sm'} className="w-full" onClick={() => disconnect()}>
-            <BluetoothOff className="mr-2 h-4" />
-            Trennen
-          </Button>
-        )}
-        {!selectedBox ? (
-          <Button
-            size={'sm'}
-            className="w-full"
-            variant={'secondary'}
-            onClick={() => setShowWizardDrawer(true)}
-          >
-            <UserCog2 className="mr-2 h-5" />
-            Setup
-          </Button>
-        ) : isConnected ? (
-          !isRecording ? (
-            <Button
-              size={'sm'}
-              className="w-full"
-              onClick={() => start()}
-              variant={'secondary'}
-            >
-              <Circle className="mr-2 h-5 fill-red-500 text-red-500" />
-              Aufzeichnen
-            </Button>
-          ) : (
-            <>
-              <Button
-                size={'sm'}
-                className="w-full"
-                onClick={() => stop()}
-                variant={'secondary'}
-              >
-                {isLoading && (
-                  <UploadCloud className="mr-2 h-5 animate-pulse opacity-50" />
-                )}
-                {!isLoading && (
-                  <Square className="mr-2 h-5 fill-red-500 text-red-500" />
-                )}
-                Stop
-              </Button>
-            </>
-          )
-        ) : (
-          <></>
-        )}
-      </div>
+    <div
+      className="flex w-full flex-col justify-around p-1 pb-safe-offset-8"
+      ref={ref}
+    >
       <div
         className={cn(
           'relative flex w-full flex-col',
           !selectedBox || values.length === 0 ? '' : 'divide-y',
         )}
       >
-        <div
-          className={cn(
-            'grid w-full gap-1',
-            layoutFull ? 'grid-cols-1' : 'grid-cols-2',
-          )}
-        >
+        <div className={cn('grid w-full grid-cols-2 gap-1')}>
           <GridItem
             name="Geschwindigkeit"
             value={lastValue?.gps_spd}
@@ -208,7 +130,11 @@ export default function MeasurementsGrid({
       </div>
     </div>
   )
-}
+})
+
+MeasurementsGrid.displayName = 'MeasurementsGrid'
+
+export default MeasurementsGrid
 
 function GridItem({
   name,

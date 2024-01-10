@@ -10,7 +10,6 @@ import { Button } from '../ui/button'
 
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
   DrawerFooter,
   DrawerHeader,
@@ -78,7 +77,7 @@ export default function SettingsDrawer() {
       shouldScaleBackground
       onOpenChange={open => setOpen(open)}
     >
-      <DrawerTrigger>
+      <DrawerTrigger asChild>
         <Button variant="bold" size={'icon'} onClick={() => setOpen(true)}>
           <Cog className="h-6" />
         </Button>
@@ -161,9 +160,7 @@ export default function SettingsDrawer() {
                     )}
                   />
                 </div>
-                <DrawerClose className="float-right">
-                  <Button type="submit">Speichern</Button>
-                </DrawerClose>
+                <Button type="submit">Speichern</Button>
               </form>
             </Form>
           </div>
