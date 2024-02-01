@@ -16,7 +16,7 @@ export const useSettingsStore = create<SettingsStoreInterface>()(
     set => ({
       uploadInterval: 10,
       setUploadInterval: uploadInterval => set({ uploadInterval }),
-      useSenseBoxGPS: true,
+      useSenseBoxGPS: false,
       setUseSenseBoxGPS: useSenseBoxGPS => set({ useSenseBoxGPS }),
       reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)')
         .matches,

@@ -55,7 +55,7 @@ const TopBar = () => {
               </DropdownMenuItem>
             </Link>
             <DropdownMenuItem onClick={() => setShowWizardDrawer(true)}>
-              <UserCog className="mr-2 h-7 w-7" /> Setup
+              <UserCog className="mr-2 h-7 w-7" /> openSenseMap
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={async () =>

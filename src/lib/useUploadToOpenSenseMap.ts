@@ -1,3 +1,4 @@
+import { toast } from '@/components/ui/use-toast'
 import { point } from '@turf/helpers'
 import { useEffect, useRef, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
@@ -102,12 +103,17 @@ const useUploadToOpenSenseMap = () => {
     if (!intervalChange) {
       setRecording(false)
       setEnd(new Date())
+      toast({
+        description: 'Du findest den Track im Tracks Menü',
+        title: 'Track gespeichert',
+      })
     }
   }
 
   async function uploadToOpenSenseMap() {
     if (!selectedBox) {
-      throw new Error('No box selected.')
+      return
+      // throw new Error('No box selected.')
     }
     if (!valuesRef.current) {
       throw new Error('No values.')

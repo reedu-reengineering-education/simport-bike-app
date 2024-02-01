@@ -12,7 +12,7 @@ const HANDLE_PADDING = 8
 
 export default function DeviceMapWrapper() {
   const [snap, setSnap] = useState(
-    (DRAG_HANDLE_HEIGHT + HANDLE_PADDING + 60) / window.innerHeight,
+    (DRAG_HANDLE_HEIGHT + HANDLE_PADDING + 60 + 256) / window.innerHeight,
   )
   const [snapPoints, setSnapPoints] = useState<number[]>([
     (DRAG_HANDLE_HEIGHT + HANDLE_PADDING + 60) / window.innerHeight,
