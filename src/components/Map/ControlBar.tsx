@@ -1,5 +1,3 @@
-import { useAuthStore } from '@/lib/store/useAuthStore'
-import { useUIStore } from '@/lib/store/useUIStore'
 import useSenseBox from '@/lib/useSenseBox'
 import useUploadToOpenSenseMap from '@/lib/useUploadToOpenSenseMap'
 import {
@@ -8,7 +6,6 @@ import {
   Circle,
   Square,
   UploadCloud,
-  UserCog2,
 } from 'lucide-react'
 import { forwardRef } from 'react'
 import ConnectWithCamera from '../Device/ConnectWithCamera'
@@ -17,10 +14,10 @@ import { Button } from '../ui/button'
 const ControlBar = forwardRef<HTMLDivElement>(({}, ref) => {
   const { connect, isConnected, disconnect } = useSenseBox()
 
-  const selectedBox = useAuthStore(state => state.selectedBox)
+  // const selectedBox = useAuthStore(state => state.selectedBox)
 
   const { isRecording, start, stop, isLoading } = useUploadToOpenSenseMap()
-  const setShowWizardDrawer = useUIStore(state => state.setShowWizardDrawer)
+  // const setShowWizardDrawer = useUIStore(state => state.setShowWizardDrawer)
 
   return (
     <div
@@ -41,17 +38,7 @@ const ControlBar = forwardRef<HTMLDivElement>(({}, ref) => {
           Trennen
         </Button>
       )}
-      {!selectedBox ? (
-        <Button
-          size={'sm'}
-          className="w-full"
-          variant={'secondary'}
-          onClick={() => setShowWizardDrawer(true)}
-        >
-          <UserCog2 className="mr-2 h-5" />
-          Setup
-        </Button>
-      ) : isConnected ? (
+      {isConnected ? (
         !isRecording ? (
           <Button
             size={'sm'}
