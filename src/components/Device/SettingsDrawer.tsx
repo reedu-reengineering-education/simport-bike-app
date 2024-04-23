@@ -78,7 +78,7 @@ export default function SettingsDrawer() {
       onOpenChange={open => setOpen(open)}
     >
       <DrawerTrigger asChild>
-        <Button variant="bold" size={'icon'} onClick={() => setOpen(true)}>
+        <Button variant="secondary" size={'icon'} onClick={() => setOpen(true)}>
           <Cog className="h-6" />
         </Button>
       </DrawerTrigger>

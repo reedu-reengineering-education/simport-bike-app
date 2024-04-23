@@ -54,7 +54,7 @@ const TopBar = () => {
         <SettingsDrawer />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant={'bold'} size={'icon'}>
+            <Button variant={'secondary'} size={'icon'}>
               <Bars3Icon className="h-7" />
             </Button>
           </DropdownMenuTrigger>
