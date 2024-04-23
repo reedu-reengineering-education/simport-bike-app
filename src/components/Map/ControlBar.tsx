@@ -25,7 +25,7 @@ const ControlBar = forwardRef<HTMLDivElement>(({}, ref) => {
       ref={ref}
     >
       {!isConnected ? (
-        <div className="flex w-full rounded-md bg-primary/25">
+        <div className="mx-auto flex w-full max-w-xl rounded-md bg-primary/25">
           <Button size={'sm'} className="w-full" onClick={() => connect()}>
             <Bluetooth className="mr-2 h-4" />
             Verbinden
@@ -33,7 +33,11 @@ const ControlBar = forwardRef<HTMLDivElement>(({}, ref) => {
           <ConnectWithCamera />
         </div>
       ) : (
-        <Button size={'sm'} className="w-full" onClick={() => disconnect()}>
+        <Button
+          size={'sm'}
+          className="mx-auto w-full max-w-xl"
+          onClick={() => disconnect()}
+        >
           <BluetoothOff className="mr-2 h-4" />
           Trennen
         </Button>

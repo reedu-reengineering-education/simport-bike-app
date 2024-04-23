@@ -1,31 +1,35 @@
 'use client'
 
-import { useThemeDetector } from '@/lib/useThemeDetector'
 import 'mapbox-gl/dist/mapbox-gl.css'
-import { forwardRef } from 'react'
+import { useTheme } from 'next-themes'
+import { forwardRef, useEffect } from 'react'
 import { MapProps, MapRef, Map as ReactMap } from 'react-map-gl'
 
 const Map = forwardRef<MapRef, MapProps>(
   ({ children, mapStyle, ...props }, ref) => {
-    const isDarkTheme = useThemeDetector()
+    const { theme } = useTheme()
 
-    const basemap = isDarkTheme ? 'dataviz-dark' : 'streets-v2'
+    useEffect(() => {
+      // @ts-ignore
+      if (!ref.current) return
+
+      // @ts-ignore
+      onMapLoad({ target: ref.current })
+    }, [theme])
 
     const onMapLoad = (e: mapboxgl.MapboxEvent<undefined>) => {
       // @ts-ignore
       e.target.setConfigProperty(
         'basemap',
         'lightPreset',
-        isDarkTheme ? 'night' : '',
+        theme === 'dark' ? 'night' : '',
       )
     }
 
     return (
       // @ts-ignore
       <ReactMap
-        mapStyle={
-          mapStyle || 'mapbox://styles/mapbox/standard?lightPreset=dawn'
-        }
+        mapStyle={mapStyle || 'mapbox://styles/mapbox/standard'}
         mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
         ref={ref}
         style={{

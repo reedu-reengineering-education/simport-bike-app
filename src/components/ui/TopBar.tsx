@@ -13,7 +13,15 @@ import {
   BeakerIcon,
   LockClosedIcon,
 } from '@heroicons/react/24/outline'
-import { ArrowLeftIcon, InfoIcon, UserCog, WaypointsIcon } from 'lucide-react'
+import {
+  ArrowLeftIcon,
+  InfoIcon,
+  MoonIcon,
+  SunIcon,
+  UserCog,
+  WaypointsIcon,
+} from 'lucide-react'
+import { useTheme } from 'next-themes'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import SettingsDrawer from '../Device/SettingsDrawer'
@@ -29,6 +37,8 @@ const TopBar = () => {
   const { setShowWizardDrawer } = useUIStore()
 
   const isHome = pathname === '/'
+
+  const { theme, setTheme } = useTheme()
 
   return (
     <div className="pointer-events-auto sticky top-0 z-10 flex w-full items-center justify-between px-4 pt-2 landscape:px-safe-or-4">
@@ -73,6 +83,15 @@ const TopBar = () => {
             <DropdownMenuItem>
               <InfoIcon className="mr-2 h-7 w-7" /> Hilfe
             </DropdownMenuItem>
+            {theme === 'light' ? (
+              <DropdownMenuItem onClick={() => setTheme('dark')}>
+                <MoonIcon className="mr-2 h-7 w-7" /> Dunkles Design
+              </DropdownMenuItem>
+            ) : (
+              <DropdownMenuItem onClick={() => setTheme('light')}>
+                <SunIcon className="mr-2 h-7 w-7" /> Helles Design
+              </DropdownMenuItem>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
