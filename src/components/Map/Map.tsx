@@ -1,15 +1,15 @@
 'use client'
 
-import { MapProps, MapRef, Map as ReactMap } from 'react-map-gl/maplibre'
 import 'maplibre-gl/dist/maplibre-gl.css'
+import { useTheme } from 'next-themes'
 import { forwardRef } from 'react'
-import { useThemeDetector } from '@/lib/useThemeDetector'
+import { MapProps, MapRef, Map as ReactMap } from 'react-map-gl/maplibre'
 
 const Map = forwardRef<MapRef, MapProps>(
   ({ children, mapStyle, ...props }, ref) => {
-    const isDarkTheme = useThemeDetector()
+    const { theme } = useTheme()
 
-    const basemap = isDarkTheme ? 'dataviz-dark' : 'streets-v2'
+    const basemap = theme === 'dark' ? 'dataviz-dark' : 'streets-v2'
 
     return (
       // @ts-ignore
@@ -18,6 +18,7 @@ const Map = forwardRef<MapRef, MapProps>(
           mapStyle ||
           `https://api.maptiler.com/maps/${basemap}/style.json?key=DT8RRRX6sOuzQrcuhKuE`
         }
+        mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
         ref={ref}
         style={{
           width: '100%',
