@@ -2,8 +2,29 @@
 	"appId": "de.reedu.senseboxbike",
 	"appName": "senseBox:Bike",
 	"webDir": "out",
-	"server": {},
+	"server": {
+		"url": "http://192.168.2.135:3000",
+		"cleartext": true
+	},
 	"android": {
 		"useLegacyBridge": true
-	}
+	},
+	"packageClassList": [
+		"BackgroundGeolocation",
+		"BackgroundGeolocation",
+		"BluetoothLe",
+		"BluetoothLe",
+		"KeepAwakePlugin",
+		"KeepAwakePlugin",
+		"BarcodeScannerPlugin",
+		"BarcodeScannerPlugin",
+		"AppPlugin",
+		"CAPBrowserPlugin",
+		"FilesystemPlugin",
+		"GeolocationPlugin",
+		"HapticsPlugin",
+		"PreferencesPlugin",
+		"PushNotificationsPlugin",
+		"SharePlugin"
+	]
 }
