@@ -2,7 +2,6 @@
 
 import { useTracksStore } from '@/lib/store/useTracksStore'
 import { cn } from '@/lib/utils'
-import 'maplibre-gl/dist/maplibre-gl.css'
 import Link from 'next/link'
 import { Button } from '../ui/button'
 import TrackDetail from './TrackDetail'

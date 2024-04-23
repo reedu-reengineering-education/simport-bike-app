@@ -5,13 +5,14 @@ import { useMapViewportState } from '@/lib/store/useMapViewportStore'
 import { useSettingsStore } from '@/lib/store/useSettingsStore'
 import useSenseBox from '@/lib/useSenseBox'
 import { bearing, point } from '@turf/turf'
-import { LngLatLike } from 'maplibre-gl'
 import { useEffect, useRef } from 'react'
-import { Layer, Source } from 'react-map-gl'
 import {
   AttributionControl,
+  Layer,
+  LngLatLike,
   MapRef,
-} from 'react-map-gl/dist/esm/exports-maplibre'
+  Source,
+} from 'react-map-gl'
 import LocationHistory from '../Map/LocationHistory'
 import LocationMarker from '../Map/LocationMarker'
 import MapComponent from '../Map/Map'
@@ -104,16 +105,18 @@ export default function TrajectoryMap({
           marginTop: 'calc(0.5rem + env(safe-area-inset-top))',
         }}
       />
-      <Source data={zones} type="geojson">
-        <Layer
-          id="exclusion-zones"
-          type="fill"
-          paint={{
-            'fill-color': '#f00',
-            'fill-opacity': 0.2,
-          }}
-        />
-      </Source>
+      {zones && zones.features.length > 0 && (
+        <Source data={zones} type="geojson">
+          <Layer
+            id="exclusion-zones"
+            type="fill"
+            paint={{
+              'fill-color': '#f00',
+              'fill-opacity': 0.2,
+            }}
+          />
+        </Source>
+      )}
       {values && values.length > 0 && (
         <>
           <LocationHistory values={values} />

@@ -1,5 +1,5 @@
 import { Location } from '@capacitor-community/background-geolocation'
-import { Layer, Source } from 'react-map-gl/maplibre'
+import { Layer, Source } from 'react-map-gl'
 
 import { circle, point } from '@turf/turf'
 
