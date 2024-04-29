@@ -13,7 +13,9 @@ export default function LocationHistory({
         type="geojson"
         data={{
           type: 'LineString',
-          coordinates: values.map(value => [value.gps_lng, value.gps_lat]),
+          coordinates: values
+            .filter(value => value.gps_lng && value.gps_lat)
+            .map(value => [value.gps_lng!, value.gps_lat!]),
         }}
       >
         <Layer

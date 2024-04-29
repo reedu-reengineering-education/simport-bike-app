@@ -1,3 +1,4 @@
+import { useRawBLEDataStore } from '@/lib/store/use-raw-data-store'
 import { useAuthStore } from '@/lib/store/useAuthStore'
 import useSenseBox from '@/lib/useSenseBox'
 import { cn } from '@/lib/utils'
@@ -5,11 +6,14 @@ import { SparkAreaChart, SparkAreaChartProps } from '@tremor/react'
 import { Loader2Icon } from 'lucide-react'
 import { forwardRef, useEffect, useState } from 'react'
 import colors from 'tailwindcss/colors'
+import { sensorRegistry } from '../sensors'
 import AnimatedNumber from '../ui/animated-number'
 
 const MeasurementsGrid = forwardRef<HTMLDivElement>(({}, ref) => {
   const { values: allValues, isConnected } = useSenseBox()
   const selectedBox = useAuthStore(state => state.selectedBox)
+
+  const rawData = useRawBLEDataStore(state => state.rawBleSensorData)
 
   const values = allValues.filter((_, i) => i > allValues.length - 20)
   const lastValue = values.at(-1)
@@ -26,7 +30,13 @@ const MeasurementsGrid = forwardRef<HTMLDivElement>(({}, ref) => {
         )}
       >
         <div className={cn('grid w-full grid-cols-2 gap-1')}>
-          <GridItem
+          {Object.keys(rawData).map((key, i) => sensorRegistry[key])}
+          {/* {(await getSubscribableSensors()).map((characteristic, i) => (
+            <div key={i}>
+              <p>{characteristic}</p>
+            </div>
+          ))} */}
+          {/* <GridItem
             name="Geschwindigkeit"
             value={lastValue?.gps_spd}
             unit="km/h"
@@ -117,7 +127,7 @@ const MeasurementsGrid = forwardRef<HTMLDivElement>(({}, ref) => {
               ],
               colors: ['indigo', 'cyan', 'amber'],
             }}
-          />
+          /> */}
         </div>
         {selectedBox && isConnected && values.length === 0 && (
           <div className="flex h-full w-full flex-col items-center justify-center bg-background/75 p-12 backdrop-blur">
@@ -136,21 +146,23 @@ MeasurementsGrid.displayName = 'MeasurementsGrid'
 
 export default MeasurementsGrid
 
-function GridItem({
-  name,
-  value,
-  labels,
-  unit,
-  chartProps,
-  decimals = 2,
-}: {
+export interface GridItemProps {
   name: string
   value: number | (number | undefined)[] | undefined
   labels?: string[]
   unit: string
   chartProps: SparkAreaChartProps
   decimals?: number
-}) {
+}
+
+export function GridItem({
+  name,
+  value,
+  labels,
+  unit,
+  chartProps,
+  decimals = 2,
+}: GridItemProps) {
   const [selectedValue, setSelectedValue] = useState<number>()
   const [labelIndex, setLabelIndex] = useState<number>()
 
