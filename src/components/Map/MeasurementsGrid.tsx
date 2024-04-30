@@ -20,16 +20,16 @@ const MeasurementsGrid = forwardRef<HTMLDivElement>(({}, ref) => {
 
   return (
     <div
-      className="flex w-full flex-col justify-around p-1 pb-safe-offset-8"
+      className="flex w-full h-full flex-col justify-around p-1 pb-safe-offset-8"
       ref={ref}
     >
       <div
         className={cn(
-          'relative flex w-full flex-col',
+          'relative flex w-full h-full flex-col',
           !selectedBox || values.length === 0 ? '' : 'divide-y',
         )}
       >
-        <div className={cn('grid w-full grid-cols-2 gap-1')}>
+        <div className={cn('grid w-full h-full grid-cols-1 grid-rows-4 gap-1')}>
           {Object.keys(rawData).map((key, i) => sensorRegistry[key])}
           {/* {(await getSubscribableSensors()).map((characteristic, i) => (
             <div key={i}>
@@ -204,6 +204,7 @@ export function GridItem({
             className="h-full w-full opacity-30"
             curveType="monotone"
             colors={['slate']}
+            minValue={100}
             {...chartProps}
           />
         </div>

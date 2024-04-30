@@ -48,15 +48,17 @@ export const sensorRegistry: Record<string, React.ReactNode> = {
   [OvertakingPredictionSensor.BLE_CHARACTERISTIC]: (
     <SensorView
       characteristic={OvertakingPredictionSensor.BLE_CHARACTERISTIC}
-      rawValueToValue={value => value.measurement[0]}
+      rawValueToValue={value => value.measurement[0]*100}
       rawHistoryValuesToData={values =>
-        values.map(v => ({ x: v.timestamp, y: v.measurement[0] }))
+        values.map(v => ({ x: v.timestamp, y: v.measurement[0]*100, y25: 25, y50: 50, y75: 75, y100: 100  }))
       }
       name={'Overtake Prediction'}
       unit={'%'}
+      decimals={0}
       chartProps={{
         index: 'x',
-        categories: ['y'],
+        categories: ['y25', 'y50', 'y75', 'y100', 'y'],
+        colors: ['cyan', 'cyan', 'cyan', 'cyan', 'red']
       }}
     />
   ),
