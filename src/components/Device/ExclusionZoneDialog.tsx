@@ -62,15 +62,15 @@ export default function ExclusionZoneDialog() {
             aufgezeichnet werden.
           </DialogDescription>
           <DialogDescription className="flex flex-wrap items-center gap-x-1">
-            <p>Tippen Sie auf</p>
-            <div className="flex h-6 w-6 items-center justify-center rounded bg-white">
+            Tippen Sie auf
+            <span className="flex h-6 w-6 items-center justify-center rounded bg-white">
               <i className="mapbox-gl-draw_ctrl-draw-btn mapbox-gl-draw_polygon" />
-            </div>
-            <p>um eine Zone zu zeichnen und auf</p>
-            <div className="flex h-6 w-6 items-center justify-center rounded bg-white">
+            </span>
+            um eine Zone zu zeichnen und auf
+            <span className="flex h-6 w-6 items-center justify-center rounded bg-white">
               <i className="mapbox-gl-draw_ctrl-draw-btn mapbox-gl-draw_trash" />
-            </div>
-            <p>um eine Zone zu löschen.</p>
+            </span>
+            um eine Zone zu löschen.
           </DialogDescription>
         </DialogHeader>
         <div className="h-96 w-full overflow-hidden rounded-md">
