@@ -1,5 +1,7 @@
+import { GISExporter } from '@/lib/export/GISExporter'
+import { ITrackExporter } from '@/lib/export/ITrackExporter'
+import { OpenSenseMapExporter } from '@/lib/export/OpenSenseMapExporter'
 import { Track } from '@/lib/store/useTracksStore'
-import downloadTrack from '@/lib/track-download'
 import { cn } from '@/lib/utils'
 import { format, formatDuration, intervalToDuration, parseISO } from 'date-fns'
 import { de } from 'date-fns/locale'
@@ -7,29 +9,30 @@ import {
   ClockIcon,
   DownloadIcon,
   DropletsIcon,
-  ExpandIcon,
   GaugeIcon,
   RouteIcon,
   RulerIcon,
-  ShrinkIcon,
   ThermometerIcon,
 } from 'lucide-react'
-import { useState } from 'react'
 import LocationHistory from '../Map/LocationHistory'
 import Map from '../Map/Map'
 import { Button } from '../ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Drawer, DrawerContent, DrawerTrigger } from '../ui/drawer'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '../ui/dropdown-menu'
 import { toast } from '../ui/use-toast'
 import DeleteTrackDialog from './DeleteTrackDialog'
 import { getBBox, getDistance } from './track-lib'
 
 export default function TrackDetail({ track }: { track: Track }) {
-  const [isLargeMap, setIsLargeMap] = useState(false)
-
-  async function handleTrackDownload() {
+  async function handleTrackDownload(exporter: ITrackExporter) {
     try {
-      await downloadTrack(track.id)
+      await exporter.exportTrack(track.id)
     } catch (error: any) {
       if (error.message === 'Share canceled') return
 
@@ -97,14 +100,9 @@ export default function TrackDetail({ track }: { track: Track }) {
               </Card>
             )}
           </div>
-          <Card
-            className={cn(
-              'relative min-h-40 w-full rounded-md transition-all',
-              isLargeMap ? 'h-80' : 'h-40',
-            )}
-          >
+          <Card className={cn('h-40 w-full rounded-md transition-all')}>
             <Map
-              interactive={!isLargeMap}
+              interactive={false}
               initialViewState={{
                 // @ts-ignore
                 bounds: getBBox(track),
@@ -112,17 +110,6 @@ export default function TrackDetail({ track }: { track: Track }) {
             >
               <LocationHistory values={track.measurements} />
             </Map>
-            <Button
-              variant={'secondary'}
-              className="absolute right-0 top-0 m-2 rounded-full p-3"
-              onClick={() => setIsLargeMap(!isLargeMap)}
-            >
-              {isLargeMap ? (
-                <ShrinkIcon className="h-5 w-5" />
-              ) : (
-                <ExpandIcon className="h-5 w-5" />
-              )}
-            </Button>
           </Card>
           <div className="grid grid-cols-2 gap-2">
             <Card>
@@ -203,15 +190,29 @@ export default function TrackDetail({ track }: { track: Track }) {
             </Card>
           </div>
           <hr className="my-2" />
-          <div className="flex w-full gap-2">
-            <Button
-              variant={'outline'}
-              className="flex-1"
-              onClick={handleTrackDownload}
-            >
-              <DownloadIcon className="mr-2 h-5" />
-              Download
-            </Button>
+          <div className="flex w-full flex-wrap gap-2">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant={'outline'} className="flex-1">
+                  <DownloadIcon className="mr-2 h-5" />
+                  Export
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="mx-2">
+                <DropdownMenuItem
+                  onClick={() => handleTrackDownload(new GISExporter())}
+                >
+                  CSV Datei (GIS)
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() =>
+                    handleTrackDownload(new OpenSenseMapExporter())
+                  }
+                >
+                  CSV Datei (openSenseMap)
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             <DeleteTrackDialog track={track} />
           </div>
         </div>

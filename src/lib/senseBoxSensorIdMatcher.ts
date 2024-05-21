@@ -34,7 +34,10 @@ function getSensorKeyFromTitle(
   if (lowerCaseTitle.includes('geschwin')) return 'gps_spd'
 }
 
-export default function match(senseBox: BoxEntity, data: senseBoxDataRecord) {
+export default function matchSensorToRecord(
+  senseBox: BoxEntity,
+  data: senseBoxDataRecord,
+) {
   return senseBox.sensors.reduce<
     {
       sensor: string
@@ -48,7 +51,7 @@ export default function match(senseBox: BoxEntity, data: senseBoxDataRecord) {
       acc.push({
         sensor: sensor._id,
         value: data[key] ?? -1,
-        createdAt: data.timestamp.toISOString(),
+        createdAt: new Date(data.timestamp).toISOString(), // idk why i need to convert this to a date
         location: { lng: data.gps_lng, lat: data.gps_lat },
       })
     }

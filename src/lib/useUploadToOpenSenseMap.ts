@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { uploadData } from './api/openSenseMapClient'
 import { isInExclusionZone } from './exclusion-zone'
-import match from './senseBoxSensorIdMatcher'
+import matchSensorToRecord from './senseBoxSensorIdMatcher'
 import { useAuthStore } from './store/useAuthStore'
 import { useSenseBoxValuesStore } from './store/useSenseBoxValuesStore'
 import { useSettingsStore } from './store/useSettingsStore'
@@ -123,7 +123,7 @@ const useUploadToOpenSenseMap = () => {
       .filter(
         record => !isInExclusionZone(point([record.gps_lng!, record.gps_lat!])),
       )
-      .flatMap(record => match(selectedBox, record))
+      .flatMap(record => matchSensorToRecord(selectedBox, record))
       .map(record => ({
         ...record,
         value: record.value.toFixed(2),
