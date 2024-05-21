@@ -3,12 +3,16 @@ import useRawSensorValues from '@/lib/use-raw-sensor-values'
 import { subSeconds } from 'date-fns'
 import { GridItem, GridItemProps } from '../Map/MeasurementsGrid'
 
-interface SensorViewProps extends Omit<GridItemProps, 'value'> {
+interface SensorViewProps<T> extends Omit<GridItemProps, 'value'> {
   characteristic: string
-  rawValueToValue: (_rawValue: RawBLESensorData) => GridItemProps['value']
+  rawValueToValue: (_rawValue: RawBLESensorData<T>) => GridItemProps['value']
   rawHistoryValuesToData: (
-    _rawValues: RawBLESensorData[],
+    _rawValues: RawBLESensorData<T>[],
   ) => GridItemProps['chartProps']['data']
+  customComponent?: (
+    _value: RawBLESensorData<T> | undefined,
+    _historyValues: RawBLESensorData<T>[],
+  ) => React.ReactNode
 }
 
 type ChangeFields<T, R> = Omit<T, keyof R> & R
@@ -18,7 +22,7 @@ export default function SensorView({
   rawValueToValue,
   ...props
 }: ChangeFields<
-  SensorViewProps,
+  SensorViewProps<number[] | number[][]>,
   {
     chartProps: Omit<GridItemProps['chartProps'], 'data'>
   }
@@ -29,6 +33,14 @@ export default function SensorView({
   const timeframeValues = historyValues.filter(
     v => v.timestamp > timeframeTreshold,
   )
+
+  if (props.customComponent) {
+    return (
+      <div className="relative flex-1 overflow-hidden rounded-md bg-muted/40 px-4 py-3">
+        {props.customComponent(value, timeframeValues)}
+      </div>
+    )
+  }
 
   if (!value) return null
 

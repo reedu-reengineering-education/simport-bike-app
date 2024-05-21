@@ -2,21 +2,21 @@ import { create } from 'zustand'
 
 type Characteristic = string
 
-export interface RawBLESensorData {
-  measurement: number[]
+export interface RawBLESensorData<T> {
+  measurement: T
   timestamp: Date
 }
 
-interface RawBLEDataStore {
-  rawBleSensorData: Record<Characteristic, RawBLESensorData[]>
+interface RawBLEDataStore<T> {
+  rawBleSensorData: Record<Characteristic, RawBLESensorData<T>[]>
   addRawBLESensorData: (
     _characteristic: Characteristic,
-    _measurements: RawBLESensorData,
+    _measurements: RawBLESensorData<T>,
   ) => void
   reset: () => void
 }
 
-export const useRawBLEDataStore = create<RawBLEDataStore>(set => ({
+export const useRawBLEDataStore = create<RawBLEDataStore<number[]>>(set => ({
   rawBleSensorData: {},
   addRawBLESensorData: (characteristic, measurement) => {
     set(state => ({
