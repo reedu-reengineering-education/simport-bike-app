@@ -1,14 +1,17 @@
-import { GISExporter } from '@/lib/export/GISExporter'
+import { GISCSVExporter } from '@/lib/export/GISCSVExporter'
 import { ITrackExporter } from '@/lib/export/ITrackExporter'
-import { OpenSenseMapExporter } from '@/lib/export/OpenSenseMapExporter'
+import { OpenSenseMapCSVExporter } from '@/lib/export/OpenSenseMapCSVExporter'
+import { OpenSenseMapDirectExporter } from '@/lib/export/OpenSenseMapDirectExporter'
 import { Track } from '@/lib/store/useTracksStore'
 import { cn } from '@/lib/utils'
+import { CloudArrowUpIcon } from '@heroicons/react/24/outline'
 import { format, formatDuration, intervalToDuration, parseISO } from 'date-fns'
 import { de } from 'date-fns/locale'
 import {
   ClockIcon,
   DownloadIcon,
   DropletsIcon,
+  FileDownIcon,
   GaugeIcon,
   RouteIcon,
   RulerIcon,
@@ -23,6 +26,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu'
 import { toast } from '../ui/use-toast'
@@ -200,15 +204,26 @@ export default function TrackDetail({ track }: { track: Track }) {
               </DropdownMenuTrigger>
               <DropdownMenuContent className="mx-2">
                 <DropdownMenuItem
-                  onClick={() => handleTrackDownload(new GISExporter())}
+                  onClick={() =>
+                    handleTrackDownload(new OpenSenseMapDirectExporter())
+                  }
                 >
+                  <CloudArrowUpIcon className="mr-2 h-4 w-4" /> openSenseMap
+                  Upload
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() => handleTrackDownload(new GISCSVExporter())}
+                >
+                  <FileDownIcon className="mr-2 h-4 w-4" />
                   CSV Datei (GIS)
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() =>
-                    handleTrackDownload(new OpenSenseMapExporter())
+                    handleTrackDownload(new OpenSenseMapCSVExporter())
                   }
                 >
+                  <FileDownIcon className="mr-2 h-4 w-4" />
                   CSV Datei (openSenseMap)
                 </DropdownMenuItem>
               </DropdownMenuContent>

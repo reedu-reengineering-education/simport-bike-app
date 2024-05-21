@@ -33,9 +33,8 @@ export default function RootLayout({
             vaul-drawer-wrapper=""
           >
             {children}
-
-            <Toaster />
           </div>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

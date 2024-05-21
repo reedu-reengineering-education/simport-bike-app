@@ -9,7 +9,7 @@ import { useAuthStore } from '../store/useAuthStore'
 import { Track, useTracksStore } from '../store/useTracksStore'
 import { ITrackExporter } from './ITrackExporter'
 
-export class OpenSenseMapExporter implements ITrackExporter {
+export class OpenSenseMapCSVExporter implements ITrackExporter {
   filenamePrefix: string = 'sb_track_opensensemap'
 
   async exportTrack(trackId: Track['id']) {

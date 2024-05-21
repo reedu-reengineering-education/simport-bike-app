@@ -4,7 +4,7 @@ import { format } from 'date-fns'
 import { Track, useTracksStore } from '../store/useTracksStore'
 import { ITrackExporter } from './ITrackExporter'
 
-export class GISExporter implements ITrackExporter {
+export class GISCSVExporter implements ITrackExporter {
   filenamePrefix: string = 'sb_track_GIS'
 
   async exportTrack(trackId: Track['id']) {
