@@ -1,5 +1,6 @@
 import { toast } from '@/components/ui/use-toast'
 import { point } from '@turf/turf'
+import { uploadData } from '../api/openSenseMapClient'
 import { isInExclusionZone } from '../exclusion-zone'
 import matchSensorToRecord from '../senseBoxSensorIdMatcher'
 import { useAuthStore } from '../store/useAuthStore'
@@ -47,9 +48,9 @@ export class OpenSenseMapDirectExporter implements ITrackExporter {
     }
 
     // upload chunks to OpenSenseMap
-    // for (const chunk of chunkedData) {
-    //   await uploadData(currentSenseBox, chunk)
-    // }
+    for (const chunk of chunkedData) {
+      await uploadData(currentSenseBox, chunk)
+    }
 
     toast({
       variant: 'default',
