@@ -1,7 +1,7 @@
 import { create } from 'zustand'
-import { senseBoxDataRecord } from './useSenseBoxValuesStore'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import { capPreferencesStorage } from './capPreferencesZustandStorage'
+import { senseBoxDataRecord } from './useSenseBoxValuesStore'
 
 export type Track = {
   id: string
