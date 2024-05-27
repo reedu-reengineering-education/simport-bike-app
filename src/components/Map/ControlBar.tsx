@@ -1,5 +1,5 @@
+import useRecordTrack from '@/lib/useRecordTrack'
 import useSenseBox from '@/lib/useSenseBox'
-import useUploadToOpenSenseMap from '@/lib/useUploadToOpenSenseMap'
 import {
   Bluetooth,
   BluetoothOff,
@@ -16,7 +16,7 @@ const ControlBar = forwardRef<HTMLDivElement>(({}, ref) => {
 
   // const selectedBox = useAuthStore(state => state.selectedBox)
 
-  const { isRecording, start, stop, isLoading } = useUploadToOpenSenseMap()
+  const { isRecording, start, stop, isLoading } = useRecordTrack()
   // const setShowWizardDrawer = useUIStore(state => state.setShowWizardDrawer)
 
   return (

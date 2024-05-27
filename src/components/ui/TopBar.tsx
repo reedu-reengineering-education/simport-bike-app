@@ -1,5 +1,3 @@
-'use client'
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,8 +11,8 @@ import {
   BeakerIcon,
   LockClosedIcon,
 } from '@heroicons/react/24/outline'
+import { Link } from '@tanstack/react-router'
 import {
-  ArrowLeftIcon,
   InfoIcon,
   MoonIcon,
   SunIcon,
@@ -22,8 +20,6 @@ import {
   WaypointsIcon,
 } from 'lucide-react'
 import { useTheme } from 'next-themes'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import SettingsDrawer from '../Device/SettingsDrawer'
 import { Button } from './button'
 
@@ -33,22 +29,23 @@ const titles: Record<string, string> = {
 }
 
 const TopBar = () => {
-  const pathname = usePathname()
+  // const pathname = usePathname()
   const { setShowWizardDrawer } = useUIStore()
 
-  const isHome = pathname === '/'
+  // const isHome = pathname === '/'
+  const isHome = '/'
 
   const { theme, setTheme } = useTheme()
 
   return (
     <div className="pointer-events-auto sticky top-0 z-10 flex w-full items-center justify-between px-4 pt-2 landscape:px-safe-or-4">
       <div className="flex items-center gap-2">
-        {!isHome && (
+        {/* {!isHome && (
           <Link href="/">
             <ArrowLeftIcon className="h-7 w-7" />
           </Link>
         )}
-        <h1 className="text-xl">{titles[pathname]}</h1>
+        <h1 className="text-xl">{titles[pathname]}</h1> */}
       </div>
       <div className="flex flex-col-reverse gap-4">
         <SettingsDrawer />
@@ -59,7 +56,7 @@ const TopBar = () => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="mt-2 p-2 mr-safe-or-2">
-            <Link href="/tracks">
+            <Link to="/tracks">
               <DropdownMenuItem>
                 <WaypointsIcon className="mr-2 h-7 w-7" /> Tracks
               </DropdownMenuItem>

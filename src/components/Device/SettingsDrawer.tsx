@@ -1,5 +1,3 @@
-'use client'
-
 import { useSettingsStore } from '@/lib/store/useSettingsStore'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Cog, ExternalLinkIcon } from 'lucide-react'

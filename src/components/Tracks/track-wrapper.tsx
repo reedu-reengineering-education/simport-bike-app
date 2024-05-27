@@ -1,19 +1,9 @@
-'use client'
-
-import { useTracksStore } from '@/lib/store/useTracksStore'
-import { cn } from '@/lib/utils'
-import Link from 'next/link'
-import { Button } from '../ui/button'
-import TrackDetail from './TrackDetail'
-
 export default function TrackWrapper() {
-  const tracks = useTracksStore(state => state.tracks).filter(
-    t => t.measurements.length > 0,
-  )
+  // const [tracks, setTracks] = useState<(typeof Track)[]>([])
 
   return (
     <div className="flex w-full flex-col gap-2">
-      {tracks.length === 0 && (
+      {/* {tracks.length === 0 && (
         <div
           className={cn(
             'rounded-mdp-8 flex min-h-[200px] flex-col items-center justify-center rounded-md bg-muted/50 text-center',
@@ -28,15 +18,12 @@ export default function TrackWrapper() {
             >
               Verbinde dich mit deiner senseBox und Tracke deine nächste Fahrt
             </p>
-            <Link href="/">
-              <Button variant={'outline'}>Neuen Track erstellen</Button>
-            </Link>
           </div>
         </div>
-      )}
-      {tracks.map(track => {
+      )} */}
+      {/* {tracks.map(track => {
         return <TrackDetail key={track.id} track={track} />
-      })}
+      })} */}
     </div>
   )
 }

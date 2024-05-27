@@ -1,5 +1,3 @@
-'use client'
-
 import { getUser } from '@/lib/api/openSenseMapClient'
 import { useAuthStore } from '@/lib/store/useAuthStore'
 import { App } from '@capacitor/app'

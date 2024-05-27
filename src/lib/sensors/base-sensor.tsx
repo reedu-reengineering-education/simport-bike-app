@@ -1,6 +1,8 @@
 import { BleClient } from '@capacitor-community/bluetooth-le'
+import { Measurement } from '../db/entities'
 import { useRawBLEDataStore } from '../store/use-raw-data-store'
 import { useBLEStore } from '../store/useBLEStore'
+import { useTrackRecordStore } from '../store/useTrackRecordStore'
 import AbstractSensor from './abstract-sensor'
 
 export const BLE_SENSEBOX_SERVICE = 'CF06A218-F68E-E0BE-AD04-8EBC1EB0BC84'
@@ -21,6 +23,24 @@ export default class BaseSensor<T extends number[]> extends AbstractSensor<T> {
       (this.constructor as any).BLE_CHARACTERISTIC,
       value => {
         const rawData = this.parseData(value)
+
+        const trackId = useTrackRecordStore.getState().currentTrackId
+
+        if (!trackId) {
+          throw new Error('No track ID')
+        }
+
+        if (!BaseSensor.attributes && rawData.length === 1) {
+          const [value] = rawData
+
+          const measurement = new Measurement()
+          measurement.timestamp = new Date()
+          measurement.type = BaseSensor.type
+          measurement.value = value
+          measurement.track.id = trackId
+          measurement.save()
+        }
+
         useRawBLEDataStore
           .getState()
           .addRawBLESensorData((this.constructor as any).BLE_CHARACTERISTIC, {

@@ -1,5 +1,3 @@
-'use client'
-
 import {
   Dialog,
   DialogContent,
@@ -8,9 +6,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { Button } from '../ui/button'
 import { InfoIcon, Loader2, Plus } from 'lucide-react'
 import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { Button } from '../ui/button'
 import {
   Form,
   FormControl,
@@ -20,21 +19,20 @@ import {
   FormLabel,
   FormMessage,
 } from '../ui/form'
-import { useForm } from 'react-hook-form'
 import { Input } from '../ui/input'
 
-import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from 'zod'
 
 const formSchema = z.object({
   name: z.string().min(2).max(50),
 })
 
 import { createSenseBoxBike } from '@/lib/api/openSenseMapClient'
-import { toast } from '../ui/use-toast'
-import useOpenSenseMapAuth from '@/lib/useOpenSenseMapAuth'
 import { useAuthStore } from '@/lib/store/useAuthStore'
+import useOpenSenseMapAuth from '@/lib/useOpenSenseMapAuth'
 import { Geolocation } from '@capacitor/geolocation'
+import { toast } from '../ui/use-toast'
 
 export default function CreateBikeBoxDialog() {
   const [open, setOpen] = useState(false)

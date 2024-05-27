@@ -1,5 +1,3 @@
-'use client'
-
 import { useSettingsStore } from '@/lib/store/useSettingsStore'
 import { animated, useSpring } from '@react-spring/web'
 

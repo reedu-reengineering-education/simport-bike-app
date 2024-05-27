@@ -1,5 +1,3 @@
-'use client'
-
 import { useExclusionZoneStore } from '@/lib/store/useExclusionZoneStore'
 import { useMapViewportState } from '@/lib/store/useMapViewportStore'
 import { useSettingsStore } from '@/lib/store/useSettingsStore'

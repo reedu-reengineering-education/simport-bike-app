@@ -1,3 +1,4 @@
+import accelerometer from './accelerometer'
 import ultrasonic from './ultrasonic-distance-sensor'
 
 export interface Sensor {
@@ -5,7 +6,7 @@ export interface Sensor {
   Component: React.ReactNode
 }
 
-const sensors = [ultrasonic]
+const sensors = [ultrasonic, accelerometer]
 
 export const sensorRegistry: Record<string, React.ReactNode> = sensors.reduce(
   (acc, sensor) => ({ ...acc, [sensor.uuid]: sensor.Component }),

@@ -1,19 +1,18 @@
 import { toast } from '@/components/ui/use-toast'
 import { point } from '@turf/helpers'
 import { useEffect, useRef, useState } from 'react'
-import { v4 as uuidv4 } from 'uuid'
 import { uploadData } from './api/openSenseMapClient'
+import { useTrack } from './db/hooks'
 import { isInExclusionZone } from './exclusion-zone'
 import match from './senseBoxSensorIdMatcher'
 import { useAuthStore } from './store/useAuthStore'
 import { useSenseBoxValuesStore } from './store/useSenseBoxValuesStore'
 import { useSettingsStore } from './store/useSettingsStore'
 import { useTrackRecordStore } from './store/useTrackRecordStore'
-import { useTracksStore } from './store/useTracksStore'
 import { useUploadStore } from './store/useUploadStore'
 import useSenseBox from './useSenseBox'
 
-const useUploadToOpenSenseMap = () => {
+const useRecordTrack = () => {
   const [isLoading, setIsLoading] = useState(false)
   const selectedBox = useAuthStore(state => state.selectedBox)
   const values = useSenseBoxValuesStore(state => state.values)
@@ -35,13 +34,12 @@ const useUploadToOpenSenseMap = () => {
   const uploadStartRef = useRef<typeof uploadStart>()
   uploadStartRef.current = uploadStart
 
-  const setStart = useTrackRecordStore(state => state.setStart)
-  const setEnd = useTrackRecordStore(state => state.setEnd)
-  const measurements = useTrackRecordStore(state => state.measurements)
-  const recordStart = useTrackRecordStore(state => state.start)
-  const end = useTrackRecordStore(state => state.end)
-  const reset = useTrackRecordStore(state => state.reset)
-  const addTrack = useTracksStore(state => state.addTrack)
+  const currentTrackId = useTrackRecordStore(state => state.currentTrackId)
+  const setCurrentTrackId = useTrackRecordStore(
+    state => state.setCurrentTrackId,
+  )
+
+  const { createTrack, endTrack } = useTrack()
 
   const { isConnected } = useSenseBox()
 
@@ -61,28 +59,15 @@ const useUploadToOpenSenseMap = () => {
   }, [interval])
 
   useEffect(() => {
-    if (end) {
-      if (measurements.length > 0) {
-        addTrack({
-          id: uuidv4(),
-          start: recordStart?.toISOString()!,
-          end: end.toISOString()!,
-          measurements,
-        })
-      }
-      reset()
-    }
-  }, [end])
-
-  useEffect(() => {
     // when the connection is lost, stop uploading
     if (!isConnected && intervalId) {
       stop()
     }
   }, [isConnected])
 
-  function start(intervalChange?: boolean) {
+  async function start(intervalChange?: boolean) {
     setUploadStart(new Date())
+
     const intervalId = setInterval(() => {
       uploadToOpenSenseMap()
     }, interval)
@@ -90,7 +75,8 @@ const useUploadToOpenSenseMap = () => {
 
     if (!intervalChange) {
       setRecording(true)
-      setStart(new Date())
+      const trackId = await createTrack()
+      setCurrentTrackId(trackId)
     }
   }
 
@@ -102,7 +88,11 @@ const useUploadToOpenSenseMap = () => {
 
     if (!intervalChange) {
       setRecording(false)
-      setEnd(new Date())
+      if (!currentTrackId) {
+        return
+      }
+      endTrack(currentTrackId)
+      setCurrentTrackId(undefined)
       toast({
         description: 'Du findest den Track im Tracks Menü',
         title: 'Track gespeichert',
@@ -164,4 +154,4 @@ const useUploadToOpenSenseMap = () => {
   return { isRecording: intervalId !== undefined, isLoading, start, stop }
 }
 
-export default useUploadToOpenSenseMap
+export default useRecordTrack

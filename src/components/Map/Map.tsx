@@ -1,5 +1,3 @@
-'use client'
-
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { useTheme } from 'next-themes'
 import { forwardRef, useEffect } from 'react'
@@ -30,7 +28,7 @@ const Map = forwardRef<MapRef, MapProps>(
       // @ts-ignore
       <ReactMap
         mapStyle={mapStyle || 'mapbox://styles/mapbox/standard'}
-        mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
+        mapboxAccessToken={import.meta.env.VITE_MAPBOX_ACCESS_TOKEN}
         ref={ref}
         style={{
           width: '100%',

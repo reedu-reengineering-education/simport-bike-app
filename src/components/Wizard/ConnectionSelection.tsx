@@ -1,10 +1,8 @@
-'use client'
-
-import { Button } from '../ui/button'
-import { ArrowLeft, CheckCircle } from 'lucide-react'
-import WizardSlide from './WizardSlide'
 import { useAuthStore } from '@/lib/store/useAuthStore'
+import { ArrowLeft, CheckCircle } from 'lucide-react'
 import { useSwiper } from 'swiper/react'
+import { Button } from '../ui/button'
+import WizardSlide from './WizardSlide'
 
 export default function ConnectionSelection({
   onClose,

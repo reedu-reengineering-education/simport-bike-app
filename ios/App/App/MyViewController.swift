@@ -12,7 +12,7 @@ class MyViewController: CAPBridgeViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        webView!.allowsBackForwardNavigationGestures = true
+        webView!.allowsBackForwardNavigationGestures = false
 
         // Do any additional setup after loading the view.
     }

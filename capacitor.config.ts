@@ -11,7 +11,7 @@ const server: CapacitorConfig['server'] =
   process.env.NODE_ENV === 'production'
     ? {}
     : {
-        url: `http://${ipAddress}:3000`,
+        url: `http://${ipAddress}:5173`,
         cleartext: true,
       }
 
@@ -23,11 +23,27 @@ const config: CapacitorConfig = {
   android: {
     useLegacyBridge: true,
   },
-  // plugins: {
-  //   CapacitorHttp: {
-  //     enabled: true,
-  //   },
-  // },
+  plugins: {
+    CapacitorSQLite: {
+      iosDatabaseLocation: 'Library/CapacitorDatabase',
+      iosIsEncryption: true,
+      iosKeychainPrefix: 'angular-sqlite-app-starter',
+      iosBiometric: {
+        biometricAuth: false,
+        biometricTitle: 'Biometric login for capacitor sqlite',
+      },
+      androidIsEncryption: true,
+      androidBiometric: {
+        biometricAuth: false,
+        biometricTitle: 'Biometric login for capacitor sqlite',
+        biometricSubTitle: 'Log in using your biometric',
+      },
+      electronIsEncryption: true,
+      electronWindowsLocation: 'C:\\ProgramData\\CapacitorDatabases',
+      electronMacLocation: '/Volumes/Development_Lacie/Development/Databases',
+      electronLinuxLocation: 'Databases',
+    },
+  },
 }
 
 export default config

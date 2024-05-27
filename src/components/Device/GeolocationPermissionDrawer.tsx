@@ -1,5 +1,3 @@
-'use client'
-
 import { usePermissionsStore } from '@/lib/store/usePermissionsStore'
 import { Button } from '../ui/button'
 import {

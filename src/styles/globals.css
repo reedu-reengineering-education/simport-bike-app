@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body,
+#root,
+ion-app {
+  width: 100%;
+  height: 100% !important;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

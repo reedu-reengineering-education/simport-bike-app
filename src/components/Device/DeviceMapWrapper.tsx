@@ -1,5 +1,3 @@
-'use client'
-
 import { useEffect, useRef, useState } from 'react'
 import ControlBar from '../Map/ControlBar'
 import MeasurementsGrid from '../Map/MeasurementsGrid'

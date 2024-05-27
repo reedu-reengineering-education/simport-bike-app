@@ -1,11 +1,12 @@
-'use client'
-import { useSwiper } from 'swiper/react'
-import { Button } from '../ui/button'
-import { Input } from '../ui/input'
-import { useState } from 'react'
+import { register } from '@/lib/api/openSenseMapClient'
+import { useAuthStore } from '@/lib/store/useAuthStore'
 import { zodResolver } from '@hookform/resolvers/zod'
-import * as z from 'zod' // import * as z from "zod";
+import { Loader2Icon } from 'lucide-react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useSwiper } from 'swiper/react'
+import * as z from 'zod' // import * as z from "zod";
+import { Button } from '../ui/button'
 import {
   Form,
   FormControl,
@@ -14,11 +15,9 @@ import {
   FormLabel,
   FormMessage,
 } from '../ui/form'
+import { Input } from '../ui/input'
 import { useToast } from '../ui/use-toast'
-import { useAuthStore } from '@/lib/store/useAuthStore'
 import WizardSlide from './WizardSlide'
-import { Loader2Icon } from 'lucide-react'
-import { register } from '@/lib/api/openSenseMapClient'
 
 const formSchema = z
   .object({

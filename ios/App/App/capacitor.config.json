@@ -2,9 +2,33 @@
 	"appId": "de.reedu.senseboxbike",
 	"appName": "senseBox:Bike",
 	"webDir": "out",
-	"server": {},
+	"server": {
+		"url": "http://192.168.2.136:5173",
+		"cleartext": true
+	},
 	"android": {
 		"useLegacyBridge": true
+	},
+	"plugins": {
+		"CapacitorSQLite": {
+			"iosDatabaseLocation": "Library/CapacitorDatabase",
+			"iosIsEncryption": true,
+			"iosKeychainPrefix": "angular-sqlite-app-starter",
+			"iosBiometric": {
+				"biometricAuth": false,
+				"biometricTitle": "Biometric login for capacitor sqlite"
+			},
+			"androidIsEncryption": true,
+			"androidBiometric": {
+				"biometricAuth": false,
+				"biometricTitle": "Biometric login for capacitor sqlite",
+				"biometricSubTitle": "Log in using your biometric"
+			},
+			"electronIsEncryption": true,
+			"electronWindowsLocation": "C:\\ProgramData\\CapacitorDatabases",
+			"electronMacLocation": "/Volumes/Development_Lacie/Development/Databases",
+			"electronLinuxLocation": "Databases"
+		}
 	},
 	"packageClassList": [
 		"BackgroundGeolocation",
@@ -13,6 +37,8 @@
 		"BluetoothLe",
 		"KeepAwakePlugin",
 		"KeepAwakePlugin",
+		"CapacitorSQLitePlugin",
+		"CapacitorSQLitePlugin",
 		"BarcodeScannerPlugin",
 		"BarcodeScannerPlugin",
 		"AppPlugin",
