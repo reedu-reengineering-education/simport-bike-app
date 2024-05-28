@@ -50,7 +50,7 @@ export default function OpenSenseMapRegister() {
     try {
       await register(values.name, values.email, values.password)
       swiper.slideNext()
-    } catch (e) {
+    } catch (_e) {
       toast({ variant: 'destructive', title: 'Registrierung fehlgeschlagen' })
     } finally {
       setLoading(false)

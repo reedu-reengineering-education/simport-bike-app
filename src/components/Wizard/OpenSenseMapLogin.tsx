@@ -44,7 +44,7 @@ export default function OpenSenseMapLogin() {
     try {
       await login(values.email, values.password)
       swiper.slideNext()
-    } catch (e) {
+    } catch (_e) {
       toast({ variant: 'destructive', title: 'Login fehlgeschlagen' })
     } finally {
       setLoading(false)

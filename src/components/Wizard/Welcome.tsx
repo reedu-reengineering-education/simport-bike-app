@@ -1,7 +1,7 @@
-import { useSwiper } from 'swiper/react'
-import { Button } from '../ui/button'
-import Logo from '../../../public/senseboxbike.png'
 import Image from 'next/image'
+import { useSwiper } from 'swiper/react'
+import Logo from '../../../public/senseboxbike.png'
+import { Button } from '../ui/button'
 import WizardSlide from './WizardSlide'
 
 export default function Welcome() {

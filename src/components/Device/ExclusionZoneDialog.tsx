@@ -1,3 +1,4 @@
+// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 import Map from '@/components/Map/Map'
 import { useExclusionZoneStore } from '@/lib/store/useExclusionZoneStore'
 import { useEffect, useRef, useState } from 'react'

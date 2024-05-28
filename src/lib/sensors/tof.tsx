@@ -111,7 +111,7 @@ export default class ToFSensor {
   protected parsePackages(data: DataView) {
     const packages = data.byteLength / 4
 
-    let valueRecords: number[] = []
+    const valueRecords: number[] = []
     for (let i = 0; i < packages; i++) {
       valueRecords.push(data.getFloat32(i * 4, true))
     }

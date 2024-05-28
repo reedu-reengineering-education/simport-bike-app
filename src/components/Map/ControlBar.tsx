@@ -11,7 +11,7 @@ import { forwardRef } from 'react'
 import ConnectWithCamera from '../Device/ConnectWithCamera'
 import { Button } from '../ui/button'
 
-const ControlBar = forwardRef<HTMLDivElement>(({}, ref) => {
+const ControlBar = forwardRef<HTMLDivElement>((_, ref) => {
   const { connect, isConnected, disconnect } = useSenseBox()
 
   // const selectedBox = useAuthStore(state => state.selectedBox)

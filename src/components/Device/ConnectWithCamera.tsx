@@ -12,7 +12,7 @@ export default function ConnectWithCamera() {
         try {
           await connect(barcode.rawValue)
           return
-        } catch (error) {
+        } catch (_error) {
           continue
         }
       }

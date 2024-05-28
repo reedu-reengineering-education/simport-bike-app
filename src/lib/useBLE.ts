@@ -5,7 +5,7 @@ import { connectToDevice, disconnectFromDevice } from './ble'
 import { useBLEStore } from './store/useBLEStore'
 import { useSenseBoxValuesStore } from './store/useSenseBoxValuesStore'
 
-export default function useBLEDevice(options: RequestBleDeviceOptions) {
+export default function useBLEDevice(_options: RequestBleDeviceOptions) {
   const device = useBLEStore(state => state.device)
   const setDevice = useBLEStore(state => state.setDevice)
   const connected = useBLEStore(state => state.connected)

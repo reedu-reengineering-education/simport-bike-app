@@ -52,7 +52,11 @@ export class InitialMigration1716477284299 implements MigrationInterface {
     for (const track of existingTracks) {
       console.log('Inserting track', track.id)
       await queryRunner.query(
-        `INSERT INTO "track" ("id", "start", "end") VALUES ('${track.id}', '${new Date(track.start).toISOString()}', '${new Date(track.end).toISOString()}')`,
+        `INSERT INTO "track" ("id", "start", "end") VALUES ('${
+          track.id
+        }', '${new Date(track.start).toISOString()}', '${new Date(
+          track.end,
+        ).toISOString()}')`,
       )
       for (const measurement of track.measurements) {
         const { timestamp, gps_lat, gps_lng, gps_spd } = measurement

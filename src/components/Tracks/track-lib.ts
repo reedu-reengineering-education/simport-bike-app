@@ -1,12 +1,12 @@
 import { Track } from '@/lib/store/useTracksStore'
 
 import {
-  bbox,
   buffer,
-  point,
+  bbox,
   featureCollection,
-  lineString,
   lineDistance,
+  lineString,
+  point,
 } from '@turf/turf'
 
 export function getBBox(track: Track) {

@@ -59,53 +59,45 @@ const refreshAccessToken = async () => {
 }
 
 export async function signin(username: string, password: string) {
-  try {
-    // dont use the axiosApiInstance here, because we dont want to send the token
-    const response = await axiosApiInstanceWithoutInterceptor.post(
-      '/users/sign-in',
-      {
-        email: username,
-        password: password,
-      },
-    )
-    if (response.status === 200) {
-      const { token, refreshToken } = response.data
-      useAuthStore.getState().setToken(token)
-      useAuthStore.getState().setRefreshToken(refreshToken)
-      useAuthStore.getState().setEmail(username)
-      useAuthStore.getState().setIsLoggedIn(true)
-      return response.data
-    } else {
-      throw new Error(response.data.message)
-    }
-  } catch (error) {
-    throw error
+  // dont use the axiosApiInstance here, because we dont want to send the token
+  const response = await axiosApiInstanceWithoutInterceptor.post(
+    '/users/sign-in',
+    {
+      email: username,
+      password: password,
+    },
+  )
+  if (response.status === 200) {
+    const { token, refreshToken } = response.data
+    useAuthStore.getState().setToken(token)
+    useAuthStore.getState().setRefreshToken(refreshToken)
+    useAuthStore.getState().setEmail(username)
+    useAuthStore.getState().setIsLoggedIn(true)
+    return response.data
+  } else {
+    throw new Error(response.data.message)
   }
 }
 
 export async function register(name: string, email: string, password: string) {
-  try {
-    // dont use the axiosApiInstance here, because we dont want to send the token
-    const response = await axiosApiInstanceWithoutInterceptor.post(
-      '/users/register',
-      {
-        name: name,
-        email: email,
-        password: password,
-      },
-    )
-    if (response.status === 201) {
-      const { token, refreshToken } = response.data
-      useAuthStore.getState().setToken(token)
-      useAuthStore.getState().setRefreshToken(refreshToken)
-      useAuthStore.getState().setEmail(email)
-      useAuthStore.getState().setIsLoggedIn(true)
-      return response.data
-    } else {
-      throw new Error(response.data.message)
-    }
-  } catch (error) {
-    throw error
+  // dont use the axiosApiInstance here, because we dont want to send the token
+  const response = await axiosApiInstanceWithoutInterceptor.post(
+    '/users/register',
+    {
+      name: name,
+      email: email,
+      password: password,
+    },
+  )
+  if (response.status === 201) {
+    const { token, refreshToken } = response.data
+    useAuthStore.getState().setToken(token)
+    useAuthStore.getState().setRefreshToken(refreshToken)
+    useAuthStore.getState().setEmail(email)
+    useAuthStore.getState().setIsLoggedIn(true)
+    return response.data
+  } else {
+    throw new Error(response.data.message)
   }
 }
 

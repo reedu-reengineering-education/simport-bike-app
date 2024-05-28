@@ -34,6 +34,9 @@ export class Measurement extends BaseEntity {
   @CreateDateColumn({ default: () => 'CURRENT_TIMESTAMP' })
   timestamp: Date
 
-  @ManyToOne(() => Track, track => track.measurements)
+  @ManyToOne(
+    () => Track,
+    track => track.measurements,
+  )
   track: Track
 }

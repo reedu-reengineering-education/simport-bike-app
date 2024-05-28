@@ -23,30 +23,15 @@ import { useTheme } from 'next-themes'
 import SettingsDrawer from '../Device/SettingsDrawer'
 import { Button } from './button'
 
-const titles: Record<string, string> = {
-  '/': '',
-  '/tracks': 'Tracks',
-}
-
 const TopBar = () => {
   // const pathname = usePathname()
   const { setShowWizardDrawer } = useUIStore()
-
-  // const isHome = pathname === '/'
-  const isHome = '/'
 
   const { theme, setTheme } = useTheme()
 
   return (
     <div className="pointer-events-auto sticky top-0 z-10 flex w-full items-center justify-between px-4 pt-2 landscape:px-safe-or-4">
-      <div className="flex items-center gap-2">
-        {/* {!isHome && (
-          <Link href="/">
-            <ArrowLeftIcon className="h-7 w-7" />
-          </Link>
-        )}
-        <h1 className="text-xl">{titles[pathname]}</h1> */}
-      </div>
+      <div className="flex items-center gap-2"></div>
       <div className="flex flex-col-reverse gap-4">
         <SettingsDrawer />
         <DropdownMenu>

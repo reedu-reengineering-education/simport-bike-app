@@ -29,7 +29,7 @@ import { subscribeToAvailableSensors } from './ble'
 export const BackgroundGeolocation =
   registerPlugin<BackgroundGeolocationPlugin>('BackgroundGeolocation')
 
-export default function useSenseBox(timestampInterval: number = 500) {
+export default function useSenseBox(_timestampInterval: number = 500) {
   const { isConnected, connect, disconnect } = useBLEDevice({
     namePrefix: 'senseBox',
   })

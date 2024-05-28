@@ -1,15 +1,10 @@
 const path = require('path')
 
-const buildEslintFixCommand = filenames =>
-  `eslint --fix  ${filenames
-    .map(f => path.relative(process.cwd(), f))
-    .join(' ')}`
-
-const buildPrettierCommand = filenames =>
-  `prettier --write ${filenames
+const buildBiomeFixCommand = filenames =>
+  `biome check --apply --no-errors-on-unmatched ${filenames
     .map(f => path.relative(process.cwd(), f))
     .join(' ')}`
 
 module.exports = {
-  '*.{js,jsx,ts,tsx}': [buildEslintFixCommand, buildPrettierCommand],
+  '*.{js,jsx,ts,tsx}': [buildBiomeFixCommand],
 }

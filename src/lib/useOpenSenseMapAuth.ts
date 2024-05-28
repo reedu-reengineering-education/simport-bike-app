@@ -1,17 +1,12 @@
-import { useAuthStore } from './store/useAuthStore'
 import { getBoxes, signin, signout } from './api/openSenseMapClient'
+import { useAuthStore } from './store/useAuthStore'
 
 const useOpenSenseMapAuth = () => {
   const setBoxes = useAuthStore(state => state.setBoxes)
 
   const login = async (username: string, password: string) => {
-    try {
-      await signin(username, password)
-
-      await refreshBoxes()
-    } catch (error) {
-      throw error
-    }
+    await signin(username, password)
+    await refreshBoxes()
   }
 
   async function refreshBoxes() {

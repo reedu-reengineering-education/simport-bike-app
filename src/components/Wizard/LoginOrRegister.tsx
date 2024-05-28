@@ -1,4 +1,4 @@
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '../ui/tabs'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs'
 import OpenSenseMapLogin from './OpenSenseMapLogin'
 import OpenSenseMapRegister from './OpenSenseMapRegister'
 

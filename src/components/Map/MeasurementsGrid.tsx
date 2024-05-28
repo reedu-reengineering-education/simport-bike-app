@@ -9,28 +9,28 @@ import colors from 'tailwindcss/colors'
 import { sensorRegistry } from '../sensors'
 import AnimatedNumber from '../ui/animated-number'
 
-const MeasurementsGrid = forwardRef<HTMLDivElement>(({}, ref) => {
+const MeasurementsGrid = forwardRef<HTMLDivElement>((_, ref) => {
   const { values: allValues, isConnected } = useSenseBox()
   const selectedBox = useAuthStore(state => state.selectedBox)
 
   const rawData = useRawBLEDataStore(state => state.rawBleSensorData)
 
   const values = allValues.filter((_, i) => i > allValues.length - 20)
-  const lastValue = values.at(-1)
+  const _lastValue = values.at(-1)
 
   return (
     <div
-      className="flex w-full h-full flex-col justify-around p-1 pb-safe-offset-8"
+      className="flex h-full w-full flex-col justify-around p-1 pb-safe-offset-8"
       ref={ref}
     >
       <div
         className={cn(
-          'relative flex w-full h-full flex-col',
+          'relative flex h-full w-full flex-col',
           !selectedBox || values.length === 0 ? '' : 'divide-y',
         )}
       >
-        <div className={cn('grid w-full h-full grid-cols-1 grid-rows-4 gap-1')}>
-          {Object.keys(rawData).map((key, i) => sensorRegistry[key])}
+        <div className={cn('grid h-full w-full grid-cols-1 grid-rows-4 gap-1')}>
+          {Object.keys(rawData).map(key => sensorRegistry[key])}
           {/* {(await getSubscribableSensors()).map((characteristic, i) => (
             <div key={i}>
               <p>{characteristic}</p>

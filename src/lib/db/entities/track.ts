@@ -12,8 +12,12 @@ export class Track {
   @Column('datetime', { nullable: true })
   end: Date | null
 
-  @OneToMany(() => Measurement, measurement => measurement.track, {
-    cascade: true,
-  })
+  @OneToMany(
+    () => Measurement,
+    measurement => measurement.track,
+    {
+      cascade: true,
+    },
+  )
   measurements: Measurement[]
 }

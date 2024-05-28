@@ -1,6 +1,7 @@
 import { Track } from '@/lib/store/useTracksStore'
 import downloadTrack from '@/lib/track-download'
 import { cn } from '@/lib/utils'
+import {} from '@capacitor/share'
 import { format, formatDuration, intervalToDuration, parseISO } from 'date-fns'
 import { de } from 'date-fns/locale'
 import {
@@ -16,6 +17,7 @@ import {
 } from 'lucide-react'
 import { useState } from 'react'
 import LocationHistory from '../Map/LocationHistory'
+// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 import Map from '../Map/Map'
 import { Button } from '../ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
@@ -30,7 +32,8 @@ export default function TrackDetail({ track }: { track: Track }) {
   async function handleTrackDownload() {
     try {
       await downloadTrack(track.id)
-    } catch (error: any) {
+    } catch (error) {
+      // @ts-ignore
       if (error.message === 'Share canceled') return
 
       toast({

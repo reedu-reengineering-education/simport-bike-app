@@ -3,6 +3,7 @@ import { useTheme } from 'next-themes'
 import { forwardRef, useEffect } from 'react'
 import { MapProps, MapRef, Map as ReactMap } from 'react-map-gl'
 
+// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 const Map = forwardRef<MapRef, MapProps>(
   ({ children, mapStyle, ...props }, ref) => {
     const { theme } = useTheme()

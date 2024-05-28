@@ -170,6 +170,7 @@ export default function SettingsDrawer() {
                 className="gap-0.25 flex items-center text-xs text-muted-foreground"
                 href="https://opensensemap.org"
                 target="_blank"
+                rel="noreferrer"
               >
                 openSenseMap
                 <ExternalLinkIcon className="ml-1 h-3 w-3" />
@@ -178,6 +179,7 @@ export default function SettingsDrawer() {
                 className="gap-0.25 flex items-center text-xs text-muted-foreground"
                 href="https://reedu.de"
                 target="_blank"
+                rel="noreferrer"
               >
                 re:edu
                 <ExternalLinkIcon className="ml-1 h-3 w-3" />

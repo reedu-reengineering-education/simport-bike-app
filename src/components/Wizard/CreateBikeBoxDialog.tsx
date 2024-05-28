@@ -62,7 +62,7 @@ export default function CreateBikeBoxDialog() {
       setSelectedBox(newBox)
       form.reset()
       setOpen(false)
-    } catch (error) {
+    } catch (_error) {
       toast({
         title: 'Fehler',
         description: 'Fehler beim Erstellen der senseBox:bike',
