@@ -39,18 +39,30 @@ export class InitialMigration1716477284299 implements MigrationInterface {
   name = 'InitialMigration1716477284299'
 
   public async up(queryRunner: QueryRunner): Promise<void> {
-    const existingTracks = useTracksStore.getState().tracks
+    console.log('🐠 Starting migration')
 
+    // create track table
     await queryRunner.query(
       `CREATE TABLE "track" ("id" varchar PRIMARY KEY NOT NULL, "start" datetime NOT NULL, "end" datetime)`,
     )
 
+    // create measurement table
     await queryRunner.query(
-      `CREATE TABLE "measurement" ("id" varchar PRIMARY KEY NOT NULL, "type" varchar NOT NULL, "attribute" varchar, "value" real NOT NULL, "timestamp" datetime NOT NULL DEFAULT (CURRENT_TIMESTAMP), "gps_lat" real NOT NULL, "gps_lng" real NOT NULL, "gps_spd" real NOT NULL, "trackId" varchar, FOREIGN KEY ("trackId") REFERENCES "track" ("id") ON DELETE CASCADE ON UPDATE NO ACTION)`,
+      `CREATE TABLE "measurement" ("id" varchar PRIMARY KEY NOT NULL, "type" varchar NOT NULL, "attribute" varchar, "value" real NOT NULL, "timestamp" datetime NOT NULL DEFAULT (CURRENT_TIMESTAMP), "trackId" varchar, FOREIGN KEY ("trackId") REFERENCES "track" ("id") ON DELETE CASCADE ON UPDATE NO ACTION)`,
     )
 
+    // create geolocation table
+    await queryRunner.query(
+      `CREATE TABLE "geolocation" ("id" varchar PRIMARY KEY NOT NULL, "timestamp" datetime NOT NULL DEFAULT (CURRENT_TIMESTAMP), "latitude" real NOT NULL, "longitude" real NOT NULL, "speed" real NOT NULL, "trackId" varchar, FOREIGN KEY ("trackId") REFERENCES "track" ("id") ON DELETE CASCADE ON UPDATE NO ACTION)`,
+    )
+
+    console.log('🐠 Migrating old data to new tables...')
+
+    const existingTracks = useTracksStore.getState().tracks
+
+    console.log('🐠 Found tracks:', existingTracks.length)
+
     for (const track of existingTracks) {
-      console.log('Inserting track', track.id)
       await queryRunner.query(
         `INSERT INTO "track" ("id", "start", "end") VALUES ('${
           track.id
@@ -58,19 +70,31 @@ export class InitialMigration1716477284299 implements MigrationInterface {
           track.end,
         ).toISOString()}')`,
       )
+
       for (const measurement of track.measurements) {
         const { timestamp, gps_lat, gps_lng, gps_spd } = measurement
 
-        console.log('Looping measurement', measurement)
-
-        console.log('Phenomena', phenomena)
+        console.log('🐠 Migrating measurement:', measurement)
+        console.log('🐠 GPS:', gps_lat, gps_lng, gps_spd)
+        if (gps_lat != null && gps_lng != null && gps_spd != null) {
+          await queryRunner.query(
+            `INSERT INTO "geolocation" ("id", "latitude", "longitude", "speed", "timestamp", "trackId") VALUES ($1, $2, $3, $4, $5, $6)`,
+            [
+              uuidv4(),
+              gps_lat,
+              gps_lng,
+              gps_spd,
+              new Date(timestamp).toISOString(),
+              track.id,
+            ],
+          )
+        }
 
         for (const phenomenon of phenomena) {
-          const [type] = Object.entries(typeMapping).find(([_, value]) =>
-            value.includes(phenomenon),
-          )
-
-          console.log(phenomenon, type)
+          const [type] =
+            Object.entries(typeMapping).find(([_, value]) =>
+              value.includes(phenomenon),
+            ) || []
 
           if (!type) {
             continue
@@ -79,45 +103,25 @@ export class InitialMigration1716477284299 implements MigrationInterface {
           const attribute =
             attributeMapping[phenomenon as keyof typeof attributeMapping]
 
-          console.log('attribute', attribute)
-
-          console.log(
-            'Inserting measurement',
-            measurement[phenomenon as keyof typeof measurement],
-          )
-
           await queryRunner.query(
-            `INSERT INTO "measurement" ("id", "type", "attribute", "value", "timestamp", "gps_lat", "gps_lng", "gps_spd", "trackId") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+            `INSERT INTO "measurement" ("id", "type", "attribute", "value", "timestamp", "trackId") VALUES ($1, $2, $3, $4, $5, $6)`,
             [
               uuidv4(),
               type,
               attribute ?? null,
               measurement[phenomenon as keyof typeof measurement],
               new Date(timestamp).toISOString(),
-              gps_lat,
-              gps_lng,
-              gps_spd,
               track.id,
             ],
           )
         }
       }
     }
-
-    // if (existingTracks.length > 0) {
-    //   await queryRunner.query(
-    //     `INSERT INTO "track" ("id", "start", "end") VALUES ${existingTracks
-    //       .map(
-    //         track =>
-    //           `('${track.id}', '${new Date(track.start).toISOString()}', '${new Date(track.end).toISOString()}')`,
-    //       )
-    //       .join(',')}`,
-    //   )
-    // }
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`DROP TABLE "measurement"`)
     await queryRunner.query(`DROP TABLE "track"`)
+    await queryRunner.query(`DROP TABLE "geolocation"`)
   }
 }

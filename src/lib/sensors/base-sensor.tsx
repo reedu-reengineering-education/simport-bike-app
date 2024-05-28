@@ -1,5 +1,6 @@
 import { BleClient } from '@capacitor-community/bluetooth-le'
-import { Measurement } from '../db/entities'
+import { Measurement, Track } from '../db/entities'
+import senseBoxBikeDataSource from '../db/sources/senseBoxBikeDataSource'
 import { useRawBLEDataStore } from '../store/use-raw-data-store'
 import { useBLEStore } from '../store/useBLEStore'
 import { useTrackRecordStore } from '../store/useTrackRecordStore'
@@ -21,25 +22,8 @@ export default class BaseSensor<T extends number[]> extends AbstractSensor<T> {
       deviceId,
       BLE_SENSEBOX_SERVICE,
       (this.constructor as any).BLE_CHARACTERISTIC,
-      value => {
+      async value => {
         const rawData = this.parseData(value)
-
-        const trackId = useTrackRecordStore.getState().currentTrackId
-
-        if (!trackId) {
-          throw new Error('No track ID')
-        }
-
-        if (!BaseSensor.attributes && rawData.length === 1) {
-          const [value] = rawData
-
-          const measurement = new Measurement()
-          measurement.timestamp = new Date()
-          measurement.type = BaseSensor.type
-          measurement.value = value
-          measurement.track.id = trackId
-          measurement.save()
-        }
 
         useRawBLEDataStore
           .getState()
@@ -47,6 +31,42 @@ export default class BaseSensor<T extends number[]> extends AbstractSensor<T> {
             measurement: rawData,
             timestamp: new Date(),
           })
+
+        const trackId = useTrackRecordStore.getState().currentTrackId
+
+        if (!trackId) {
+          // we are not recording a track, so we don't need to save the data
+          return
+        }
+
+        const track = await senseBoxBikeDataSource.dataSource
+          .getRepository(Track)
+          .findOne({ where: { id: trackId } })
+
+        if (!track) {
+          throw new Error('Track not found')
+        }
+
+        const type = (this.constructor as any).type
+        const attributes = (this.constructor as any).attributes ?? [null]
+
+        if (rawData.length === attributes.length) {
+          const values = rawData as number[]
+
+          for (let i = 0; i < attributes.length; i++) {
+            const measurement = new Measurement()
+            measurement.timestamp = new Date()
+            measurement.type = type
+            measurement.value = values[i]
+            measurement.attribute = attributes[i]
+            measurement.track = track
+            measurement.save()
+          }
+        } else {
+          throw new Error(
+            `Data length (${rawData.length}) does not match attributes length (${attributes.length})`,
+          )
+        }
       },
     )
   }

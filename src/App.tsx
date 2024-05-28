@@ -10,21 +10,24 @@ import {
   createRoute,
   createRouter,
 } from '@tanstack/react-router'
+import TrackDetailPage from './pages/tracks/detail/detail'
 
 const rootRoute = createRootRoute({
-  component: () => (
-    <>
-      <AuthChecker />
-      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-        <div
-          className="flex h-full max-h-full w-full flex-col bg-background px-safe landscape:px-0"
-          vaul-drawer-wrapper=""
-        >
-          <Outlet />
-        </div>
-      </ThemeProvider>
-    </>
-  ),
+  component: () => {
+    return (
+      <>
+        <AuthChecker />
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <div
+            className="flex h-full max-h-full w-full flex-col bg-background px-safe landscape:px-0"
+            vaul-drawer-wrapper=""
+          >
+            <Outlet />
+          </div>
+        </ThemeProvider>
+      </>
+    )
+  },
 })
 
 const indexRoute = createRoute({
@@ -35,11 +38,25 @@ const indexRoute = createRoute({
 
 const tracksRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/tracks',
+  path: 'tracks',
+})
+
+const tracksIndexRoute = createRoute({
+  getParentRoute: () => tracksRoute,
+  path: '/',
   component: TracksPage,
 })
 
-const routeTree = rootRoute.addChildren([indexRoute, tracksRoute])
+export const trackDetailRoute = createRoute({
+  getParentRoute: () => tracksRoute,
+  path: '$trackId',
+  component: TrackDetailPage,
+})
+
+const routeTree = rootRoute.addChildren([
+  indexRoute,
+  tracksRoute.addChildren([tracksIndexRoute, trackDetailRoute]),
+])
 
 const router = createRouter({ routeTree })
 

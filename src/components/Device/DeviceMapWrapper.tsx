@@ -9,10 +9,10 @@ const DRAG_HANDLE_HEIGHT = 8 + 16
 const HANDLE_PADDING = 8
 
 export default function DeviceMapWrapper() {
-  const [snap, setSnap] = useState(
+  const [snap, _setSnap] = useState(
     (DRAG_HANDLE_HEIGHT + HANDLE_PADDING + 60 + 256) / window.innerHeight,
   )
-  const [snapPoints, setSnapPoints] = useState<number[]>([
+  const [_snapPoints, setSnapPoints] = useState<number[]>([
     (DRAG_HANDLE_HEIGHT + HANDLE_PADDING + 60) / window.innerHeight,
     (DRAG_HANDLE_HEIGHT + HANDLE_PADDING + 60 + 256) / window.innerHeight,
   ])
@@ -46,19 +46,19 @@ export default function DeviceMapWrapper() {
             open
             modal={false}
             dismissible={false}
-            snapPoints={snapPoints}
-            activeSnapPoint={snap}
+            snapPoints={[0.2, 0.8]}
+            // activeSnapPoint={snap}
             shouldScaleBackground={false}
-            setActiveSnapPoint={cursnap => {
-              if (!cursnap) return
-              if (typeof cursnap === 'string') {
-                setSnap(parseFloat(cursnap))
-              } else if (cursnap < snapPoints[0]) {
-                setSnap(snapPoints[0])
-              } else {
-                setSnap(cursnap)
-              }
-            }}
+            // setActiveSnapPoint={cursnap => {
+            //   if (!cursnap) return
+            //   if (typeof cursnap === 'string') {
+            //     setSnap(parseFloat(cursnap))
+            //   } else if (cursnap < snapPoints[0]) {
+            //     setSnap(snapPoints[0])
+            //   } else {
+            //     setSnap(cursnap)
+            //   }
+            // }}
           >
             <DrawerContent className="h-full">
               <div className="mt-2" />

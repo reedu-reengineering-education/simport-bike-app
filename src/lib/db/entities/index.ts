@@ -1,4 +1,5 @@
+import { Geolocation } from './geolocation'
 import { Measurement } from './measurement'
 import { Track } from './track'
 
-export { Measurement, Track }
+export { Geolocation, Measurement, Track }

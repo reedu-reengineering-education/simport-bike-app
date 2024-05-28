@@ -22,15 +22,6 @@ export class Measurement extends BaseEntity {
   @Column('real')
   value: number | string | boolean // The measured value, which can be of different types based on the sensor attribute
 
-  @Column('real')
-  gps_lat: number
-
-  @Column('real')
-  gps_lng: number
-
-  @Column('real')
-  gps_spd: number
-
   @CreateDateColumn({ default: () => 'CURRENT_TIMESTAMP' })
   timestamp: Date
 

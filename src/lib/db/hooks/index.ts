@@ -11,8 +11,9 @@ const initializeConnection = async () => {
   trackRepository = connection.getRepository(Track)
 }
 
-export const useTrack = () => {
+export const useTrack = (id?: string) => {
   const [tracks, setTracks] = useState<Track[]>([])
+  const [track, setTrack] = useState<Track>()
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
 
@@ -22,6 +23,7 @@ export const useTrack = () => {
       const tracks = await trackRepository.find({
         relations: {
           measurements: true,
+          geolocations: true,
         },
       })
       setTracks(tracks)
@@ -30,6 +32,24 @@ export const useTrack = () => {
 
     fetchUsers()
   }, [])
+
+  useEffect(() => {
+    const fetchTrack = async () => {
+      await initializeConnection()
+      const track = await trackRepository.findOne({
+        where: { id },
+        relations: {
+          measurements: true,
+          geolocations: true,
+        },
+      })
+      if (!track) throw new Error('Track not found')
+      setTrack(track)
+      setLoading(false)
+    }
+
+    fetchTrack()
+  }, [id])
 
   const createTrack = async () => {
     setSaving(true)
@@ -51,5 +71,5 @@ export const useTrack = () => {
     setSaving(false)
   }
 
-  return { tracks, createTrack, endTrack, saving, loading }
+  return { tracks, track, createTrack, endTrack, saving, loading }
 }

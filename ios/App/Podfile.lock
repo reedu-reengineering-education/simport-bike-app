@@ -7,7 +7,7 @@ PODS:
     - Capacitor
   - CapacitorCommunityBackgroundGeolocation (0.0.1):
     - Capacitor
-  - CapacitorCommunityBluetoothLe (3.1.4):
+  - CapacitorCommunityBluetoothLe (6.0.0):
     - Capacitor
   - CapacitorCommunityKeepAwake (5.0.0):
     - Capacitor
@@ -167,7 +167,7 @@ SPEC CHECKSUMS:
   CapacitorApp: 9d53aec7101f7b030a950c5bdc4df8612576b279
   CapacitorBrowser: 7e1e2cdbb3e372f09f0bad0c4c21a6d187b679ad
   CapacitorCommunityBackgroundGeolocation: 6f26f4290377dbd1d6dec21e62cb66f008f61ec7
-  CapacitorCommunityBluetoothLe: 0ddb7590ea18421f207e312375aeb277d6b3fc05
+  CapacitorCommunityBluetoothLe: 53eb347a559c15b0e6ff6b83ee383ed6b0825b6a
   CapacitorCommunityKeepAwake: c820e5394a74ab73635107f0544378b026562243
   CapacitorCommunitySqlite: e1e97b8691802cec1fe38a389f677d40651b968a
   CapacitorCordova: 8c4bfdf69368512e85b1d8b724dd7546abeb30af

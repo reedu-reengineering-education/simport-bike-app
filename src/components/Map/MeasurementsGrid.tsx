@@ -8,6 +8,7 @@ import { forwardRef, useEffect, useState } from 'react'
 import colors from 'tailwindcss/colors'
 import { sensorRegistry } from '../sensors'
 import AnimatedNumber from '../ui/animated-number'
+import { ScrollArea } from '../ui/scroll-area'
 
 const MeasurementsGrid = forwardRef<HTMLDivElement>((_, ref) => {
   const { values: allValues, isConnected } = useSenseBox()
@@ -23,7 +24,7 @@ const MeasurementsGrid = forwardRef<HTMLDivElement>((_, ref) => {
       className="flex h-full w-full flex-col justify-around p-1 pb-safe-offset-8"
       ref={ref}
     >
-      <div
+      <ScrollArea
         className={cn(
           'relative flex h-full w-full flex-col',
           !selectedBox || values.length === 0 ? '' : 'divide-y',
@@ -90,44 +91,7 @@ const MeasurementsGrid = forwardRef<HTMLDivElement>((_, ref) => {
               categories: ['pm1', 'pm2_5', 'pm4', 'pm10'],
               colors: ['indigo', 'cyan', 'amber', 'emerald'],
             }}
-          />
-          <GridItem
-            name="Distanz Links"
-            value={lastValue?.distance_l}
-            unit="cm"
-            chartProps={{
-              data: values.map(v => ({ x: v.timestamp, y: v.distance_l })),
-              index: 'x',
-              categories: ['y'],
-            }}
-            decimals={0}
-          />
-
-          <GridItem
-            name="Beschleunigung"
-            value={[
-              lastValue?.acceleration_x,
-              lastValue?.acceleration_y,
-              lastValue?.acceleration_z,
-            ]}
-            unit="m/s²"
-            labels={['X', 'Y', 'Z']}
-            chartProps={{
-              data: values.map(v => ({
-                x: v.timestamp,
-                acceleration_x: v.acceleration_x,
-                acceleration_y: v.acceleration_y,
-                acceleration_z: v.acceleration_z,
-              })),
-              index: 'x',
-              categories: [
-                'acceleration_x',
-                'acceleration_y',
-                'acceleration_z',
-              ],
-              colors: ['indigo', 'cyan', 'amber'],
-            }}
-          /> */}
+          />  */}
         </div>
         {selectedBox && isConnected && values.length === 0 && (
           <div className="flex h-full w-full flex-col items-center justify-center bg-background/75 p-12 backdrop-blur">
@@ -137,7 +101,7 @@ const MeasurementsGrid = forwardRef<HTMLDivElement>((_, ref) => {
             </p>
           </div>
         )}
-      </div>
+      </ScrollArea>
     </div>
   )
 })
