@@ -32,13 +32,14 @@ const initializeDataSources = async () => {
 }
 
 if (sqliteParams.platform !== 'web') {
-  await initializeDataSources()
-
-  ReactDOM.createRoot(document.getElementById('root')!).render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>,
-  )
+  initializeDataSources().then(() => {
+    // initialize the root
+    ReactDOM.createRoot(document.getElementById('root')!).render(
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>,
+    )
+  })
 } else {
   window.addEventListener('DOMContentLoaded', async () => {
     const jeepEl = document.createElement('jeep-sqlite')

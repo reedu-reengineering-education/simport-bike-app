@@ -49,52 +49,10 @@ export default function useBLEDevice(_options: RequestBleDeviceOptions) {
     setConnected(false)
   }
 
-  // /**
-  //  * Listen to a characteristic
-  //  * @param service BLE Service UUID
-  //  * @param characteristic BLE Characteristic UUID
-  //  * @param callback Callback function to be called when a new value is received
-  //  * @returns A promise that resolves when the listener is started
-  //  */
-  // const listen = async (
-  //   service: string,
-  //   characteristic: string,
-  //   callback: (_value: DataView) => void,
-  // ) => {
-  //   if (!device) return
-
-  //   return await BleClient.startNotifications(
-  //     device.deviceId,
-  //     service,
-  //     characteristic,
-  //     callback,
-  //   )
-  // }
-
-  // const send = async (
-  //   service: string,
-  //   characteristic: string,
-  //   value: DataView,
-  // ) => {
-  //   if (!device) return
-
-  //   return await BleClient.write(
-  //     device.deviceId,
-  //     service,
-  //     characteristic,
-  //     value,
-  //     {
-  //       timeout: 10000,
-  //     },
-  //   )
-  // }
-
   return {
     device,
     connect,
     disconnect,
-    // listen,
-    // send,
     isConnected: connected,
   }
 }

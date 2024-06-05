@@ -39,8 +39,6 @@ export default function SettingsDrawer() {
   const reducedMotion = useSettingsStore(state => state.reducedMotion)
   const setReducedMotion = useSettingsStore(state => state.setReducedMotion)
 
-  // const { send } = useSenseBox()
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -52,14 +50,6 @@ export default function SettingsDrawer() {
   })
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
-    // send(
-    //   '29BD0A85-51E4-4D3C-914E-126541EB2A5E',
-    //   '60B1D5CE-3539-44D2-BB35-FF2DAABE17FF',
-    //   numbersToDataView([
-    //     values.uploadInterval,
-    //     values.switchUseDeviceGPS ? 1 : 0,
-    //   ]),
-    // )
     useSettingsStore.setState({
       uploadInterval: values.uploadInterval,
       useSenseBoxGPS: !values.switchUseSmartphoneGPS,

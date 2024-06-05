@@ -1,5 +1,5 @@
+import useBLEDevice from '@/lib/useBLE'
 import useRecordTrack from '@/lib/useRecordTrack'
-import useSenseBox from '@/lib/useSenseBox'
 import {
   Bluetooth,
   BluetoothOff,
@@ -12,7 +12,9 @@ import ConnectWithCamera from '../Device/ConnectWithCamera'
 import { Button } from '../ui/button'
 
 const ControlBar = forwardRef<HTMLDivElement>((_, ref) => {
-  const { connect, isConnected, disconnect } = useSenseBox()
+  const { connect, isConnected, disconnect } = useBLEDevice({
+    namePrefix: 'senseBox',
+  })
 
   // const selectedBox = useAuthStore(state => state.selectedBox)
 

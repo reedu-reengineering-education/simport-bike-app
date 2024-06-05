@@ -3,8 +3,7 @@ import { useTheme } from 'next-themes'
 import { forwardRef, useEffect } from 'react'
 import { MapProps, MapRef, Map as ReactMap } from 'react-map-gl'
 
-// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
-const Map = forwardRef<MapRef, MapProps>(
+const InteractiveMap = forwardRef<MapRef, MapProps>(
   ({ children, mapStyle, ...props }, ref) => {
     const { theme } = useTheme()
 
@@ -47,6 +46,6 @@ const Map = forwardRef<MapRef, MapProps>(
   },
 )
 
-Map.displayName = 'Map'
+InteractiveMap.displayName = 'Map'
 
-export default Map
+export default InteractiveMap

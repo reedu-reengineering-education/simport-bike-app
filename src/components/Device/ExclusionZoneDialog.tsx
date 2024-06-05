@@ -1,5 +1,5 @@
 // biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
-import Map from '@/components/Map/Map'
+import InteractiveMap from '@/components/Map/Map'
 import { useExclusionZoneStore } from '@/lib/store/useExclusionZoneStore'
 import { useEffect, useRef, useState } from 'react'
 import DrawControl from '../Map/DrawControl'
@@ -76,7 +76,7 @@ export default function ExclusionZoneDialog() {
         </DialogHeader>
         <div className="h-96 w-full overflow-hidden rounded-md">
           {/* @ts-ignore */}
-          <Map ref={mapRef}>
+          <InteractiveMap ref={mapRef}>
             <DrawControl
               position="top-left"
               displayControlsDefault={false}
@@ -86,7 +86,7 @@ export default function ExclusionZoneDialog() {
               }}
               ref={ref => setDrawRef(ref)}
             />
-          </Map>
+          </InteractiveMap>
         </div>
         <Button
           onClick={() => {

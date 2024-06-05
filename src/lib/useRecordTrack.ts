@@ -2,7 +2,8 @@ import { toast } from '@/components/ui/use-toast'
 import { point } from '@turf/helpers'
 import { useEffect, useRef, useState } from 'react'
 import { uploadData } from './api/openSenseMapClient'
-import { useTrack } from './db/hooks'
+import { useTrack } from './db/hooks/useTrack'
+import { useTracks } from './db/hooks/useTracks'
 import { isInExclusionZone } from './exclusion-zone'
 import match from './senseBoxSensorIdMatcher'
 import { useAuthStore } from './store/useAuthStore'
@@ -39,7 +40,8 @@ const useRecordTrack = () => {
     state => state.setCurrentTrackId,
   )
 
-  const { createTrack, endTrack } = useTrack()
+  const { createTrack } = useTracks()
+  const { endTrack } = useTrack()
 
   const { isConnected } = useSenseBox()
 

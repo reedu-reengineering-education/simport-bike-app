@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { BleClient } from '@capacitor-community/bluetooth-le'
 import { useBLEStore } from '../store/useBLEStore'
 import { BLE_SENSEBOX_SERVICE } from './base-sensor'

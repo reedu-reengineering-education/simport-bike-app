@@ -9,14 +9,14 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
-import { useTrack } from '@/lib/db/hooks'
+import { useTracks } from '@/lib/db/hooks/useTracks'
 import { Link } from '@tanstack/react-router'
 import { formatDuration, intervalToDuration } from 'date-fns'
 import { HomeIcon } from 'lucide-react'
 import { Navbar } from './navbar'
 
 export default function TracksPage() {
-  const { tracks, loading } = useTrack()
+  const { tracks, loading } = useTracks()
 
   return (
     <div className="flex h-full w-full flex-col pt-safe">
@@ -56,14 +56,14 @@ export default function TracksPage() {
                 end: track.end ?? new Date(),
               }),
             )}
-            <div>
+            {/* <div>
               Measurements: {track.measurements.length} (
               {Array.from(new Set(track.measurements.map(m => m.type))).join(
                 ', ',
               )}
               )
             </div>
-            <div>Geolocations: {track.geolocations.length}</div>
+            <div>Geolocations: {track.geolocations.length}</div> */}
             <Link
               to="/tracks/$trackId"
               params={{

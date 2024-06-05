@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { BleClient } from '@capacitor-community/bluetooth-le'
 import { useRawBLEDataStore } from '../store/use-raw-data-store'
 import { useBLEStore } from '../store/useBLEStore'

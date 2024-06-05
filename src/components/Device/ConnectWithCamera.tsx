@@ -1,10 +1,12 @@
-import useSenseBox from '@/lib/useSenseBox'
+import useBLEDevice from '@/lib/useBLE'
 import { Barcode, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning'
 import { QrCodeIcon } from 'lucide-react'
 import { Button } from '../ui/button'
 
 export default function ConnectWithCamera() {
-  const { connect } = useSenseBox()
+  const { connect } = useBLEDevice({
+    namePrefix: 'senseBox',
+  })
 
   async function handleScanResults(results: Barcode[]) {
     for (const barcode of results) {

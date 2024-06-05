@@ -1,5 +1,5 @@
-import { CapacitorConfig } from '@capacitor/cli'
 import { execSync } from 'child_process'
+import { CapacitorConfig } from '@capacitor/cli'
 
 console.log(process.env.NODE_ENV)
 
@@ -18,31 +18,13 @@ const server: CapacitorConfig['server'] =
 const config: CapacitorConfig = {
   appId: 'de.reedu.senseboxbike',
   appName: 'senseBox:Bike',
-  webDir: 'out',
+  webDir: 'dist',
   server,
   android: {
     useLegacyBridge: true,
   },
   plugins: {
-    CapacitorSQLite: {
-      iosDatabaseLocation: 'Library/CapacitorDatabase',
-      iosIsEncryption: true,
-      iosKeychainPrefix: 'angular-sqlite-app-starter',
-      iosBiometric: {
-        biometricAuth: false,
-        biometricTitle: 'Biometric login for capacitor sqlite',
-      },
-      androidIsEncryption: true,
-      androidBiometric: {
-        biometricAuth: false,
-        biometricTitle: 'Biometric login for capacitor sqlite',
-        biometricSubTitle: 'Log in using your biometric',
-      },
-      electronIsEncryption: true,
-      electronWindowsLocation: 'C:\\ProgramData\\CapacitorDatabases',
-      electronMacLocation: '/Volumes/Development_Lacie/Development/Databases',
-      electronLinuxLocation: 'Databases',
-    },
+    CapacitorSQLite: {},
   },
 }
 

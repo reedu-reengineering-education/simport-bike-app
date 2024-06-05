@@ -18,7 +18,7 @@ import {
 import { useState } from 'react'
 import LocationHistory from '../Map/LocationHistory'
 // biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
-import Map from '../Map/Map'
+import InteractiveMap from '../Map/Map'
 import { Button } from '../ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Drawer, DrawerContent, DrawerTrigger } from '../ui/drawer'
@@ -47,7 +47,7 @@ export default function TrackDetail({ track }: { track: Track }) {
       <DrawerTrigger>
         <Card className="flex h-fit overflow-hidden">
           <div className="relative h-40 flex-1">
-            <Map
+            <InteractiveMap
               interactive={false}
               initialViewState={{
                 // @ts-ignore
@@ -55,7 +55,7 @@ export default function TrackDetail({ track }: { track: Track }) {
               }}
             >
               <LocationHistory values={track.measurements} />
-            </Map>
+            </InteractiveMap>
             <div className="absolute left-0 top-0 w-fit rounded-br-md bg-background px-4 py-2">
               {format(parseISO(track.start), 'PPpp', {
                 locale: de,
@@ -106,7 +106,7 @@ export default function TrackDetail({ track }: { track: Track }) {
               isLargeMap ? 'h-80' : 'h-40',
             )}
           >
-            <Map
+            <InteractiveMap
               interactive={!isLargeMap}
               initialViewState={{
                 // @ts-ignore
@@ -114,7 +114,7 @@ export default function TrackDetail({ track }: { track: Track }) {
               }}
             >
               <LocationHistory values={track.measurements} />
-            </Map>
+            </InteractiveMap>
             <Button
               variant={'secondary'}
               className="absolute right-0 top-0 m-2 rounded-full p-3"

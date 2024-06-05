@@ -8,29 +8,36 @@ import AbstractSensor from './abstract-sensor'
 
 export const BLE_SENSEBOX_SERVICE = 'CF06A218-F68E-E0BE-AD04-8EBC1EB0BC84'
 
-export default class BaseSensor<T extends number[]> extends AbstractSensor<T> {
-  protected BLE_CHARACTERISTIC!: string
+export default class BaseSensor<T extends number[]>
+  implements AbstractSensor<T>
+{
+  parseData(_data: DataView): T {
+    throw new Error('Method not implemented.')
+  }
 
-  subscribe() {
-    console.log((this.constructor as any).BLE_CHARACTERISTIC)
+  async subscribe() {
     const deviceId = useBLEStore.getState().device?.deviceId
     if (!deviceId) {
       throw new Error('No device connected')
     }
 
-    BleClient.startNotifications(
+    const characteristic = (this.constructor as any).BLE_CHARACTERISTIC
+    const type = (this.constructor as any).type
+    const attributes = (this.constructor as any).attributes || [null]
+
+    await BleClient.startNotifications(
       deviceId,
       BLE_SENSEBOX_SERVICE,
-      (this.constructor as any).BLE_CHARACTERISTIC,
+      characteristic,
       async value => {
         const rawData = this.parseData(value)
 
-        useRawBLEDataStore
-          .getState()
-          .addRawBLESensorData((this.constructor as any).BLE_CHARACTERISTIC, {
-            measurement: rawData,
-            timestamp: new Date(),
-          })
+        console.log('Received data:', rawData)
+
+        useRawBLEDataStore.getState().addRawBLESensorData(characteristic, {
+          measurement: rawData,
+          timestamp: new Date(),
+        })
 
         const trackId = useTrackRecordStore.getState().currentTrackId
 
@@ -46,9 +53,6 @@ export default class BaseSensor<T extends number[]> extends AbstractSensor<T> {
         if (!track) {
           throw new Error('Track not found')
         }
-
-        const type = (this.constructor as any).type
-        const attributes = (this.constructor as any).attributes ?? [null]
 
         if (rawData.length === attributes.length) {
           const values = rawData as number[]
