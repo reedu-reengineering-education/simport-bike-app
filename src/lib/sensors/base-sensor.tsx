@@ -32,8 +32,6 @@ export default class BaseSensor<T extends number[]>
       async value => {
         const rawData = this.parseData(value)
 
-        console.log('Received data:', rawData)
-
         useRawBLEDataStore.getState().addRawBLESensorData(characteristic, {
           measurement: rawData,
           timestamp: new Date(),

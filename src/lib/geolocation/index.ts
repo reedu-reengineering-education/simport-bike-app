@@ -2,6 +2,7 @@ import { BackgroundGeolocationPlugin } from '@capacitor-community/background-geo
 import { Capacitor, registerPlugin } from '@capacitor/core'
 import { Geolocation, Track } from '../db/entities'
 import senseBoxBikeDataSource from '../db/sources/senseBoxBikeDataSource'
+import { useRawBLEDataStore } from '../store/use-raw-data-store'
 import { useTrackRecordStore } from '../store/useTrackRecordStore'
 
 const BackgroundGeolocation = registerPlugin<BackgroundGeolocationPlugin>(
@@ -57,6 +58,11 @@ class GeolocationService {
             if (!location) {
               return
             }
+
+            useRawBLEDataStore.getState().addRawGeolocationData({
+              type: 'Point',
+              coordinates: [location.longitude, location.latitude],
+            })
 
             const trackId = useTrackRecordStore.getState().currentTrackId
 

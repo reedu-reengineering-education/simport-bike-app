@@ -60,12 +60,14 @@ export default function DeviceMapWrapper() {
             //   }
             // }}
           >
-            <DrawerContent className="h-full">
-              <div className="mt-2" />
-              <ControlBar ref={controlBarRef} />
-              <MeasurementsGrid ref={drawerContentRef} />
-              <DrawerFooter />
-            </DrawerContent>
+            <>
+              <DrawerContent className="h-full">
+                <div className="mt-2" />
+                <ControlBar ref={controlBarRef} />
+                <MeasurementsGrid ref={drawerContentRef} />
+                <DrawerFooter />
+              </DrawerContent>
+            </>
           </Drawer>
         </div>
       </div>

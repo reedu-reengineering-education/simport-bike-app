@@ -1,3 +1,4 @@
+import { useRawBLEDataStore } from '@/lib/store/use-raw-data-store'
 import { useExclusionZoneStore } from '@/lib/store/useExclusionZoneStore'
 import { useMapViewportState } from '@/lib/store/useMapViewportStore'
 import { useRef } from 'react'
@@ -14,6 +15,10 @@ export default function TrajectoryMap() {
   const zones = useExclusionZoneStore(state => state.zones)
 
   const mapRef = useRef<MapRef>(null)
+
+  const trajectory = useRawBLEDataStore(state => state.rawGeolocationData)
+
+  console.log('TrajectoryMap -> trajectory', trajectory)
 
   // useEffect(() => {
   //   const latestValue = values.at(-1)
@@ -75,6 +80,8 @@ export default function TrajectoryMap() {
   //   }
   // }, [values])
 
+  // return <div className="p-20">{JSON.stringify(trajectory)}</div>
+
   return (
     <MapComponent
       ref={mapRef}
@@ -96,6 +103,22 @@ export default function TrajectoryMap() {
             paint={{
               'fill-color': '#f00',
               'fill-opacity': 0.2,
+            }}
+          />
+        </Source>
+      )}
+      {trajectory && trajectory.coordinates.length > 0 && (
+        <Source data={trajectory} type="geojson">
+          <Layer
+            id="myTrajectory"
+            type="line"
+            layout={{
+              'line-join': 'round',
+              'line-cap': 'round',
+            }}
+            paint={{
+              'line-color': '#0000ff',
+              'line-width': 8,
             }}
           />
         </Source>

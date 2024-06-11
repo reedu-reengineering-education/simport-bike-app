@@ -13,6 +13,8 @@ interface RawBLEDataStore<T> {
     _characteristic: Characteristic,
     _measurements: RawBLESensorData<T>,
   ) => void
+  rawGeolocationData: GeoJSON.LineString
+  addRawGeolocationData: (_geolocation: GeoJSON.Point) => void
   reset: () => void
 }
 
@@ -29,5 +31,24 @@ export const useRawBLEDataStore = create<RawBLEDataStore<number[]>>(set => ({
       },
     }))
   },
-  reset: () => set({ rawBleSensorData: {} }),
+  rawGeolocationData: {
+    type: 'LineString',
+    coordinates: [],
+  },
+  addRawGeolocationData: geolocation => {
+    set(state => ({
+      rawGeolocationData: {
+        ...state.rawGeolocationData,
+        coordinates: [
+          ...state.rawGeolocationData.coordinates,
+          [geolocation.coordinates[0], geolocation.coordinates[1]],
+        ],
+      },
+    }))
+  },
+  reset: () =>
+    set({
+      rawBleSensorData: {},
+      rawGeolocationData: { type: 'LineString', coordinates: [] },
+    }),
 }))

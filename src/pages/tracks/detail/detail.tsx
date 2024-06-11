@@ -1,5 +1,6 @@
 import { trackDetailRoute } from '@/App'
 import InteractiveMap from '@/components/Map/Map'
+import TrajectoryLayer from '@/components/Map/layers/trajectory'
 import { AnimateIn } from '@/components/animated/animate-in'
 import Spinner from '@/components/ui/Spinner'
 import {
@@ -23,39 +24,55 @@ import {
 } from '@/components/ui/breadcrumb'
 import { Button } from '@/components/ui/button'
 import { useTrack } from '@/lib/db/hooks/useTrack'
+import { BaseExporter } from '@/lib/exporter/BaseExporter'
+import { CSVExporter } from '@/lib/exporter/CSVExporter'
+import { MultiFileExporter } from '@/lib/exporter/MultiFileExporter'
 import { Link, useNavigate } from '@tanstack/react-router'
+import { buffer, bbox, featureCollection, point } from '@turf/turf'
 import { format } from 'date-fns'
 import { HomeIcon } from 'lucide-react'
 import { useEffect, useRef } from 'react'
-import { Layer, MapRef, Source } from 'react-map-gl'
+import { MapRef } from 'react-map-gl'
 import { Navbar } from '../navbar'
 
 export default function TrackDetailPage() {
   const { trackId } = trackDetailRoute.useParams()
 
-  const { track, loading, deleteTrack } = useTrack(trackId)
+  const { track, trajectory, loading, deleteTrack } = useTrack(trackId)
 
   const navigate = useNavigate({ from: '/tracks/$trackId' })
 
   const mapRef = useRef<MapRef>(null)
 
   useEffect(() => {
-    if (!track) return
+    if (!trajectory) return
     if (!mapRef.current) return
 
-    // const bounds = bbox(
-    //   buffer(
-    //     featureCollection(
-    //       track?.geolocations?.map(value =>
-    //         point([value.longitude, value.latitude]),
-    //       ) ?? [],
-    //     ),
-    //     0.01,
-    //   ),
-    // )
+    const bounds = bbox(
+      buffer(
+        featureCollection(
+          trajectory?.map(value => point([value.longitude, value.latitude])) ??
+            [],
+        ),
+        0.01,
+      ),
+    )
 
-    // mapRef.current?.fitBounds([bounds[0], bounds[1], bounds[2], bounds[3]])
-  }, [track])
+    mapRef.current?.fitBounds([bounds[0], bounds[1], bounds[2], bounds[3]], {
+      animate: false,
+      padding: 12,
+      pitch: 30,
+    })
+  }, [trajectory])
+
+  const handleExport = async (exporter: typeof BaseExporter) => {
+    try {
+      const Exporter = new exporter(trackId)
+      await Exporter.export()
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   return (
     <div className="flex h-full w-full flex-col pt-safe">
@@ -90,41 +107,35 @@ export default function TrackDetailPage() {
           </Breadcrumb>
         </Navbar>
       </header>
-      <div className="flex-1 overflow-scroll p-4 pb-safe">
+      <div className="overflow-scroll p-4 pb-safe grid gap-2">
         <div className="h-80 rounded-md overflow-hidden">
           <InteractiveMap ref={mapRef}>
-            {track?.geolocations && (
-              <Source
-                id="location-history"
-                type="geojson"
-                data={{
-                  type: 'LineString',
-                  coordinates:
-                    track?.geolocations?.map(value => [
-                      value.longitude,
-                      value.latitude,
-                    ]) ?? [],
-                }}
-              >
-                <Layer
-                  id="history"
-                  type="line"
-                  paint={{
-                    'line-color': '#007cbf',
-                    'line-width': 2,
-                  }}
-                />
-              </Source>
+            {trajectory && trajectory.length > 0 && (
+              <TrajectoryLayer trajectory={trajectory} />
             )}
           </InteractiveMap>
         </div>
-        {!track && loading && <Spinner />}
+        {loading && <Spinner />}
         {!track && !loading && (
           <div>
             Track not found
             <Link to="/tracks">Tracks</Link>
           </div>
         )}
+        <Button
+          onClick={() => {
+            handleExport(CSVExporter)
+          }}
+        >
+          Export (CSV)
+        </Button>
+        <Button
+          onClick={() => {
+            handleExport(MultiFileExporter)
+          }}
+        >
+          Export (MultiFile)
+        </Button>
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <Button variant={'destructive'} className="w-full">
