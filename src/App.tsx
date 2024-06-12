@@ -11,6 +11,7 @@ import {
   createRouter,
 } from '@tanstack/react-router'
 import { Button } from './components/ui/button'
+import { Toaster } from './components/ui/toaster'
 import TrackDetailPage from './pages/tracks/detail/detail'
 
 const rootRoute = createRootRoute({
@@ -24,6 +25,7 @@ const rootRoute = createRootRoute({
             vaul-drawer-wrapper=""
           >
             <Outlet />
+            <Toaster />
           </div>
         </ThemeProvider>
       </>

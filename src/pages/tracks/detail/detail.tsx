@@ -23,6 +23,13 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
 import { Button } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { toast } from '@/components/ui/use-toast'
 import { useTrack } from '@/lib/db/hooks/useTrack'
 import { BaseExporter } from '@/lib/exporter/BaseExporter'
 import { CSVExporter } from '@/lib/exporter/CSVExporter'
@@ -30,8 +37,8 @@ import { MultiFileExporter } from '@/lib/exporter/MultiFileExporter'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { buffer, bbox, featureCollection, point } from '@turf/turf'
 import { format } from 'date-fns'
-import { HomeIcon } from 'lucide-react'
-import { useEffect, useRef } from 'react'
+import { FileDownIcon, HomeIcon, Loader2 } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
 import { MapRef } from 'react-map-gl'
 import { Navbar } from '../navbar'
 
@@ -39,6 +46,8 @@ export default function TrackDetailPage() {
   const { trackId } = trackDetailRoute.useParams()
 
   const { track, trajectory, loading, deleteTrack } = useTrack(trackId)
+
+  const [isExporting, setIsExporting] = useState(false)
 
   const navigate = useNavigate({ from: '/tracks/$trackId' })
 
@@ -67,10 +76,19 @@ export default function TrackDetailPage() {
 
   const handleExport = async (exporter: typeof BaseExporter) => {
     try {
+      setIsExporting(true)
       const Exporter = new exporter(trackId)
       await Exporter.export()
     } catch (error) {
-      console.error(error)
+      console.log('we are in the catch block')
+      toast({
+        variant: 'destructive',
+        title: 'Export failed',
+        // @ts-ignore
+        description: error?.message,
+      })
+    } finally {
+      setIsExporting(false)
     }
   }
 
@@ -122,49 +140,64 @@ export default function TrackDetailPage() {
             <Link to="/tracks">Tracks</Link>
           </div>
         )}
-        <Button
-          onClick={() => {
-            handleExport(CSVExporter)
-          }}
-        >
-          Export (CSV)
-        </Button>
-        <Button
-          onClick={() => {
-            handleExport(MultiFileExporter)
-          }}
-        >
-          Export (MultiFile)
-        </Button>
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button variant={'destructive'} className="w-full">
-              Löschen
-            </Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-              <AlertDialogDescription>
-                This action cannot be undone. This will permanently delete your
-                account and remove your data from our servers.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction
-                onClick={async () => {
-                  await deleteTrack(trackId)
-                  navigate({
-                    to: '/tracks',
-                  })
-                }}
-              >
-                Delete
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+
+        <div className="flex gap-2">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button disabled={isExporting} className="flex-1">
+                {isExporting && (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Exporting...
+                  </>
+                )}
+                {!isExporting && (
+                  <>
+                    Download <FileDownIcon className="h-4 ml-2" />
+                  </>
+                )}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" side="top">
+              <DropdownMenuItem onClick={() => handleExport(CSVExporter)}>
+                CSV
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleExport(MultiFileExporter)}>
+                Multi File
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant={'destructive'} className="w-full flex-1">
+                Löschen
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete
+                  your account and remove your data from our servers.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={async () => {
+                    await deleteTrack(trackId)
+                    navigate({
+                      to: '/tracks',
+                    })
+                  }}
+                >
+                  Delete
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
       </div>
     </div>
   )

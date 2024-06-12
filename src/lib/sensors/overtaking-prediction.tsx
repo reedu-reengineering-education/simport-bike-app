@@ -8,6 +8,8 @@ export default class OvertakingPredictionSensor<T extends [number]>
   public static BLE_CHARACTERISTIC: string =
     'FC01C688-2C44-4965-AE18-373AF9FED18D'
 
+  public static type: string = 'overtaking'
+
   parseData(data: DataView): T {
     const [prediction] = this.parsePackages(data)
 

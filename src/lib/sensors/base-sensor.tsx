@@ -25,6 +25,12 @@ export default class BaseSensor<T extends number[]>
     const type = (this.constructor as any).type
     const attributes = (this.constructor as any).attributes || [null]
 
+    if (type == 'battery') {
+      console.log('Battery sensor')
+      console.log(characteristic)
+      console.log(BLE_SENSEBOX_SERVICE)
+    }
+
     await BleClient.startNotifications(
       deviceId,
       BLE_SENSEBOX_SERVICE,
