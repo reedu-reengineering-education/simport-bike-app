@@ -1,18 +1,21 @@
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { useTheme } from 'next-themes'
-import { forwardRef, useEffect } from 'react'
+import { forwardRef, useEffect, useRef } from 'react'
 import { MapProps, MapRef, Map as ReactMap } from 'react-map-gl'
 
 const InteractiveMap = forwardRef<MapRef, MapProps>(
   ({ children, mapStyle, ...props }, ref) => {
     const { theme } = useTheme()
 
+    const localRef = useRef<MapRef>(null)
+    const mapRef = ref || localRef
+
     useEffect(() => {
       // @ts-ignore
-      if (!ref.current) return
+      if (!mapRef.current) return
 
       // @ts-ignore
-      onMapLoad({ target: ref.current })
+      onMapLoad({ target: mapRef.current })
     }, [theme])
 
     const onMapLoad = (e: mapboxgl.MapboxEvent<undefined>) => {
@@ -29,7 +32,7 @@ const InteractiveMap = forwardRef<MapRef, MapProps>(
       <ReactMap
         mapStyle={mapStyle || 'mapbox://styles/mapbox/standard'}
         mapboxAccessToken={import.meta.env.VITE_MAPBOX_ACCESS_TOKEN}
-        ref={ref}
+        ref={mapRef}
         style={{
           width: '100%',
           height: '100%',

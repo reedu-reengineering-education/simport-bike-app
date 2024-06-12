@@ -20,10 +20,7 @@ export const useTracks = () => {
     const fetchUsers = async () => {
       await initializeConnection()
       const tracks = await trackRepository.find({
-        // relations: {
-        //   measurements: true,
-        //   geolocations: true,
-        // },
+        order: { start: 'DESC' },
       })
       setTracks(tracks)
       setLoading(false)

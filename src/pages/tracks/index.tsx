@@ -1,5 +1,6 @@
 import TrackWrapper from '@/components/Tracks/track-wrapper'
 import { AnimateIn } from '@/components/animated/animate-in'
+import TrackPreview from '@/components/track/track-preview'
 import Spinner from '@/components/ui/Spinner'
 import {
   Breadcrumb,
@@ -11,7 +12,6 @@ import {
 } from '@/components/ui/breadcrumb'
 import { useTracks } from '@/lib/db/hooks/useTracks'
 import { Link } from '@tanstack/react-router'
-import { formatDuration, intervalToDuration } from 'date-fns'
 import { HomeIcon } from 'lucide-react'
 import { Navbar } from './navbar'
 
@@ -41,7 +41,7 @@ export default function TracksPage() {
           </Breadcrumb>
         </Navbar>
       </header>
-      <div className="flex-1 overflow-scroll p-4 pb-safe">
+      <div className="flex-1 overflow-scroll p-4 pb-safe grid gap-14">
         {loading && <Spinner />}
         {tracks.length === 0 && (
           <div>
@@ -49,31 +49,7 @@ export default function TracksPage() {
           </div>
         )}
         {tracks.map(track => (
-          <div key={track.id}>
-            {formatDuration(
-              intervalToDuration({
-                start: track.start,
-                end: track.end ?? new Date(),
-              }),
-            )}
-            {/* <div>
-              Measurements: {track.measurements.length} (
-              {Array.from(new Set(track.measurements.map(m => m.type))).join(
-                ', ',
-              )}
-              )
-            </div>
-            <div>Geolocations: {track.geolocations.length}</div> */}
-            <Link
-              to="/tracks/$trackId"
-              params={{
-                trackId: track.id,
-              }}
-            >
-              Visit Track
-            </Link>
-            <p>---</p>
-          </div>
+          <TrackPreview key={track.id} trackId={track.id} />
         ))}
         <TrackWrapper />
       </div>

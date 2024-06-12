@@ -17,6 +17,7 @@ const initializeConnection = async () => {
 
 export const useTrack = (id?: string) => {
   const [track, setTrack] = useState<Track>()
+  const [measurementTypes, setMeasurementTypes] = useState<string[]>([])
   const [trajectory, setTrajectory] = useState<Geolocation[]>([])
   const [measurements, setMeasurements] = useState<Measurement[]>([])
   const [loading, setLoading] = useState(true)
@@ -30,8 +31,21 @@ export const useTrack = (id?: string) => {
 
       const track = await trackRepository.findOne({
         where: { id },
+        relations: ['geolocations'],
+        relationLoadStrategy: 'query',
       })
       if (!track) throw new Error('Track not found')
+
+      const measurementTypes = await measurementRepository.find({
+        where: { track: { id } },
+        select: {
+          type: true,
+        },
+      })
+      const distinctMeasurementTypes = Array.from(
+        new Set(measurementTypes.map(({ type }) => type)),
+      )
+      setMeasurementTypes(distinctMeasurementTypes)
       setTrack(track)
 
       const trajectory = await geolocationRepository.find({
@@ -73,6 +87,7 @@ export const useTrack = (id?: string) => {
 
   return {
     track,
+    measurementTypes,
     trajectory,
     measurements,
     deleteTrack,
