@@ -1,25 +1,28 @@
 import { useEffect, useState } from 'react'
 import { DataSource, Repository } from 'typeorm'
-import { Geolocation, Measurement, Track } from '../entities'
+import { Measurement, Track } from '../entities'
 import senseBoxBikeDataSource from '../sources/senseBoxBikeDataSource'
 
 let trackRepository: Repository<Track>
-let geolocationRepository: Repository<Geolocation>
 let measurementRepository: Repository<Measurement>
 let connection: DataSource
 
 const initializeConnection = async () => {
   if (!connection) connection = senseBoxBikeDataSource.dataSource
   trackRepository = connection.getRepository(Track)
-  geolocationRepository = connection.getRepository(Geolocation)
   measurementRepository = connection.getRepository(Measurement)
+}
+
+type MeasurementType = {
+  type: string
+  attributes?: string[]
 }
 
 export const useTrack = (id?: string) => {
   const [track, setTrack] = useState<Track>()
-  const [measurementTypes, setMeasurementTypes] = useState<string[]>([])
-  const [trajectory, setTrajectory] = useState<Geolocation[]>([])
-  const [measurements, setMeasurements] = useState<Measurement[]>([])
+  const [measurementTypes, setMeasurementTypes] = useState<MeasurementType[]>(
+    [],
+  )
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
 
@@ -40,25 +43,29 @@ export const useTrack = (id?: string) => {
         where: { track: { id } },
         select: {
           type: true,
+          attribute: true,
         },
       })
-      const distinctMeasurementTypes = Array.from(
-        new Set(measurementTypes.map(({ type }) => type)),
-      )
+
+      const distinctMeasurementTypes: MeasurementType[] = []
+      measurementTypes.forEach(({ type, attribute }) => {
+        const existingType = distinctMeasurementTypes.find(
+          ({ type: existingType }) => existingType === type,
+        )
+        if (existingType) {
+          if (attribute && !existingType.attributes?.includes(attribute)) {
+            existingType.attributes?.push(attribute)
+          }
+        } else {
+          distinctMeasurementTypes.push({
+            type,
+            attributes: attribute ? [attribute] : undefined,
+          })
+        }
+      })
+
       setMeasurementTypes(distinctMeasurementTypes)
       setTrack(track)
-
-      const trajectory = await geolocationRepository.find({
-        where: { track: { id } },
-        order: { timestamp: 'ASC' },
-      })
-      setTrajectory(trajectory)
-
-      const measurements = await measurementRepository.find({
-        where: { track: { id } },
-        order: { timestamp: 'ASC' },
-      })
-      setMeasurements(measurements)
 
       setLoading(false)
     }
@@ -88,8 +95,6 @@ export const useTrack = (id?: string) => {
   return {
     track,
     measurementTypes,
-    trajectory,
-    measurements,
     deleteTrack,
     endTrack,
     saving,

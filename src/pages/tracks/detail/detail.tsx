@@ -29,12 +29,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
+import { useMeasurements } from '@/lib/db/hooks/useMeasurements'
 import { useTrack } from '@/lib/db/hooks/useTrack'
 import { BaseExporter } from '@/lib/exporter/BaseExporter'
 import { CSVExporter } from '@/lib/exporter/CSVExporter'
 import { MultiFileExporter } from '@/lib/exporter/MultiFileExporter'
 import { Link, useNavigate } from '@tanstack/react-router'
+import { AreaChart } from '@tremor/react'
 import { buffer, bbox, featureCollection, point } from '@turf/turf'
 import { format } from 'date-fns'
 import { FileDownIcon, HomeIcon, Loader2 } from 'lucide-react'
@@ -45,7 +48,8 @@ import { Navbar } from '../navbar'
 export default function TrackDetailPage() {
   const { trackId } = trackDetailRoute.useParams()
 
-  const { track, trajectory, loading, deleteTrack } = useTrack(trackId)
+  const { track, loading, deleteTrack, measurementTypes } = useTrack(trackId)
+  const { measurements } = useMeasurements(trackId)
 
   const [isExporting, setIsExporting] = useState(false)
 
@@ -54,14 +58,15 @@ export default function TrackDetailPage() {
   const mapRef = useRef<MapRef>(null)
 
   useEffect(() => {
-    if (!trajectory) return
+    if (!track?.geolocations) return
     if (!mapRef.current) return
 
     const bounds = bbox(
       buffer(
         featureCollection(
-          trajectory?.map(value => point([value.longitude, value.latitude])) ??
-            [],
+          track.geolocations?.map(value =>
+            point([value.longitude, value.latitude]),
+          ) ?? [],
         ),
         0.01,
       ),
@@ -72,7 +77,7 @@ export default function TrackDetailPage() {
       padding: 12,
       pitch: 30,
     })
-  }, [trajectory])
+  }, [track?.geolocations])
 
   const handleExport = async (exporter: typeof BaseExporter) => {
     try {
@@ -125,11 +130,11 @@ export default function TrackDetailPage() {
           </Breadcrumb>
         </Navbar>
       </header>
-      <div className="overflow-scroll p-4 pb-safe grid gap-2">
+      <div className="overflow-scroll p-4 pb-safe grid gap-8">
         <div className="h-80 rounded-md overflow-hidden">
           <InteractiveMap ref={mapRef}>
-            {trajectory && trajectory.length > 0 && (
-              <TrajectoryLayer trajectory={trajectory} />
+            {track?.geolocations && track.geolocations.length > 0 && (
+              <TrajectoryLayer trajectory={track.geolocations} />
             )}
           </InteractiveMap>
         </div>
@@ -141,6 +146,37 @@ export default function TrackDetailPage() {
           </div>
         )}
 
+        <div className="grid gap-8">
+          {measurementTypes.map(({ type, attributes }) => (
+            <div key={type} className="grid gap-2">
+              <p className="font-semibold text-sm">{type}</p>
+              <div className="bg-muted px-2 py-1 rounded-md">
+                <AreaChart
+                  className="w-full h-40"
+                  data={measurements
+                    .filter(e => e.type === type)
+                    .map(e => {
+                      if (!attributes) return { x: e.timestamp, y: e.value }
+                      return {
+                        x: e.timestamp,
+                        [e.attribute!]: e.value,
+                      }
+                    })}
+                  categories={[...(attributes ?? 'y')]}
+                  index={'x'}
+                  showXAxis={false}
+                  showYAxis={false}
+                  showLegend={!!attributes}
+                  // valueFormatter={e => e.toFixed(2)}
+                  showTooltip={false}
+                  // onValueChange={e => alert(e)}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <Separator />
         <div className="flex gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
