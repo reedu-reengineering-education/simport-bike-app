@@ -35,7 +35,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Build app
-        run: yarn build
+        run: yarn export
 
       - name: cd android
         run: cd android
