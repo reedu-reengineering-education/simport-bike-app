@@ -2,7 +2,6 @@
 	"appId": "de.reedu.senseboxbike",
 	"appName": "senseBox:Bike",
 	"webDir": "dist",
-	"server": {},
 	"android": {
 		"useLegacyBridge": true
 	},
