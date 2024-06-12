@@ -20,7 +20,7 @@ export class Measurement extends BaseEntity {
   attribute: string | null // Describes the specific attribute being measured (e.g., "pm1", "pm2.5" for finedust, "x", "y", "z" for acceleration)
 
   @Column('real')
-  value: number | string | boolean // The measured value, which can be of different types based on the sensor attribute
+  value: number // The measured value, which can be of different types based on the sensor attribute
 
   @CreateDateColumn({ default: () => 'CURRENT_TIMESTAMP' })
   timestamp: Date

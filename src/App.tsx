@@ -10,6 +10,8 @@ import {
   createRoute,
   createRouter,
 } from '@tanstack/react-router'
+import { Button } from './components/ui/button'
+import { Toaster } from './components/ui/toaster'
 import TrackDetailPage from './pages/tracks/detail/detail'
 
 const rootRoute = createRootRoute({
@@ -23,6 +25,7 @@ const rootRoute = createRootRoute({
             vaul-drawer-wrapper=""
           >
             <Outlet />
+            <Toaster />
           </div>
         </ThemeProvider>
       </>
@@ -67,5 +70,19 @@ declare module '@tanstack/react-router' {
 }
 
 export default function App() {
-  return <RouterProvider router={router} />
+  return (
+    <RouterProvider
+      router={router}
+      defaultErrorComponent={e => (
+        <div className="p-safe-offset-4 grid items-center gap-4">
+          <h1 className="font-bold">Error</h1>
+          <p className="text-red-500 font-mono bg-zinc-200 px-3 py-2 rounded-md">
+            {e.error.message}
+          </p>
+          <Button onClick={e.reset}>Reset</Button>
+          {e.info?.componentStack}
+        </div>
+      )}
+    />
+  )
 }

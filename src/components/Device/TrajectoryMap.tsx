@@ -1,13 +1,12 @@
+import { useRawBLEDataStore } from '@/lib/store/use-raw-data-store'
 import { useExclusionZoneStore } from '@/lib/store/useExclusionZoneStore'
 import { useMapViewportState } from '@/lib/store/useMapViewportStore'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { AttributionControl, Layer, MapRef, Source } from 'react-map-gl'
 import MapComponent from '../Map/Map'
+import TrajectoryLayer from '../Map/layers/trajectory'
 
 export default function TrajectoryMap() {
-  // const { values } = useSenseBox()
-  // const reducedMotion = useSettingsStore(state => state.reducedMotion)
-
   const initialViewState = useMapViewportState(state => state.viewport)
   const setViewport = useMapViewportState(state => state.setViewport)
 
@@ -15,65 +14,22 @@ export default function TrajectoryMap() {
 
   const mapRef = useRef<MapRef>(null)
 
-  // useEffect(() => {
-  //   const latestValue = values.at(-1)
-  //   if (
-  //     latestValue &&
-  //     latestValue.gps_lat &&
-  //     latestValue.gps_lng &&
-  //     mapRef.current &&
-  //     !mapRef.current?.isMoving()
-  //   ) {
-  //     const center = [latestValue.gps_lng, latestValue.gps_lat] as LngLatLike
-  //     const zoom =
-  //       mapRef.current?.getZoom() > 10 ? mapRef.current.getZoom() : 18
-  //     let mapBearing = mapRef.current?.getBearing()
-  //     let pitch = mapRef.current?.getPitch()
-  //     const valueBefore = values.at(-2)
-  //     if (
-  //       valueBefore?.gps_lat &&
-  //       valueBefore?.gps_lng &&
-  //       (latestValue?.gps_spd ?? 0) > 5
-  //     ) {
-  //       mapBearing = bearing(
-  //         point([valueBefore.gps_lng, valueBefore.gps_lat]),
-  //         point([latestValue.gps_lng, latestValue.gps_lat]),
-  //       )
-  //       pitch = 60
-  //     } else {
-  //       mapBearing = 0
-  //       pitch = 0
-  //     }
+  const trajectory = useRawBLEDataStore(state => state.rawGeolocationData)
 
-  //     if (reducedMotion) {
-  //       mapRef.current?.setCenter(center)
-  //       mapRef.current?.setZoom(zoom)
-  //       mapRef.current?.setBearing(mapBearing)
-  //       mapRef.current?.setPitch(pitch)
-  //       mapRef.current?.setPadding({
-  //         top: 0,
-  //         bottom:
-  //           mapRef.current.getContainer().clientHeight * (paddingBottom || 0),
-  //         left: 0,
-  //         right: 0,
-  //       })
-  //     } else {
-  //       mapRef.current?.flyTo({
-  //         center,
-  //         zoom,
-  //         bearing: mapBearing,
-  //         pitch,
-  //         padding: {
-  //           top: 0,
-  //           bottom:
-  //             mapRef.current.getContainer().clientHeight * (paddingBottom || 0),
-  //           left: 0,
-  //           right: 0,
-  //         },
-  //       })
-  //     }
-  //   }
-  // }, [values])
+  useEffect(() => {
+    const center = trajectory?.coordinates?.at(-1) as [number, number]
+
+    if (center && mapRef.current && !mapRef.current?.isMoving()) {
+      const zoom =
+        mapRef.current?.getZoom() > 10 ? mapRef.current.getZoom() : 18
+
+      mapRef.current?.flyTo({
+        center,
+        zoom,
+        pitch: 45,
+      })
+    }
+  }, [trajectory])
 
   return (
     <MapComponent
@@ -100,24 +56,13 @@ export default function TrajectoryMap() {
           />
         </Source>
       )}
-      {/* {values && values.length > 0 && (
-        <>
-          <LocationHistory values={values} />
-          <LocationMarker
-            location={{
-              latitude: values.at(-1)?.gps_lat || 0,
-              longitude: values.at(-1)?.gps_lng || 0,
-              accuracy: 10,
-              simulated: false,
-              altitude: null,
-              altitudeAccuracy: null,
-              bearing: null,
-              speed: null,
-              time: null,
-            }}
-          />
-        </>
-      )} */}
+      <TrajectoryLayer
+        // @ts-ignore
+        trajectory={trajectory.coordinates.map(g => ({
+          latitude: g[1],
+          longitude: g[0],
+        }))}
+      />
     </MapComponent>
   )
 }

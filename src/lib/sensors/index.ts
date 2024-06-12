@@ -1,5 +1,6 @@
 import AccelerometerSensor from './accelerometer'
 import BaseSensor from './base-sensor'
+import BatterySensor from './battery'
 import FinedustSensor from './finedust'
 import HumiditySensor from './humidity'
 import OvertakingPredictionSensor from './overtaking-prediction'
@@ -16,6 +17,7 @@ const sensors = [
   OvertakingPredictionSensor,
   ToFSensor,
   FinedustSensor,
+  BatterySensor,
 ]
 
 export const characteristicRegistry: Record<

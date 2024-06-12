@@ -91,6 +91,7 @@ export const getSubscribableSensors = async () => {
   const services = await BleClient.getServices(deviceId)
   const availableCharacteristics = []
   for (const service of services) {
+    console.log('🦈 Service', service)
     for (const characteristic of service.characteristics) {
       if (characteristicRegistry[characteristic.uuid]) {
         availableCharacteristics.push(characteristic.uuid)

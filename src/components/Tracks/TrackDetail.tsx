@@ -17,7 +17,6 @@ import {
 } from 'lucide-react'
 import { useState } from 'react'
 import LocationHistory from '../Map/LocationHistory'
-// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 import InteractiveMap from '../Map/Map'
 import { Button } from '../ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
