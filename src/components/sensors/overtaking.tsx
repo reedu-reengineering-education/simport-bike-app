@@ -19,6 +19,8 @@ const overtaking: Sensor = {
       chartProps={{
         index: 'x',
         categories: ['y'],
+        maxValue: 100,
+        minValue: 0,
       }}
     />
   ),

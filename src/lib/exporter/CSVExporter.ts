@@ -16,11 +16,11 @@ export class CSVExporter extends BaseExporter implements AbstractExporter {
     const df = new dfd.DataFrame(track)
 
     const csv = dfd.toCSV(df)
+
     const writeResult = await Filesystem.writeFile({
       data: csv as string,
       path: `senseBox_bike_${format(metadata.start, 'yyyy-MM-dd_HH-mm')}.csv`,
       directory: Directory.Cache,
-      recursive: true,
       encoding: Encoding.UTF8,
     })
     await Share.share({
@@ -29,7 +29,6 @@ export class CSVExporter extends BaseExporter implements AbstractExporter {
     // cleanup
     await Filesystem.deleteFile({
       path: writeResult.uri,
-      directory: Directory.Cache,
     })
   }
 }

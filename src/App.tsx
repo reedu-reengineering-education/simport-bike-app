@@ -21,7 +21,7 @@ const rootRoute = createRootRoute({
         <AuthChecker />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div
-            className="flex h-full max-h-full w-full flex-col bg-background px-safe landscape:px-0"
+            className="flex h-full max-h-full w-full flex-col bg-background landscape:px-0"
             vaul-drawer-wrapper=""
           >
             <Outlet />

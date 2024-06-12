@@ -126,7 +126,6 @@ export class MultiFileExporter
     })
     await Filesystem.deleteFile({
       path: `track_${format(new Date(track.start), 'yyyy-MM-dd_HH-mm-ss')}.zip`,
-      directory: Directory.Cache,
     })
   }
 }
