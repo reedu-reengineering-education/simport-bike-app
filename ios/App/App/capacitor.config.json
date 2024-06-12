@@ -2,10 +2,7 @@
 	"appId": "de.reedu.senseboxbike",
 	"appName": "senseBox:Bike",
 	"webDir": "dist",
-	"server": {
-		"url": "http://192.168.2.136:5173",
-		"cleartext": true
-	},
+	"server": {},
 	"android": {
 		"useLegacyBridge": true
 	},
