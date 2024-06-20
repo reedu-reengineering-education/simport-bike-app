@@ -5,12 +5,16 @@ import { forwardRef, useEffect, useState } from 'react'
 import colors from 'tailwindcss/colors'
 import { sensorRegistry } from '../sensors'
 import AnimatedNumber from '../ui/animated-number'
+import { ScrollArea } from '../ui/scroll-area'
 
 const MeasurementsGrid = forwardRef<HTMLDivElement>((_, ref) => {
   const rawData = useRawBLEDataStore(state => state.rawBleSensorData)
 
   return (
-    <div className="flex h-full w-full flex-col p-1 pb-safe-offset-8" ref={ref}>
+    <ScrollArea
+      className="flex h-full w-full flex-col p-1 pb-safe-offset-8"
+      ref={ref}
+    >
       <div
         className={cn(
           'grid overflow-y-scroll w-full h-full grid-cols-2 grid-rows-4 gap-1',
@@ -18,7 +22,7 @@ const MeasurementsGrid = forwardRef<HTMLDivElement>((_, ref) => {
       >
         {Object.keys(rawData).map(key => sensorRegistry[key])}
       </div>
-    </div>
+    </ScrollArea>
   )
 })
 

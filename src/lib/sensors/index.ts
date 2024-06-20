@@ -2,8 +2,10 @@ import AccelerometerSensor from './accelerometer'
 import BaseSensor from './base-sensor'
 import BatterySensor from './battery'
 import FinedustSensor from './finedust'
+import HeartRateSensor from './heart-rate'
 import HumiditySensor from './humidity'
 import OvertakingPredictionSensor from './overtaking-prediction'
+import SoundSensor from './sound'
 import TemperatureSensor from './temperature'
 import ToFSensor from './tof'
 import UltrasonicDistanceSensor from './ultrasonic-distance'
@@ -18,6 +20,8 @@ const sensors = [
   ToFSensor,
   FinedustSensor,
   BatterySensor,
+  HeartRateSensor,
+  SoundSensor,
 ]
 
 export const characteristicRegistry: Record<

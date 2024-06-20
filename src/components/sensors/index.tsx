@@ -1,8 +1,10 @@
 import accelerometer from './accelerometer'
 import battery from './battery'
 import finedust from './finedust'
+import heartRate from './heart-rate'
 import humidity from './humidity'
 import overtaking from './overtaking'
+import sound from './sound'
 import temperature from './temperature'
 import ultrasonic from './ultrasonic-distance-sensor'
 
@@ -20,6 +22,8 @@ const sensors = [
   finedust,
   overtaking,
   battery,
+  heartRate,
+  sound,
 ]
 
 export const sensorRegistry: Record<string, React.ReactNode> = sensors.reduce(
