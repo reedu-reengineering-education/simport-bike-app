@@ -8,7 +8,9 @@ import {
   UploadCloud,
 } from 'lucide-react'
 import { forwardRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import ConnectWithCamera from '../Device/ConnectWithCamera'
+import SettingsDrawer from '../Device/SettingsDrawer'
 import { Button } from '../ui/button'
 
 const ControlBar = forwardRef<HTMLDivElement>((_, ref) => {
@@ -21,16 +23,19 @@ const ControlBar = forwardRef<HTMLDivElement>((_, ref) => {
   const { isRecording, start, stop, isLoading } = useRecordTrack()
   // const setShowWizardDrawer = useUIStore(state => state.setShowWizardDrawer)
 
+  const { t } = useTranslation('translation', { keyPrefix: 'controls' })
+
   return (
     <div
       className="flex w-full justify-between gap-2 p-2 pb-safe-or-4"
       ref={ref}
     >
+      <SettingsDrawer />
       {!isConnected ? (
-        <div className="mx-auto flex w-full max-w-xl rounded-md bg-primary/25">
+        <div className="mx-auto flex w-full max-w-xl rounded-md bg-secondary">
           <Button size={'sm'} className="w-full" onClick={() => connect()}>
             <Bluetooth className="mr-2 h-4" />
-            Verbinden
+            {t('connect')}
           </Button>
           <ConnectWithCamera />
         </div>
@@ -41,7 +46,7 @@ const ControlBar = forwardRef<HTMLDivElement>((_, ref) => {
           onClick={() => disconnect()}
         >
           <BluetoothOff className="mr-2 h-4" />
-          Trennen
+          {t('disconnect')}
         </Button>
       )}
       {isConnected ? (
@@ -53,7 +58,7 @@ const ControlBar = forwardRef<HTMLDivElement>((_, ref) => {
             variant={'secondary'}
           >
             <Circle className="mr-2 h-5 fill-red-500 text-red-500" />
-            Aufzeichnen
+            {t('start')}
           </Button>
         ) : (
           <>
@@ -69,7 +74,7 @@ const ControlBar = forwardRef<HTMLDivElement>((_, ref) => {
               {!isLoading && (
                 <Square className="mr-2 h-5 fill-red-500 text-red-500" />
               )}
-              Stop
+              {t('stop')}
             </Button>
           </>
         )

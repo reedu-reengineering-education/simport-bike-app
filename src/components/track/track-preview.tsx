@@ -2,7 +2,6 @@ import { useTrack } from '@/lib/db/hooks/useTrack'
 import polyline from '@mapbox/polyline'
 import { Link } from '@tanstack/react-router'
 import { format, formatDuration, intervalToDuration } from 'date-fns'
-import { de } from 'date-fns/locale'
 import { useTheme } from 'next-themes'
 
 export default function TrackPreview({ trackId }: { trackId: string }) {
@@ -21,11 +20,7 @@ export default function TrackPreview({ trackId }: { trackId: string }) {
   return (
     <Link to={`/tracks/${track.id}`}>
       <div className="grid gap-2">
-        <h1 className="font-bold text-xl">
-          {format(track.start, 'PPp', {
-            locale: de,
-          })}
-        </h1>
+        <h1 className="font-bold text-xl">{format(track.start, 'PPp')}</h1>
         <p className="text-sm">
           {formatDuration(
             intervalToDuration({
@@ -34,7 +29,6 @@ export default function TrackPreview({ trackId }: { trackId: string }) {
             }),
             {
               format: ['hours', 'minutes', 'seconds'],
-              locale: de,
             },
           )}
         </p>

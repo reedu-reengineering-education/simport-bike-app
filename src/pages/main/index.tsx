@@ -1,8 +1,26 @@
 import DeviceMapWrapper from '@/components/Device/DeviceMapWrapper'
 import GeolocationPermissionDrawer from '@/components/Device/GeolocationPermissionDrawer'
-import { TopBar } from '@/components/ui/TopBar'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Track } from '@/lib/db/entities'
+import senseBoxBikeDataSource from '@/lib/db/sources/senseBoxBikeDataSource'
+import { Link } from '@tanstack/react-router'
+import { AudioWaveform } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 export default function MainPage() {
+  const { t } = useTranslation('translation')
+
+  const [trackCount, setTrackCount] = useState(0)
+
+  useEffect(() => {
+    senseBoxBikeDataSource.dataSource
+      .getRepository(Track)
+      .count()
+      .then(setTrackCount)
+  }, [])
+
   return (
     <div className="relative h-full w-full">
       <main className="h-full w-full overflow-auto landscape:pl-safe">
@@ -10,9 +28,16 @@ export default function MainPage() {
         <GeolocationPermissionDrawer />
       </main>
       <div className="absolute top-0 w-screen backdrop-blur pt-safe" />
-      <header className="absolute right-0 top-0 w-fit mt-safe">
-        <TopBar />
-      </header>
+      <div className="absolute top-0 right-0 mr-safe-offset-4 mt-safe-offset-2">
+        <Link to="/tracks" className="w-fit mx-auto">
+          <Button size={'sm'} variant={'secondary'}>
+            <AudioWaveform className="h-4 mr-2" />
+            {t('tracks.title')}
+            {trackCount && <Badge className="ml-2">{trackCount}</Badge>}
+            {/* <ArrowRight className="h-4 ml-2" /> */}
+          </Button>
+        </Link>
+      </div>
     </div>
   )
 }

@@ -1,4 +1,3 @@
-import TrackWrapper from '@/components/Tracks/track-wrapper'
 import { AnimateIn } from '@/components/animated/animate-in'
 import TrackPreview from '@/components/track/track-preview'
 import Spinner from '@/components/ui/Spinner'
@@ -12,11 +11,14 @@ import {
 } from '@/components/ui/breadcrumb'
 import { useTracks } from '@/lib/db/hooks/useTracks'
 import { Link } from '@tanstack/react-router'
-import { HomeIcon } from 'lucide-react'
+import { AudioWaveform, HomeIcon } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { Navbar } from './navbar'
 
 export default function TracksPage() {
   const { tracks, loading } = useTracks()
+
+  const { t } = useTranslation('translation', { keyPrefix: 'tracks' })
 
   return (
     <div className="flex h-full w-full flex-col pt-safe">
@@ -34,7 +36,10 @@ export default function TracksPage() {
               <BreadcrumbSeparator />
               <BreadcrumbItem>
                 <AnimateIn>
-                  <BreadcrumbPage>Tracks</BreadcrumbPage>
+                  <BreadcrumbPage className="flex items-center">
+                    <AudioWaveform className="h-4 mr-2" />
+                    {t('title')}
+                  </BreadcrumbPage>
                 </AnimateIn>
               </BreadcrumbItem>
             </BreadcrumbList>
@@ -43,15 +48,10 @@ export default function TracksPage() {
       </header>
       <div className="flex-1 overflow-scroll p-4 pb-safe grid gap-14">
         {loading && <Spinner />}
-        {tracks.length === 0 && (
-          <div>
-            No tracks found. Start tracking by clicking on the button below
-          </div>
-        )}
+        {tracks.length === 0 && <p>{t('no-tracks')}</p>}
         {tracks.map(track => (
           <TrackPreview key={track.id} trackId={track.id} />
         ))}
-        <TrackWrapper />
       </div>
     </div>
   )
