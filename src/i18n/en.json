@@ -1,0 +1,33 @@
+{
+  "translation": {
+    "settings": {
+      "title": "Settings",
+      "app-settings-title": "App Settings",
+      "privacy": "Privacy",
+      "dark": "Dark Theme",
+      "light": "Light Theme",
+      "language": "Language",
+      "record-settings-title": "Record Settings",
+      "smartphone-gps": "Smartphone GPS",
+      "smartphone-gps-desc": "Use your smartphone's GPS to track your location.",
+      "reduced-motion": "Reduced Motion",
+      "reduced-motion-desc": "Reduce motion and animations in the app.",
+      "save": "Save",
+      "private-zones": {
+        "title": "Private Zones",
+        "description": "Private zones are areas where your location is not tracked.",
+        "save": "Save"
+      }
+    },
+    "tracks": {
+      "title": "Tracks",
+      "no-tracks": "No tracks available."
+    },
+    "controls": {
+      "connect": "Connect",
+      "disconnect": "Disconnect",
+      "record-start": "Start",
+      "record-stop": "Stop"
+    }
+  }
+}

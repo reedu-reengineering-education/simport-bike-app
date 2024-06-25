@@ -25,7 +25,7 @@ export default function ConnectWithCamera() {
     <Button
       size={'sm'}
       className="w-fit"
-      variant={'ghost'}
+      variant={'secondary'}
       onClick={async () => {
         try {
           const { barcodes } = await BarcodeScanner.scan()

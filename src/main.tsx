@@ -6,6 +6,7 @@ import { JeepSqlite } from 'jeep-sqlite/dist/components/jeep-sqlite'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
+import './i18n'
 import './styles/globals.css'
 
 customElements.define('jeep-sqlite', JeepSqlite)

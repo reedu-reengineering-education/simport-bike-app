@@ -19,6 +19,10 @@ const InteractiveMap = forwardRef<MapRef, MapProps>(
     }, [theme])
 
     const onMapLoad = (e: mapboxgl.MapboxEvent<undefined>) => {
+      if (!e.target) return
+
+      if (!e.target.isStyleLoaded()) return
+
       // @ts-ignore
       e.target.setConfigProperty(
         'basemap',
