@@ -85,7 +85,8 @@ export default function TrackDetailPage() {
       const Exporter = new exporter(trackId)
       await Exporter.export()
     } catch (error) {
-      console.log('we are in the catch block')
+      // @ts-ignore
+      console.error(error?.message)
       toast({
         variant: 'destructive',
         title: 'Export failed',
