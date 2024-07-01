@@ -26,12 +26,21 @@ import * as z from 'zod'
 
 const formSchema = z.object({
   name: z.string().min(2).max(50),
+  model: z.string().optional(),
 })
 
 import { createSenseBoxBike } from '@/lib/api/openSenseMapClient'
+import { senseBoxBikeModel } from '@/lib/api/opensensemap-bike-model-factory'
 import { useAuthStore } from '@/lib/store/useAuthStore'
 import useOpenSenseMapAuth from '@/lib/useOpenSenseMapAuth'
 import { Geolocation } from '@capacitor/geolocation'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../ui/select'
 import { toast } from '../ui/use-toast'
 
 export default function CreateBikeBoxDialog() {
@@ -45,6 +54,7 @@ export default function CreateBikeBoxDialog() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: '',
+      model: 'default',
     },
   })
 
@@ -57,6 +67,7 @@ export default function CreateBikeBoxDialog() {
         values.name,
         coordinates.coords.latitude,
         coordinates.coords.longitude,
+        values.model as senseBoxBikeModel,
       )
       await refreshBoxes()
       setSelectedBox(newBox)
@@ -83,7 +94,34 @@ export default function CreateBikeBoxDialog() {
         <DialogHeader>
           <DialogTitle className="mb-2">Neue senseBox:bike</DialogTitle>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="space-y-8 text-left"
+            >
+              <FormField
+                control={form.control}
+                name="model"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Model</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="senseBox:bike Model" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="default">Default</SelectItem>
+                        <SelectItem value="atrai">Atrai</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="name"

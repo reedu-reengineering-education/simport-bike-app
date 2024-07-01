@@ -41,7 +41,7 @@ export default function TrajectoryMap() {
       <AttributionControl
         position="top-left"
         style={{
-          marginTop: 'calc(0.5rem + env(safe-area-inset-top))',
+          marginTop: 'calc(0.75rem + env(safe-area-inset-top))',
         }}
       />
       {zones && zones.features.length > 0 && (

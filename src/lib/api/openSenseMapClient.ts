@@ -1,6 +1,10 @@
 import { CapacitorHttp } from '@capacitor/core'
 import axios from 'axios'
 import { BoxEntity, BoxResponse, useAuthStore } from '../store/useAuthStore'
+import {
+  senseBoxBikeModel,
+  senseBoxBikeModelFactory,
+} from './opensensemap-bike-model-factory'
 
 const OSEM_BASE_URL = 'https://api.opensensemap.org'
 
@@ -164,92 +168,15 @@ export async function createSenseBoxBike(
   name: string,
   latitude: number,
   longitude: number,
+  model: senseBoxBikeModel = 'default',
 ) {
-  const boxData = {
-    name: name,
-    exposure: 'mobile',
-    location: [longitude, latitude],
-    grouptag: ['bike'],
-    sensors: [
-      {
-        id: 0,
-        icon: 'osem-thermometer',
-        title: 'Temperatur',
-        unit: '°C',
-        sensorType: 'HDC1080',
-      },
-      {
-        id: 1,
-        icon: 'osem-humidity',
-        title: 'rel. Luftfeuchte',
-        unit: '%',
-        sensorType: 'HDC1080',
-      },
-      {
-        id: 2,
-        icon: 'osem-cloud',
-        title: 'PM1',
-        unit: 'µg/m³',
-        sensorType: 'SPS30',
-      },
-      {
-        id: 3,
-        icon: 'osem-cloud',
-        title: 'PM25',
-        unit: 'µg/m³',
-        sensorType: 'SPS30',
-      },
-      {
-        id: 4,
-        icon: 'osem-cloud',
-        title: 'PM4',
-        unit: 'µg/m³',
-        sensorType: 'SPS30',
-      },
-      {
-        id: 5,
-        icon: 'osem-cloud',
-        title: 'PM10',
-        unit: 'µg/m³',
-        sensorType: 'SPS30',
-      },
-      {
-        id: 6,
-        icon: 'osem-signal',
-        title: 'Distanz Links',
-        unit: 'cm',
-        sensorType: 'HC-SR04',
-      },
-      {
-        id: 7,
-        icon: 'osem-shock',
-        title: 'Beschleunigung X',
-        unit: 'm/s²',
-        sensorType: 'MPU-6050',
-      },
-      {
-        id: 8,
-        icon: 'osem-shock',
-        title: 'Beschleunigung Y',
-        unit: 'm/s²',
-        sensorType: 'MPU-6050',
-      },
-      {
-        id: 9,
-        icon: 'osem-shock',
-        title: 'Beschleunigung Z',
-        unit: 'm/s²',
-        sensorType: 'MPU-6050',
-      },
-      {
-        id: 10,
-        icon: 'osem-dashboard',
-        title: 'Geschwindigkeit',
-        unit: 'km/h',
-        sensorType: 'GPS',
-      },
-    ],
-  }
+  const boxData = senseBoxBikeModelFactory(
+    name,
+    longitude,
+    latitude,
+    undefined,
+    model,
+  )
   const response = await axiosApiInstance.post('/boxes', boxData)
   if (response.status === 201) {
     const { data } = response.data

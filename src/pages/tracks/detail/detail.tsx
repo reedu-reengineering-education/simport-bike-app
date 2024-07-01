@@ -85,7 +85,8 @@ export default function TrackDetailPage() {
       const Exporter = new exporter(trackId)
       await Exporter.export()
     } catch (error) {
-      console.log('we are in the catch block')
+      // @ts-ignore
+      console.error(error?.message)
       toast({
         variant: 'destructive',
         title: 'Export failed',
@@ -132,7 +133,7 @@ export default function TrackDetailPage() {
       </header>
       <div className="overflow-scroll p-4 pb-safe-or-4 grid gap-8">
         <div className="h-80 rounded-md overflow-hidden">
-          <InteractiveMap ref={mapRef}>
+          <InteractiveMap ref={mapRef} reuseMaps>
             {track?.geolocations && track.geolocations.length > 0 && (
               <TrajectoryLayer trajectory={track.geolocations} />
             )}
