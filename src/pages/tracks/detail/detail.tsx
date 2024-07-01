@@ -133,7 +133,7 @@ export default function TrackDetailPage() {
       </header>
       <div className="overflow-scroll p-4 pb-safe-or-4 grid gap-8">
         <div className="h-80 rounded-md overflow-hidden">
-          <InteractiveMap ref={mapRef}>
+          <InteractiveMap ref={mapRef} reuseMaps>
             {track?.geolocations && track.geolocations.length > 0 && (
               <TrajectoryLayer trajectory={track.geolocations} />
             )}

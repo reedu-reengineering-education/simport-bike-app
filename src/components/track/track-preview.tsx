@@ -32,7 +32,7 @@ export default function TrackPreview({ trackId }: { trackId: string }) {
             },
           )}
         </p>
-        <div className="flex gap-2 overflow-x-scroll">
+        <div className="flex gap-2 overflow-x-scroll -mx-4 px-4">
           {measurementTypes.map(({ type }) => (
             <span key={type} className="text-xs bg-muted px-2 py-1 rounded-md">
               {type}
