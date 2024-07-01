@@ -140,7 +140,7 @@ export default function SettingsDrawer() {
                 <DropdownMenuTrigger asChild>
                   <Button variant={'secondary'} className="justify-start">
                     <LanguageIcon className="h-4 mr-2" />
-                    Language
+                    {t('language')}
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
