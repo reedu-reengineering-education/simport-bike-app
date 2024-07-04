@@ -2,6 +2,7 @@ import { trackDetailRoute } from '@/App'
 import InteractiveMap from '@/components/Map/Map'
 import TrajectoryLayer from '@/components/Map/layers/trajectory'
 import { AnimateIn } from '@/components/animated/animate-in'
+import { AreaChart } from '@/components/charts/area-chart'
 import Spinner from '@/components/ui/Spinner'
 import {
   AlertDialog,
@@ -37,11 +38,11 @@ import { BaseExporter } from '@/lib/exporter/BaseExporter'
 import { CSVExporter } from '@/lib/exporter/CSVExporter'
 import { MultiFileExporter } from '@/lib/exporter/MultiFileExporter'
 import { Link, useNavigate } from '@tanstack/react-router'
-import { AreaChart } from '@tremor/react'
 import { buffer, bbox, featureCollection, point } from '@turf/turf'
 import { format } from 'date-fns'
 import { FileDownIcon, HomeIcon, Loader2 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { MapRef } from 'react-map-gl'
 import { Navbar } from '../navbar'
 
@@ -56,6 +57,10 @@ export default function TrackDetailPage() {
   const navigate = useNavigate({ from: '/tracks/$trackId' })
 
   const mapRef = useRef<MapRef>(null)
+
+  // const [selectedTimestamp, setSelectedTimestamp] = useState<Date>()
+
+  const { t } = useTranslation('translation')
 
   useEffect(() => {
     if (!track?.geolocations) return
@@ -89,7 +94,7 @@ export default function TrackDetailPage() {
       console.error(error?.message)
       toast({
         variant: 'destructive',
-        title: 'Export failed',
+        title: t('tracks.download-failed'),
         // @ts-ignore
         description: error?.message,
       })
@@ -115,7 +120,7 @@ export default function TrackDetailPage() {
               <BreadcrumbItem>
                 <AnimateIn>
                   <BreadcrumbLink asChild>
-                    <Link to="/tracks">Tracks</Link>
+                    <Link to="/tracks">{t('tracks.title')}</Link>
                   </BreadcrumbLink>
                 </AnimateIn>
               </BreadcrumbItem>
@@ -123,7 +128,11 @@ export default function TrackDetailPage() {
               <BreadcrumbItem>
                 <AnimateIn delay={500}>
                   <BreadcrumbPage>
-                    {track ? format(track!.start, 'PPpp') : <p>Loading...</p>}
+                    {track ? (
+                      format(track!.start, 'PPpp')
+                    ) : (
+                      <p>{t('tracks.loading')}</p>
+                    )}
                   </BreadcrumbPage>
                 </AnimateIn>
               </BreadcrumbItem>
@@ -133,27 +142,30 @@ export default function TrackDetailPage() {
       </header>
       <div className="overflow-scroll p-4 pb-safe-or-4 grid gap-8">
         <div className="h-80 rounded-md overflow-hidden">
-          <InteractiveMap ref={mapRef} reuseMaps>
+          <InteractiveMap ref={mapRef}>
             {track?.geolocations && track.geolocations.length > 0 && (
-              <TrajectoryLayer trajectory={track.geolocations} />
+              <TrajectoryLayer
+                trajectory={track.geolocations}
+                // selectedTimestamp={selectedTimestamp}
+              />
             )}
           </InteractiveMap>
         </div>
         {loading && <Spinner />}
         {!track && !loading && (
           <div>
-            Track not found
-            <Link to="/tracks">Tracks</Link>
+            {t('tracks.not-found')}
+            <Link to="/tracks">{t('tracks.title')}</Link>
           </div>
         )}
 
         <div className="grid gap-8">
           {measurementTypes.map(({ type, attributes }) => (
             <div key={type} className="grid gap-2">
-              <p className="font-semibold text-sm">{type}</p>
+              <p className="font-semibold text-sm">{t(`phenomena.${type}`)}</p>
               <div className="bg-muted px-2 py-1 rounded-md">
                 <AreaChart
-                  className="w-full h-40"
+                  className="w-full h-32"
                   data={measurements
                     .filter(e => e.type === type)
                     .map(e => {
@@ -170,7 +182,15 @@ export default function TrackDetailPage() {
                   showLegend={!!attributes}
                   // valueFormatter={e => e.toFixed(2)}
                   showTooltip={false}
-                  // onValueChange={e => alert(e)}
+                  // tooltipCallback={e => {
+                  //   const x = e?.payload[0]?.payload?.x
+                  //   if (!x) {
+                  //     setSelectedTimestamp(undefined)
+                  //     return
+                  //   }
+
+                  //   setSelectedTimestamp(new Date(x))
+                  // }}
                 />
               </div>
             </div>
@@ -185,12 +205,12 @@ export default function TrackDetailPage() {
                 {isExporting && (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Exporting...
+                    {t('tracks.download-loading')}
                   </>
                 )}
                 {!isExporting && (
                   <>
-                    Download <FileDownIcon className="h-4 ml-2" />
+                    {t('tracks.download')} <FileDownIcon className="h-4 ml-2" />
                   </>
                 )}
               </Button>
@@ -208,19 +228,20 @@ export default function TrackDetailPage() {
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button variant={'destructive'} className="w-full flex-1">
-                Löschen
+                {t('tracks.delete')}
               </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogTitle>
+                  {t('tracks.delete-confirmation')}
+                </AlertDialogTitle>
                 <AlertDialogDescription>
-                  This action cannot be undone. This will permanently delete
-                  your account and remove your data from our servers.
+                  {t('tracks.delete-confirmation-description')}
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogCancel>{t('tracks.cancel')}</AlertDialogCancel>
                 <AlertDialogAction
                   onClick={async () => {
                     await deleteTrack(trackId)
@@ -229,7 +250,7 @@ export default function TrackDetailPage() {
                     })
                   }}
                 >
-                  Delete
+                  {t('tracks.delete')}
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>

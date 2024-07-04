@@ -15,35 +15,39 @@ const InteractiveMap = forwardRef<MapRef, MapProps>(
       if (!mapRef.current) return
 
       // @ts-ignore
-      onMapLoad({ target: mapRef.current })
+      // onMapLoad({ target: mapRef.current })
     }, [theme])
 
-    const onMapLoad = (e: mapboxgl.MapboxEvent<undefined>) => {
-      if (!e.target) return
+    // const onMapLoad = (e: mapboxgl.MapboxEvent<undefined>) => {
+    //   if (!e.target) return
 
-      if (!e.target.isStyleLoaded()) return
+    //   if (!e.target.isStyleLoaded()) return
 
-      // @ts-ignore
-      e.target.setConfigProperty(
-        'basemap',
-        'lightPreset',
-        theme === 'dark' ? 'night' : '',
-      )
-    }
+    //   // @ts-ignore
+    //   e.target.setConfigProperty(
+    //     'basemap',
+    //     'lightPreset',
+    //     theme === 'dark' ? 'night' : '',
+    //   )
+    // }
 
     return (
       // @ts-ignore
       <ReactMap
-        mapStyle={mapStyle || 'mapbox://styles/mapbox/standard'}
+        mapStyle={
+          mapStyle || theme === 'dark'
+            ? 'mapbox://styles/mapbox/dark-v11'
+            : 'mapbox://styles/mapbox/outdoors-v12'
+        }
         mapboxAccessToken={import.meta.env.VITE_MAPBOX_ACCESS_TOKEN}
         ref={mapRef}
         style={{
           width: '100%',
           height: '100%',
         }}
-        onLoad={onMapLoad}
+        // onLoad={onMapLoad}
         projection={{
-          name: 'globe',
+          name: 'mercator',
         }}
         {...props}
       >

@@ -34,6 +34,7 @@ import { senseBoxBikeModel } from '@/lib/api/opensensemap-bike-model-factory'
 import { useAuthStore } from '@/lib/store/useAuthStore'
 import useOpenSenseMapAuth from '@/lib/useOpenSenseMapAuth'
 import { Geolocation } from '@capacitor/geolocation'
+import { useTranslation } from 'react-i18next'
 import {
   Select,
   SelectContent,
@@ -49,6 +50,10 @@ export default function CreateBikeBoxDialog() {
 
   const { refreshBoxes } = useOpenSenseMapAuth()
   const setSelectedBox = useAuthStore(state => state.setSelectedBox)
+
+  const { t } = useTranslation('translation', {
+    keyPrefix: 'opensensemap.create-sensebox-bike-dialog',
+  })
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -75,8 +80,8 @@ export default function CreateBikeBoxDialog() {
       setOpen(false)
     } catch (_error) {
       toast({
-        title: 'Fehler',
-        description: 'Fehler beim Erstellen der senseBox:bike',
+        title: t('failed-title'),
+        description: t('failed-description'),
       })
     } finally {
       setLoading(false)
@@ -87,12 +92,12 @@ export default function CreateBikeBoxDialog() {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant={'secondary'} className="w-fit">
-          <Plus className="mr-2 w-5" /> Neue senseBox:bike hinzufügen
+          <Plus className="mr-2 w-5" /> {t('trigger')}
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="mb-2">Neue senseBox:bike</DialogTitle>
+          <DialogTitle className="mb-2">{t('title')}</DialogTitle>
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
@@ -103,19 +108,19 @@ export default function CreateBikeBoxDialog() {
                 name="model"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Model</FormLabel>
+                    <FormLabel>{t('model')}</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="senseBox:bike Model" />
+                          <SelectValue />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="default">Default</SelectItem>
-                        <SelectItem value="atrai">Atrai</SelectItem>
+                        <SelectItem value="default">{t('default')}</SelectItem>
+                        <SelectItem value="atrai">{t('atrai')}</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -127,25 +132,22 @@ export default function CreateBikeBoxDialog() {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Name</FormLabel>
+                    <FormLabel>{t('name')}</FormLabel>
                     <FormControl>
                       <Input placeholder="senseBox:bike" {...field} />
                     </FormControl>
-                    <FormDescription>
-                      Der Name der neuen senseBox:bike wird auf der openSenseMap
-                      angezeigt
-                    </FormDescription>
+                    <FormDescription>{t('description')}</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
               <DialogDescription className="flex items-center">
                 <InfoIcon className="mr-2 h-5 md:mr-4" />
-                Die Position der senseBox:bike wird automatisch ermittelt
+                {t('position-info')}
               </DialogDescription>
               <Button type="submit" disabled={loading}>
                 {loading && <Loader2 className="mr-2 w-5 animate-spin" />}
-                Speichern
+                {t('create')}
               </Button>
             </form>
           </Form>

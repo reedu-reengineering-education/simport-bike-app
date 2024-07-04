@@ -12,3 +12,5 @@ i18n.use(initReactI18next).init({
   }, // Where we're gonna put translations' files
   lng: navigator.language.split('-')[0], // Default language
 })
+
+export default i18n

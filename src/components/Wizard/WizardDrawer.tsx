@@ -1,3 +1,4 @@
+import openSenseMapLogo from '@/assets/openSenseMap.png'
 import ConnectionSelection from '@/components/Wizard/ConnectionSelection'
 import SelectDevice from '@/components/Wizard/SelectDevice'
 import { signout } from '@/lib/api/openSenseMapClient'
@@ -53,6 +54,11 @@ export default function WizardDrawer() {
             allowTouchMove={false}
           >
             <SwiperSlide>
+              <img
+                src={openSenseMapLogo}
+                alt="openSenseMap"
+                className="h-12 w-fit mx-auto mb-4"
+              />
               <LoginOrRegister />
             </SwiperSlide>
             <SwiperSlide>

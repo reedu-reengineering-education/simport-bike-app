@@ -3,6 +3,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm'
@@ -25,9 +26,13 @@ export class Geolocation extends BaseEntity {
   @CreateDateColumn({ default: () => 'CURRENT_TIMESTAMP' })
   timestamp: Date
 
+  @Column('uuid')
+  trackId: string
+
   @ManyToOne(
     () => Track,
     track => track.geolocations,
   )
+  @JoinColumn({ name: 'trackId' })
   track: Track
 }

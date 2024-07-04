@@ -21,11 +21,15 @@ interface RawBLEDataStore<T> {
 export const useRawBLEDataStore = create<RawBLEDataStore<number[]>>(set => ({
   rawBleSensorData: {},
   addRawBLESensorData: (characteristic, measurement) => {
+    // remove data older than 15 seconds
+    const now = new Date()
     set(state => ({
       rawBleSensorData: {
         ...state.rawBleSensorData,
         [characteristic]: [
-          ...(state.rawBleSensorData[characteristic] || []),
+          ...(state.rawBleSensorData[characteristic] || []).filter(
+            data => now.getTime() - data.timestamp.getTime() < 15000,
+          ),
           measurement,
         ],
       },

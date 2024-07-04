@@ -2,6 +2,7 @@ import { useAuthStore } from '@/lib/store/useAuthStore'
 import { cn } from '@/lib/utils'
 import { cx } from 'class-variance-authority'
 import { CheckCircle, Circle } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { useSwiper } from 'swiper/react'
 import { Button } from '../ui/button'
 import { ScrollArea } from '../ui/scroll-area'
@@ -14,9 +15,11 @@ export default function SelectDevice() {
   const setSelectedBox = useAuthStore(state => state.setSelectedBox)
   const swiper = useSwiper()
 
+  const { t } = useTranslation('translation', { keyPrefix: 'opensensemap' })
+
   return (
     <WizardSlide className="flex h-full w-full flex-col items-center justify-center gap-4">
-      <p className="mb-4 font-medium">Box auswählen</p>
+      <p className="mb-4 font-medium">{t('select-box')}</p>
       <CreateBikeBoxDialog />
       <ScrollArea className="flex max-h-[15rem] w-full flex-col gap-2">
         {boxes &&
@@ -46,7 +49,7 @@ export default function SelectDevice() {
         className="w-11/12 rounded-md border"
         onClick={() => swiper.slideNext()}
       >
-        Weiter
+        {t('next')}
       </Button>
     </WizardSlide>
   )

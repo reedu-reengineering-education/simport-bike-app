@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2Icon } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useSwiper } from 'swiper/react'
 import * as z from 'zod' // import * as z from "zod";
 import { Button } from '../ui/button'
@@ -30,6 +31,8 @@ export default function OpenSenseMapLogin() {
   const { login } = useOpenSenseMapAuth()
   const { toast } = useToast()
 
+  const { t } = useTranslation('translation', { keyPrefix: 'opensensemap' })
+
   const email = useAuthStore(state => state.email)
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -45,7 +48,7 @@ export default function OpenSenseMapLogin() {
       await login(values.email, values.password)
       swiper.slideNext()
     } catch (_e) {
-      toast({ variant: 'destructive', title: 'Login fehlgeschlagen' })
+      toast({ variant: 'destructive', title: t('login-failed') })
     } finally {
       setLoading(false)
     }
@@ -53,9 +56,6 @@ export default function OpenSenseMapLogin() {
 
   return (
     <WizardSlide className="flex h-full flex-col content-center justify-center gap-4">
-      <p className="mb-4 font-medium">
-        Bitte loggen Sie sich mit Ihrem openSenseMap-Account ein
-      </p>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleLogin)} className="space-y-8">
           <FormField
@@ -63,9 +63,9 @@ export default function OpenSenseMapLogin() {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>E-Mail</FormLabel>
+                <FormLabel>{t('email')}</FormLabel>
                 <FormControl>
-                  <Input type="email" placeholder="E-Mail" {...field} />
+                  <Input type="email" placeholder={t('email')} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -76,9 +76,13 @@ export default function OpenSenseMapLogin() {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Passwort</FormLabel>
+                <FormLabel>{t('password')}</FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder="Passwort" {...field} />
+                  <Input
+                    type="password"
+                    placeholder={t('password')}
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -87,7 +91,7 @@ export default function OpenSenseMapLogin() {
 
           <Button disabled={loading} type="submit">
             {loading && <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />}
-            Anmelden
+            {t('login-action')}
           </Button>
         </form>
       </Form>

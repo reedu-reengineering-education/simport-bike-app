@@ -25,6 +25,7 @@
 		"HapticsPlugin",
 		"PreferencesPlugin",
 		"PushNotificationsPlugin",
-		"SharePlugin"
+		"SharePlugin",
+		"StatusBarPlugin"
 	]
 }

@@ -7,19 +7,29 @@ import { BaseExporter } from './BaseExporter'
 
 export class CSVExporter extends BaseExporter implements AbstractExporter {
   public async export() {
-    const track = await this.fetchTrackMerge()
-    if (!track) throw new Error('Track not found')
-
     const metadata = await this.getTrackMetadata()
     if (!metadata) throw new Error('Track metadata not found')
 
+    const track = await this.fetchTrackMerge()
+    if (!track) throw new Error('Track not found')
+
     const df = new dfd.DataFrame(track)
 
-    // delete rows with NaN latitude and longitude
-    df.dropNa({ axis: 1, inplace: true })
+    // delete track_id column
+    df.drop({ columns: ['trackId'], inplace: true })
 
-    // remove group_number column
-    df.drop({ columns: ['group_number'], inplace: true })
+    // delete rows with all NaN values
+    // df.dropNa({ axis: 0, inplace: true }) does not work because it deletes all columns
+    // that have at least one NaN value
+    for (const column of df.columns) {
+      const values = df[column].values as number[]
+      if (values.every(value => null === value)) {
+        df.drop({ columns: [column], inplace: true })
+      }
+    }
+
+    // rename column group_number to group_id
+    df.rename({ group_number: 'group_id' }, { inplace: true })
 
     const mycsv = dfd.toCSV(df)
 

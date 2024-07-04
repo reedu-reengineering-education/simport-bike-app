@@ -1,8 +1,8 @@
 import { useRawBLEDataStore } from '@/lib/store/use-raw-data-store'
 import { cn } from '@/lib/utils'
-import { SparkAreaChart, SparkAreaChartProps } from '@tremor/react'
 import { forwardRef, useEffect, useState } from 'react'
 import colors from 'tailwindcss/colors'
+import { SparkAreaChart, SparkAreaChartProps } from '../charts/spark-chart'
 import { sensorRegistry } from '../sensors'
 import AnimatedNumber from '../ui/animated-number'
 
@@ -82,8 +82,9 @@ export function GridItem({
         <div className="pointer-events-none absolute -left-6 -right-6 top-0 h-full">
           <SparkAreaChart
             className="h-full w-full opacity-30"
-            curveType="monotone"
-            colors={['slate']}
+            // curveType="monotone"
+            // colors={['slate']}
+            colors={['gray']}
             minValue={100}
             {...chartProps}
           />
