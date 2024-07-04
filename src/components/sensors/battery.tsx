@@ -14,7 +14,7 @@ const battery: Sensor = {
           y: v.measurement[0],
         }))
       }
-      name={'Batterie'}
+      name={'battery'}
       unit={'%'}
       chartProps={{
         index: 'x',

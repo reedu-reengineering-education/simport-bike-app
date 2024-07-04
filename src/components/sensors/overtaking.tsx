@@ -14,7 +14,7 @@ const overtaking: Sensor = {
           y: (v.measurement[0] as number) * 100,
         }))
       }
-      name={'Überholvorgang'}
+      name={'overtaking'}
       unit={'%'}
       chartProps={{
         index: 'x',

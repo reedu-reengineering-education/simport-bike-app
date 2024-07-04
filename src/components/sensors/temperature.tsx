@@ -11,7 +11,7 @@ const temperature: Sensor = {
       rawHistoryValuesToData={values =>
         values.map(v => ({ x: v.timestamp, y: v.measurement[0] }))
       }
-      name={'Temperatur'}
+      name={'temperature'}
       unit={'°C'}
       chartProps={{
         index: 'x',

@@ -20,13 +20,13 @@ const accelerometer: Sensor = {
           acceleration_z: v.measurement[2],
         }))
       }
-      name={'Beschleunigung'}
+      name={'accelerometer'}
       unit={'m/s²'}
       labels={['X', 'Y', 'Z']}
       chartProps={{
         index: 'x',
         categories: ['acceleration_x', 'acceleration_y', 'acceleration_z'],
-        colors: ['indigo', 'cyan', 'amber'],
+        colors: ['blue', 'cyan', 'amber'],
       }}
     />
   ),

@@ -657,7 +657,7 @@ const AreaChart = React.forwardRef<HTMLDivElement, AreaChartProps>(
     }
 
     return (
-      <div ref={ref} className={cx('h-80 w-full', className)} {...other}>
+      <div ref={ref} className={cx('h-full w-full', className)} {...other}>
         <ResponsiveContainer>
           <RechartsAreaChart
             data={data}

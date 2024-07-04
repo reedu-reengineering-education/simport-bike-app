@@ -1,6 +1,7 @@
 import { RawBLESensorData } from '@/lib/store/use-raw-data-store'
 import useRawSensorValues from '@/lib/use-raw-sensor-values'
 import { subSeconds } from 'date-fns'
+import { useTranslation } from 'react-i18next'
 import { GridItem, GridItemProps } from '../Map/MeasurementsGrid'
 
 interface SensorViewProps<T> extends Omit<GridItemProps, 'value'> {
@@ -29,6 +30,7 @@ export default function SensorView({
 >) {
   const { value, historyValues } = useRawSensorValues(characteristic)
 
+  const { t } = useTranslation('translation', { keyPrefix: 'phenomena' })
   const timeframeTreshold = subSeconds(new Date(), 10)
   const timeframeValues = historyValues.filter(
     v => v.timestamp > timeframeTreshold,
@@ -47,6 +49,7 @@ export default function SensorView({
   return (
     <GridItem
       {...props}
+      name={t(props.name)}
       value={rawValueToValue(value)}
       chartProps={{
         ...props.chartProps,

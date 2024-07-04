@@ -11,7 +11,7 @@ const ultrasonic: Sensor = {
       rawHistoryValuesToData={values =>
         values.map(v => ({ x: v.timestamp, y: v.measurement[0] }))
       }
-      name={'Distanz'}
+      name={'distance'}
       unit={'cm'}
       chartProps={{
         index: 'x',

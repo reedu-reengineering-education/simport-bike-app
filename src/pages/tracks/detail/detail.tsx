@@ -163,9 +163,8 @@ export default function TrackDetailPage() {
           {measurementTypes.map(({ type, attributes }) => (
             <div key={type} className="grid gap-2">
               <p className="font-semibold text-sm">{t(`phenomena.${type}`)}</p>
-              <div className="bg-muted px-2 py-1 rounded-md">
+              <div className="bg-muted px-2 py-1 rounded-md w-full h-32">
                 <AreaChart
-                  className="w-full h-32"
                   data={measurements
                     .filter(e => e.type === type)
                     .map(e => {

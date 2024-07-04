@@ -22,13 +22,13 @@ const finedust: Sensor = {
           pm10: v.measurement[3],
         }))
       }
-      name={'Feinstaub'}
+      name={'finedust'}
       unit={'m/g³'}
       labels={['PM1', 'PM2.5', 'PM4', 'PM10']}
       chartProps={{
         index: 'x',
         categories: ['pm1', 'pm2_5', 'pm4', 'pm10'],
-        colors: ['indigo', 'cyan', 'amber', 'red'],
+        colors: ['blue', 'cyan', 'amber', 'violet'],
       }}
     />
   ),

@@ -11,7 +11,7 @@ const humidity: Sensor = {
       rawHistoryValuesToData={values =>
         values.map(v => ({ x: v.timestamp, y: v.measurement[0] }))
       }
-      name={'rel. Luftfeuchte'}
+      name={'humidity'}
       unit={'%'}
       chartProps={{
         index: 'x',
