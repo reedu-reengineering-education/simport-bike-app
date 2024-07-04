@@ -35,7 +35,7 @@ export const useTrack = (id?: string) => {
       const track = await trackRepository.findOne({
         where: { id },
         relations: ['geolocations'],
-        relationLoadStrategy: 'query',
+        // relationLoadStrategy: 'query',
       })
       if (!track) throw new Error('Track not found')
 

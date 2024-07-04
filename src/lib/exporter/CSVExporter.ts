@@ -7,13 +7,16 @@ import { BaseExporter } from './BaseExporter'
 
 export class CSVExporter extends BaseExporter implements AbstractExporter {
   public async export() {
-    const track = await this.fetchTrackMerge()
-    if (!track) throw new Error('Track not found')
-
     const metadata = await this.getTrackMetadata()
     if (!metadata) throw new Error('Track metadata not found')
 
+    const track = await this.fetchTrackMerge()
+    if (!track) throw new Error('Track not found')
+
     const df = new dfd.DataFrame(track)
+
+    // delete track_id column
+    df.drop({ columns: ['trackId'], inplace: true })
 
     // delete rows with all NaN values
     // df.dropNa({ axis: 0, inplace: true }) does not work because it deletes all columns
@@ -24,9 +27,6 @@ export class CSVExporter extends BaseExporter implements AbstractExporter {
         df.drop({ columns: [column], inplace: true })
       }
     }
-
-    // delete track_id column
-    df.drop({ columns: ['id', 'trackId'], inplace: true })
 
     // rename column group_number to group_id
     df.rename({ group_number: 'group_id' }, { inplace: true })

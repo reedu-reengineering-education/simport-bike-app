@@ -1,7 +1,11 @@
 import { toast } from '@/components/ui/use-toast'
 import { RequestBleDeviceOptions } from '@capacitor-community/bluetooth-le'
 import { Haptics } from '@capacitor/haptics'
-import { connectToDevice, disconnectFromDevice } from './ble'
+import {
+  connectToDevice,
+  disconnectFromDevice,
+  unsubscribeFromAvailableSensors,
+} from './ble'
 import { useBLEStore } from './store/useBLEStore'
 import { useSenseBoxValuesStore } from './store/useSenseBoxValuesStore'
 
@@ -44,6 +48,7 @@ export default function useBLEDevice(_options: RequestBleDeviceOptions) {
   const disconnect = async () => {
     if (!device) return
 
+    unsubscribeFromAvailableSensors()
     await disconnectFromDevice()
     setDevice(undefined)
     setConnected(false)

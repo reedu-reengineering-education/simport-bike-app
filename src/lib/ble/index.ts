@@ -83,6 +83,27 @@ export const subscribeToAvailableSensors = async () => {
   }
 }
 
+export const unsubscribeFromAvailableSensors = async () => {
+  const deviceId = useBLEStore.getState().device?.deviceId
+  if (!deviceId) {
+    throw new Error('No device connected')
+  }
+  const services = await BleClient.getServices(deviceId)
+  const senseBoxService = services.find(
+    service => service.uuid === BLE_SENSEBOX_SERVICE.toLowerCase(),
+  )
+  if (!senseBoxService) {
+    throw new Error('No senseBox service found')
+  }
+  for (const characteristic of senseBoxService.characteristics) {
+    const upperCaseUUID = characteristic.uuid.toUpperCase()
+    if (characteristicRegistry[upperCaseUUID]) {
+      const sensor = new characteristicRegistry[upperCaseUUID]()
+      sensor.unsubscribe()
+    }
+  }
+}
+
 export const getSubscribableSensors = async () => {
   const deviceId = useBLEStore.getState().device?.deviceId
   if (!deviceId) {

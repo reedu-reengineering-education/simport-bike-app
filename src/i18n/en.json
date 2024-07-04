@@ -21,13 +21,68 @@
     },
     "tracks": {
       "title": "Tracks",
-      "no-tracks": "No tracks available."
+      "no-tracks": "No tracks available.",
+      "not-found": "Track not found",
+      "delete": "Delete",
+      "delete-confirmation": "Are you sure you want to delete this track?",
+      "delete-confirmation-description": "This action cannot be undone.",
+      "cancel": "Cancel",
+      "download": "Download",
+      "download-failed": "Download failed",
+      "download-loading": "Downloading...",
+      "loading": "Loading..."
     },
     "controls": {
       "connect": "Connect",
       "disconnect": "Disconnect",
-      "record-start": "Start",
-      "record-stop": "Stop"
+      "start": "Start",
+      "stop": "Stop"
+    },
+    "notifications": {
+      "track-saved": {
+        "title": "Track Saved",
+        "description": "Your track has been successfully saved.",
+        "action": "View"
+      }
+    },
+    "opensensemap": {
+      "login": "Login",
+      "register": "Register",
+      "email": "Email",
+      "password": "Password",
+      "login-action": "Login",
+      "login-failed": "Login failed",
+      "password-no-match": "Passwords do not match",
+      "register-action": "Register",
+      "register-failed": "Registration failed",
+      "name": "Name",
+      "password-repeat": "Repeat Password",
+      "select-box": "Select senseBox",
+      "create-sensebox-bike-dialog": {
+        "trigger": "Create New senseBox:Bike",
+        "failed-title": "Error",
+        "failed-description": "Failed to create senseBox:bike",
+        "title": "New senseBox:bike",
+        "model": "Model",
+        "default": "Default",
+        "atrai": "ATRAI",
+        "name": "Name",
+        "description": "The name of the senseBox:bike will be displayed on the openSenseMap.",
+        "position-info": "The position of the senseBox:bike will be automatically taken from your smartphone.",
+        "create": "Create"
+      },
+      "next": "Next",
+      "edit": "Edit",
+      "linked-sensebox": "Linked senseBox",
+      "okay": "Okay"
+    },
+    "phenomena": {
+      "temperature": "Temperature",
+      "humidity": "Relative Humidity",
+      "accelerometer": "Acceleration",
+      "distance": "Overtaking Distance",
+      "finedust": "Fine Dust",
+      "overtaking": "Overtaking Maneuver"
     }
   }
 }

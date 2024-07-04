@@ -33,8 +33,7 @@ export default function MainPage() {
           <Button size={'sm'} variant={'secondary'}>
             <AudioWaveform className="h-4 mr-2" />
             {t('tracks.title')}
-            {trackCount && <Badge className="ml-2">{trackCount}</Badge>}
-            {/* <ArrowRight className="h-4 ml-2" /> */}
+            {trackCount > 0 && <Badge className="ml-2">{trackCount}</Badge>}
           </Button>
         </Link>
       </div>

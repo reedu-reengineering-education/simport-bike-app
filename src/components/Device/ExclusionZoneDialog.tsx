@@ -104,7 +104,7 @@ export default function ExclusionZoneDialog() {
             setOpen(false)
           }}
         >
-          ({t('save')})
+          {t('save')}
         </Button>
       </DialogContent>
     </Dialog>

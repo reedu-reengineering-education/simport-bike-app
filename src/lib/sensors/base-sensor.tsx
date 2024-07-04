@@ -1,5 +1,5 @@
 import { BleClient } from '@capacitor-community/bluetooth-le'
-import { Measurement, Track } from '../db/entities'
+import { Measurement } from '../db/entities'
 import senseBoxBikeDataSource from '../db/sources/senseBoxBikeDataSource'
 import { useRawBLEDataStore } from '../store/use-raw-data-store'
 import { useBLEStore } from '../store/useBLEStore'
@@ -11,6 +11,9 @@ export const BLE_SENSEBOX_SERVICE = 'CF06A218-F68E-E0BE-AD04-8EBC1EB0BC84'
 export default class BaseSensor<T extends number[]>
   implements AbstractSensor<T>
 {
+  measurementsBuffer: Measurement[] = []
+  measurementsInterval: NodeJS.Timeout | undefined
+
   parseData(_data: DataView): T {
     throw new Error('Method not implemented.')
   }
@@ -31,6 +34,12 @@ export default class BaseSensor<T extends number[]>
       console.log(BLE_SENSEBOX_SERVICE)
     }
 
+    // save measurements at a random interval between 5 and 15 seconds
+    const saveInterval = Math.floor(Math.random() * 10000) + 5000
+    this.measurementsInterval = setInterval(() => {
+      this.saveMeasurements()
+    }, saveInterval)
+
     await BleClient.startNotifications(
       deviceId,
       BLE_SENSEBOX_SERVICE,
@@ -50,14 +59,6 @@ export default class BaseSensor<T extends number[]>
           return
         }
 
-        const track = await senseBoxBikeDataSource.dataSource
-          .getRepository(Track)
-          .findOne({ where: { id: trackId } })
-
-        if (!track) {
-          throw new Error('Track not found')
-        }
-
         if (rawData.length === attributes.length) {
           const values = rawData as number[]
 
@@ -67,8 +68,9 @@ export default class BaseSensor<T extends number[]>
             measurement.type = type
             measurement.value = values[i]
             measurement.attribute = attributes[i]
-            measurement.track = track
-            measurement.save()
+            measurement.trackId = trackId
+
+            this.measurementsBuffer.push(measurement)
           }
         } else {
           throw new Error(
@@ -77,6 +79,13 @@ export default class BaseSensor<T extends number[]>
         }
       },
     )
+  }
+
+  async unsubscribe() {
+    if (this.measurementsInterval) {
+      clearInterval(this.measurementsInterval)
+    }
+    this.saveMeasurements()
   }
 
   /**
@@ -93,5 +102,18 @@ export default class BaseSensor<T extends number[]>
     }
 
     return valueRecords
+  }
+
+  private async saveMeasurements() {
+    if (this.measurementsBuffer.length === 0) {
+      return
+    }
+
+    await senseBoxBikeDataSource.dataSource.transaction(async manager => {
+      for (const measurement of this.measurementsBuffer) {
+        await manager.save(measurement)
+      }
+    })
+    this.measurementsBuffer = []
   }
 }

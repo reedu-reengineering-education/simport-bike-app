@@ -21,13 +21,68 @@
     },
     "tracks": {
       "title": "Strecken",
-      "no-tracks": "Keine Strecken verfügbar."
+      "no-tracks": "Keine Strecken verfügbar.",
+      "not-found": "Strecke nicht gefunden",
+      "delete": "Löschen",
+      "delete-confirmation": "Möchten Sie diese Strecke wirklich löschen?",
+      "delete-confirmation-description": "Diese Aktion kann nicht rückgängig gemacht werden.",
+      "cancel": "Abbrechen",
+      "download": "Herunterladen",
+      "download-failed": "Herunterladen fehlgeschlagen",
+      "download-loading": "Herunterladen...",
+      "loading": "Laden..."
     },
     "controls": {
       "connect": "Verbinden",
       "disconnect": "Trennen",
-      "record-start": "Aufzeichnen",
-      "record-stop": "Stop"
+      "start": "Aufzeichnen",
+      "stop": "Stop"
+    },
+    "notifications": {
+      "track-saved": {
+        "title": "Strecke gespeichert",
+        "description": "Ihre Strecke wurde erfolgreich gespeichert.",
+        "action": "Anzeigen"
+      }
+    },
+    "opensensemap": {
+      "login": "Anmelden",
+      "register": "Registrieren",
+      "email": "E-Mail",
+      "password": "Passwort",
+      "login-action": "Anmelden",
+      "login-failed": "Anmeldung fehlgeschlagen",
+      "password-no-match": "Passwörter stimmen nicht überein",
+      "register-action": "Registrieren",
+      "register-failed": "Registrierung fehlgeschlagen",
+      "name": "Name",
+      "password-repeat": "Passwort wiederholen",
+      "select-box": "senseBox auswählen",
+      "create-sensebox-bike-dialog": {
+        "trigger": "Neue senseBox:Bike erstellen",
+        "failed-title": "Fehler",
+        "failed-description": "Fehler beim Erstellen der senseBox:bike",
+        "title": "Neue senseBox:bike",
+        "model": "Modell",
+        "default": "Standard",
+        "atrai": "ATRAI",
+        "name": "Name",
+        "description": "Der Name der senseBox:bike wird auf der openSenseMap angezeigt.",
+        "position-info": "Die Position der senseBox:bike wird automatisch von Ihrem Smartphone übernommen.",
+        "create": "Erstellen"
+      },
+      "next": "Weiter",
+      "edit": "Bearbeiten",
+      "linked-sensebox": "Verknüpfte senseBox",
+      "okay": "Okay"
+    },
+    "phenomena": {
+      "temperature": "Temperatur",
+      "humidity": "rel. Luftfeuchtigkeit",
+      "accelerometer": "Beschleunigung",
+      "distance": "Überholabstand",
+      "finedust": "Feinstaub",
+      "overtaking": "Überholvorgang"
     }
   }
 }

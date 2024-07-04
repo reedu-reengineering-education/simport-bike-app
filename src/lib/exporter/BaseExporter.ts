@@ -1,4 +1,5 @@
 import { DataSource, Repository } from 'typeorm'
+import getAggregatedData from '../db/aggregation'
 import { Track } from '../db/entities'
 import senseBoxBikeDataSource from '../db/sources/senseBoxBikeDataSource'
 import { AbstractExporter } from './AbstractExporter'
@@ -29,14 +30,7 @@ export class BaseExporter implements AbstractExporter {
   protected async fetchTrackMerge() {
     await this.initializeConnection()
 
-    return await this.connection.query(
-      `SELECT *
-      FROM v_aggregated_data
-      WHERE trackId = $1
-      ORDER BY timestamp;
-    `,
-      [this.trackId],
-    )
+    return await getAggregatedData(this.trackId)
 
     // return await this.connection.query(
     //   `

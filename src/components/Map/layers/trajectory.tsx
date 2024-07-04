@@ -4,20 +4,33 @@ import { Layer, Source } from 'react-map-gl'
 
 export default function TrajectoryLayer({
   trajectory,
-}: { trajectory: Geolocation[] }) {
+  selectedTimestamp,
+}: { trajectory: Geolocation[]; selectedTimestamp?: Date }) {
   const { theme } = useTheme()
 
   if (!trajectory) return null
+
+  let pointPosition = [
+    trajectory.at(-1)?.longitude ?? 0,
+    trajectory.at(-1)?.latitude ?? 0,
+  ]
+
+  if (selectedTimestamp) {
+    const selectedPoint = trajectory.find(
+      t => t.timestamp.getTime() === selectedTimestamp.getTime(),
+    )
+
+    if (selectedPoint) {
+      pointPosition = [selectedPoint.longitude, selectedPoint.latitude]
+    }
+  }
 
   return (
     <>
       <Source
         data={{
           type: 'Point',
-          coordinates: [
-            trajectory.at(-1)?.longitude ?? 0,
-            trajectory.at(-1)?.latitude ?? 0,
-          ],
+          coordinates: pointPosition,
         }}
         type="geojson"
       >

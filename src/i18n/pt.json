@@ -16,18 +16,73 @@
       "private-zones": {
         "title": "Zonas privadas",
         "description": "Zonas privadas são áreas em que sua localização não é rastreada.",
-        "save": "Save"
+        "save": "Salvar"
       }
     },
     "tracks": {
-      "title": "Tracks",
-      "no-tracks": "Nenhuma faixa disponível"
+      "title": "Pistas",
+      "no-tracks": "Nenhuma pista disponível.",
+      "not-found": "Pista não encontrada",
+      "delete": "Excluir",
+      "delete-confirmation": "Tem certeza de que deseja excluir esta pista?",
+      "delete-confirmation-description": "Esta ação não pode ser desfeita.",
+      "cancel": "Cancelar",
+      "download": "Baixar",
+      "download-failed": "Falha ao baixar",
+      "download-loading": "Baixando...",
+      "loading": "Carregando..."
     },
     "controls": {
       "connect": "Conectar",
       "disconnect": "Desconectar",
-      "record-start": "Iniciar",
-      "record-stop": "Parar"
+      "start": "Iniciar",
+      "stop": "Parar"
+    },
+    "notifications": {
+      "track-saved": {
+        "title": "Pista salva",
+        "description": "Sua pista foi salva com sucesso.",
+        "action": "Visualizar"
+      }
+    },
+    "opensensemap": {
+      "login": "Entrar",
+      "register": "Registrar",
+      "email": "E-mail",
+      "password": "Senha",
+      "login-action": "Entrar",
+      "login-failed": "Falha no login",
+      "password-no-match": "Senhas não correspondem",
+      "register-action": "Registrar",
+      "register-failed": "Falha no registro",
+      "name": "Nome",
+      "password-repeat": "Repetir senha",
+      "select-box": "Selecionar senseBox",
+      "create-sensebox-bike-dialog": {
+        "trigger": "Criar nova senseBox:Bike",
+        "failed-title": "Erro",
+        "failed-description": "Erro ao criar a senseBox:bike",
+        "title": "Nova senseBox:bike",
+        "model": "Modelo",
+        "default": "Padrão",
+        "atrai": "ATRAI",
+        "name": "Nome",
+        "description": "O nome da senseBox:bike será exibido no openSenseMap.",
+        "position-info": "A posição da senseBox:bike será automaticamente obtida do seu smartphone.",
+        "create": "Criar"
+      },
+      "next": "Próximo",
+      "edit": "Editar",
+      "linked-sensebox": "senseBox vinculada",
+      "okay": "Ok"
+    },
+    "phenomena": {
+      "temperature": "Temperatura",
+      "humidity": "Umidade relativa do ar",
+      "accelerometer": "Acelerômetro",
+      "distance": "Distância de ultrapassagem",
+      "finedust": "Partículas finas",
+      "overtaking": "Ultrapassagem"
     }
   }
 }
