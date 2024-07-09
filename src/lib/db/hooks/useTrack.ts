@@ -13,7 +13,7 @@ const initializeConnection = async () => {
   measurementRepository = connection.getRepository(Measurement)
 }
 
-type MeasurementType = {
+export type MeasurementType = {
   type: string
   attributes?: string[]
 }
@@ -30,6 +30,7 @@ export const useTrack = (id?: string) => {
     if (!id) return
 
     const fetchTrack = async () => {
+      setLoading(true)
       await initializeConnection()
 
       const track = await trackRepository.findOne({
@@ -38,6 +39,20 @@ export const useTrack = (id?: string) => {
         // relationLoadStrategy: 'query',
       })
       if (!track) throw new Error('Track not found')
+
+      setTrack(track)
+
+      setLoading(false)
+    }
+
+    fetchTrack()
+  }, [id])
+
+  useEffect(() => {
+    if (!id) return
+
+    const fetchMeasurements = async () => {
+      await initializeConnection()
 
       const measurementTypes = await measurementRepository.find({
         where: { track: { id } },
@@ -65,12 +80,9 @@ export const useTrack = (id?: string) => {
       })
 
       setMeasurementTypes(distinctMeasurementTypes)
-      setTrack(track)
-
-      setLoading(false)
     }
 
-    fetchTrack()
+    fetchMeasurements()
   }, [id])
 
   const deleteTrack = async (id: string) => {

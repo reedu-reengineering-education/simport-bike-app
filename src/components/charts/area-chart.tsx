@@ -29,6 +29,7 @@ import {
 } from '@/lib/chartUtils'
 import { useOnWindowResize } from '@/lib/useOnWindowResize'
 import { cx } from 'class-variance-authority'
+import { format } from 'date-fns'
 
 //#region Legend
 
@@ -707,6 +708,7 @@ const AreaChart = React.forwardRef<HTMLDivElement, AreaChartProps>(
               tickLine={false}
               axisLine={false}
               minTickGap={tickGap}
+              tickFormatter={(unixTime: number) => format(unixTime, 'p')}
             >
               {xAxisLabel && (
                 <Label
@@ -936,7 +938,7 @@ const AreaChart = React.forwardRef<HTMLDivElement, AreaChartProps>(
                     }}
                     key={category}
                     name={category}
-                    type="linear"
+                    type="natural"
                     dataKey={category}
                     stroke=""
                     strokeWidth={2}
@@ -958,7 +960,7 @@ const AreaChart = React.forwardRef<HTMLDivElement, AreaChartProps>(
                     strokeOpacity={0}
                     key={category}
                     name={category}
-                    type="linear"
+                    type="natural"
                     dataKey={category}
                     stroke="transparent"
                     fill="transparent"

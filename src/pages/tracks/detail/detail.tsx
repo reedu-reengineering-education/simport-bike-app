@@ -2,7 +2,7 @@ import { trackDetailRoute } from '@/App'
 import InteractiveMap from '@/components/Map/Map'
 import TrajectoryLayer from '@/components/Map/layers/trajectory'
 import { AnimateIn } from '@/components/animated/animate-in'
-import { AreaChart } from '@/components/charts/area-chart'
+import MeasurementCharts from '@/components/details/measurement-charts'
 import Spinner from '@/components/ui/Spinner'
 import {
   AlertDialog,
@@ -32,15 +32,14 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
-import { useMeasurements } from '@/lib/db/hooks/useMeasurements'
 import { useTrack } from '@/lib/db/hooks/useTrack'
 import { BaseExporter } from '@/lib/exporter/BaseExporter'
 import { CSVExporter } from '@/lib/exporter/CSVExporter'
-import { MultiFileExporter } from '@/lib/exporter/MultiFileExporter'
+import { ZipExporter } from '@/lib/exporter/ZIPExporter'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { buffer, bbox, featureCollection, point } from '@turf/turf'
 import { format } from 'date-fns'
-import { FileDownIcon, HomeIcon, Loader2 } from 'lucide-react'
+import { AudioWaveform, FileDownIcon, HomeIcon, Loader2 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { MapRef } from 'react-map-gl'
@@ -50,7 +49,6 @@ export default function TrackDetailPage() {
   const { trackId } = trackDetailRoute.useParams()
 
   const { track, loading, deleteTrack, measurementTypes } = useTrack(trackId)
-  const { measurements } = useMeasurements(trackId)
 
   const [isExporting, setIsExporting] = useState(false)
 
@@ -63,7 +61,7 @@ export default function TrackDetailPage() {
   const { t } = useTranslation('translation')
 
   useEffect(() => {
-    if (!track?.geolocations) return
+    if (!track?.geolocations || track.geolocations.length === 0) return
     if (!mapRef.current) return
 
     const bounds = bbox(
@@ -119,8 +117,11 @@ export default function TrackDetailPage() {
               <BreadcrumbSeparator />
               <BreadcrumbItem>
                 <AnimateIn>
-                  <BreadcrumbLink asChild>
-                    <Link to="/tracks">{t('tracks.title')}</Link>
+                  <BreadcrumbLink asChild className="flex items-center">
+                    <Link to="/tracks">
+                      <AudioWaveform className="h-4 mr-2" />
+                      {t('tracks.title')}
+                    </Link>
                   </BreadcrumbLink>
                 </AnimateIn>
               </BreadcrumbItem>
@@ -159,42 +160,15 @@ export default function TrackDetailPage() {
           </div>
         )}
 
-        <div className="grid gap-8">
-          {measurementTypes.map(({ type, attributes }) => (
-            <div key={type} className="grid gap-2">
-              <p className="font-semibold text-sm">{t(`phenomena.${type}`)}</p>
-              <div className="bg-muted px-2 py-1 rounded-md w-full h-32">
-                <AreaChart
-                  data={measurements
-                    .filter(e => e.type === type)
-                    .map(e => {
-                      if (!attributes) return { x: e.timestamp, y: e.value }
-                      return {
-                        x: e.timestamp,
-                        [e.attribute!]: e.value,
-                      }
-                    })}
-                  categories={[...(attributes ?? 'y')]}
-                  index={'x'}
-                  showXAxis={false}
-                  showYAxis={false}
-                  showLegend={!!attributes}
-                  // valueFormatter={e => e.toFixed(2)}
-                  showTooltip={false}
-                  // tooltipCallback={e => {
-                  //   const x = e?.payload[0]?.payload?.x
-                  //   if (!x) {
-                  //     setSelectedTimestamp(undefined)
-                  //     return
-                  //   }
-
-                  //   setSelectedTimestamp(new Date(x))
-                  // }}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
+        {track && (
+          <div className="grid gap-8">
+            <MeasurementCharts
+              trackId={trackId}
+              measurementTypes={measurementTypes}
+              // onSelect={setSelectedTimestamp}
+            />
+          </div>
+        )}
 
         <Separator />
         <div className="flex gap-2">
@@ -218,8 +192,8 @@ export default function TrackDetailPage() {
               <DropdownMenuItem onClick={() => handleExport(CSVExporter)}>
                 CSV
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleExport(MultiFileExporter)}>
-                Multi File
+              <DropdownMenuItem onClick={() => handleExport(ZipExporter)}>
+                ZIP
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

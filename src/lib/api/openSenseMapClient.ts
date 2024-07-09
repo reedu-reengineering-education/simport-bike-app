@@ -132,6 +132,7 @@ export async function signout() {
     useAuthStore.getState().setRefreshToken('')
     useAuthStore.getState().setEmail('')
     useAuthStore.getState().setIsLoggedIn(false)
+    useAuthStore.getState().setSelectedBox(undefined)
     return true
   } else {
     throw new Error(response.data.message)

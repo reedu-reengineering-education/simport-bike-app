@@ -80,6 +80,7 @@
       "temperature": "Temperatura",
       "humidity": "Umidade relativa do ar",
       "accelerometer": "Acelerômetro",
+      "surface_classification": "Superfície da estrada",
       "distance": "Distância de ultrapassagem",
       "finedust": "Partículas finas",
       "overtaking": "Ultrapassagem"
