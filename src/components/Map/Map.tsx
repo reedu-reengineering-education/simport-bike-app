@@ -46,6 +46,7 @@ const InteractiveMap = forwardRef<MapRef, MapProps>(
           height: '100%',
         }}
         // onLoad={onMapLoad}
+        // @ts-ignore
         projection={{
           name: 'mercator',
         }}

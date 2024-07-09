@@ -77,7 +77,12 @@ export default function TrackDetailPage() {
 
     mapRef.current?.fitBounds([bounds[0], bounds[1], bounds[2], bounds[3]], {
       animate: false,
-      padding: 12,
+      padding: {
+        bottom: 100,
+        left: 12,
+        right: 12,
+        top: 24,
+      },
       pitch: 30,
     })
   }, [track?.geolocations])

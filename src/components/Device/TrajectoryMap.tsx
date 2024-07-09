@@ -37,6 +37,7 @@ export default function TrajectoryMap() {
       initialViewState={initialViewState}
       onMove={({ viewState }) => setViewport(viewState)}
       attributionControl={false}
+      reuseMaps
     >
       <AttributionControl
         position="top-left"
