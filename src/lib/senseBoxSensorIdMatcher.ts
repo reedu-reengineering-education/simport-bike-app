@@ -40,6 +40,7 @@ export function getTitlefromSensorKey(
     if (attribute === 'standing') return 'Standing'
   }
   if (key === 'speed') return 'Speed'
+  if (key === 'surface_anomaly') return 'Surface Anomaly'
 }
 
 export default function match(senseBox: BoxEntity, data: any) {

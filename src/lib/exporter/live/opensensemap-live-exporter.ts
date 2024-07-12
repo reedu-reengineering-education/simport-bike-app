@@ -211,6 +211,11 @@ function splitKeyAndAttribute(input: string): {
     return { key: input.slice(0, -6), attribute: 'pm2_5' } // -6 to exclude "_pm2_5"
   }
 
+  // special case for surface_anomaly
+  if (input.endsWith('_anomaly')) {
+    return { key: 'surface_anomaly', attribute: undefined }
+  }
+
   const parts = input.split('_')
   if (parts.length === 1) {
     // No underscore in the string

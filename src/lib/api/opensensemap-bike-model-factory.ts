@@ -202,6 +202,13 @@ const sensors: Record<
     },
     {
       id: 13,
+      icon: 'osem-shock',
+      title: 'Surface Anomaly',
+      unit: 'Δ',
+      sensorType: 'MPU-6050',
+    },
+    {
+      id: 14,
       icon: 'osem-dashboard',
       title: 'Speed',
       unit: 'm/s',

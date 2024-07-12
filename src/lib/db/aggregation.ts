@@ -17,10 +17,12 @@ export default async function getAggregatedData(trackId: string) {
       case 'humidity':
       case 'accelerometer':
       case 'finedust':
+      case 'surface_classification':
         return 'AVG'
       case 'distance':
         return 'MIN'
       case 'overtaking':
+      case 'surface_anomaly':
         return 'MAX'
       default:
         return 'AVG'

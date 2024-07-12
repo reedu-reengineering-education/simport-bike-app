@@ -8,7 +8,7 @@ export default class SurfaceAnomalySensor<T extends [number]>
   public static BLE_CHARACTERISTIC: string =
     'B944AF10-F495-4560-968F-2F0D18CAB523'
 
-  public static type: string = 'surface-anomaly'
+  public static type: string = 'surface_anomaly'
 
   parseData(data: DataView): T {
     const [surfaceAnomaly] = this.parsePackages(data)
