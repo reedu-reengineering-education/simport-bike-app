@@ -4,6 +4,7 @@ import BatterySensor from './battery'
 import FinedustSensor from './finedust'
 import HumiditySensor from './humidity'
 import OvertakingPredictionSensor from './overtaking-prediction'
+import SurfaceAnomalySensor from './surface-anomaly'
 import TemperatureSensor from './temperature'
 import UltrasonicDistanceSensor from './ultrasonic-distance'
 
@@ -16,6 +17,7 @@ const sensors = [
   OvertakingPredictionSensor,
   FinedustSensor,
   BatterySensor,
+  SurfaceAnomalySensor,
 ]
 
 export const characteristicRegistry: Record<
