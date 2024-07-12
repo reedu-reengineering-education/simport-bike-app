@@ -13,11 +13,12 @@ const initializeConnection = async () => {
 
 export const useTracks = () => {
   const [tracks, setTracks] = useState<Track[]>([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [saving, setSaving] = useState(false)
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchTracks = async () => {
+      setLoading(true)
       await initializeConnection()
       const tracks = await trackRepository.find({
         order: { start: 'DESC' },
@@ -26,7 +27,7 @@ export const useTracks = () => {
       setLoading(false)
     }
 
-    fetchUsers()
+    fetchTracks()
   }, [])
 
   const createTrack = async () => {

@@ -9,7 +9,14 @@ export default function TrackPreview({ trackId }: { trackId: string }) {
   const { track, measurementTypes } = useTrack(trackId)
   const { theme } = useTheme()
 
-  if (!track) return null
+  if (!track)
+    return (
+      <div className="grid gap-2">
+        <div className="bg-muted w-3/4 h-4 rounded-md animate-pulse" />
+        <div className="bg-muted h-4 w-2/3 rounded-md animate-pulse" />
+        <div className="bg-muted w-full aspect-video rounded-md animate-pulse" />
+      </div>
+    )
 
   const encodedPolyline = encodeURIComponent(
     polyline.encode(track?.geolocations.map(g => [g.latitude, g.longitude])),
@@ -45,6 +52,7 @@ export default function TrackPreview({ trackId }: { trackId: string }) {
         </div>
         <div className="w-full aspect-video rounded-md overflow-hidden">
           <img
+            loading="lazy"
             src={`https://api.mapbox.com/styles/v1/mapbox/${mapStyle}/static/path-5+${lineColor}-0.7(${encodedPolyline})/auto/800x450?access_token=${import.meta.env.VITE_MAPBOX_ACCESS_TOKEN}`}
           />
         </div>

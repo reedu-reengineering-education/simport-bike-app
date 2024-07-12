@@ -73,6 +73,7 @@ export default async function getAggregatedData(trackId: string) {
                 measurement.value
             FROM geolocation
             FULL OUTER JOIN measurement ON geolocation.timestamp = measurement.timestamp
+            WHERE geolocation.trackId = $1 OR measurement.trackId = $1
             ORDER BY timestamp
         )
     ),
@@ -103,7 +104,6 @@ export default async function getAggregatedData(trackId: string) {
     )
     SELECT *
     FROM aggregated_data
-    WHERE trackId = $1
     ORDER BY timestamp;`,
     [trackId],
   )

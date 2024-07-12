@@ -165,6 +165,22 @@ export async function uploadData(box: BoxEntity, data: UploadData) {
   }
 }
 
+export async function uploadDataCSV(box: BoxEntity, data: string) {
+  const response = await CapacitorHttp.post({
+    url: `${OSEM_BASE_URL}/boxes/${box._id}/data`,
+    headers: {
+      Authorization: box.access_token,
+      'Content-Type': 'text/csv',
+    },
+    data,
+  })
+  if (response.status === 201) {
+    return true
+  } else {
+    throw new Error(response.data.message)
+  }
+}
+
 export async function createSenseBoxBike(
   name: string,
   latitude: number,

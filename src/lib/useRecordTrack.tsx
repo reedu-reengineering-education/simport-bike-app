@@ -3,9 +3,10 @@ import { toast } from '@/components/ui/use-toast'
 import { useRouter } from '@tanstack/react-router'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { unsubscribeFromAvailableSensors } from './ble'
+import { disconnectFromDevice, unsubscribeFromAvailableSensors } from './ble'
 import { useTrack } from './db/hooks/useTrack'
 import { useTracks } from './db/hooks/useTracks'
+import senseBoxBikeDataSource from './db/sources/senseBoxBikeDataSource'
 import { exportData } from './exporter/live/opensensemap-live-exporter'
 import { useAuthStore } from './store/useAuthStore'
 import { useSenseBoxValuesStore } from './store/useSenseBoxValuesStore'
@@ -59,6 +60,8 @@ const useRecordTrack = () => {
   }, [isConnected])
 
   async function start() {
+    await senseBoxBikeDataSource.dataSource.query(`DELETE FROM upload;`)
+
     setUploadStart(new Date())
 
     const intervalId = setInterval(() => {
@@ -71,7 +74,7 @@ const useRecordTrack = () => {
     setCurrentTrackId(trackId)
   }
 
-  function stop() {
+  async function stop() {
     clearInterval(intervalId)
     setIntervalId(undefined)
     setUploadStart(undefined)
@@ -82,6 +85,8 @@ const useRecordTrack = () => {
       return
     }
     endTrack(currentTrackId)
+    await senseBoxBikeDataSource.dataSource.query(`DELETE FROM upload;`)
+    await disconnectFromDevice()
     toast({
       description: t('notifications.track-saved.description'),
       title: t('notifications.track-saved.title'),

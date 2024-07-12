@@ -19,7 +19,16 @@ export const senseBoxBikeModelFactory = (
   }
 }
 
-const sensors: Record<senseBoxBikeModel, any[]> = {
+const sensors: Record<
+  senseBoxBikeModel,
+  {
+    id: number
+    icon: string
+    title: string
+    unit: string
+    sensorType: string
+  }[]
+> = {
   default: [
     {
       id: 0,
@@ -103,78 +112,99 @@ const sensors: Record<senseBoxBikeModel, any[]> = {
     {
       id: 0,
       icon: 'osem-thermometer',
-      title: 'Temperatur',
+      title: 'Temperature',
       unit: '°C',
       sensorType: 'HDC1080',
     },
     {
       id: 1,
       icon: 'osem-humidity',
-      title: 'rel. Luftfeuchte',
+      title: 'Rel. Humidity',
       unit: '%',
       sensorType: 'HDC1080',
     },
     {
       id: 2,
       icon: 'osem-cloud',
-      title: 'PM1',
+      title: 'Finedust PM1',
       unit: 'µg/m³',
       sensorType: 'SPS30',
     },
     {
       id: 3,
       icon: 'osem-cloud',
-      title: 'PM2.5',
+      title: 'Finedust PM2.5',
       unit: 'µg/m³',
       sensorType: 'SPS30',
     },
     {
       id: 4,
       icon: 'osem-cloud',
-      title: 'PM4',
+      title: 'Finedust PM4',
       unit: 'µg/m³',
       sensorType: 'SPS30',
     },
     {
       id: 5,
       icon: 'osem-cloud',
-      title: 'PM10',
+      title: 'Finedust PM10',
       unit: 'µg/m³',
       sensorType: 'SPS30',
     },
     {
       id: 6,
       icon: 'osem-shock',
-      title: 'Überholvorgang',
+      title: 'Overtaking Manoeuvre',
       unit: '%',
       sensorType: 'VL53L8CX',
     },
     {
       id: 7,
       icon: 'osem-shock',
-      title: 'Beschleunigung X',
-      unit: 'm/s²',
-      sensorType: 'MPU-6050',
+      title: 'Overtaking Distance',
+      unit: 'cm',
+      sensorType: 'VL53L8CX',
     },
     {
       id: 8,
       icon: 'osem-shock',
-      title: 'Beschleunigung Y',
-      unit: 'm/s²',
+      title: 'Surface Asphalt',
+      unit: '%',
       sensorType: 'MPU-6050',
     },
     {
       id: 9,
       icon: 'osem-shock',
-      title: 'Beschleunigung Z',
-      unit: 'm/s²',
+      title: 'Surface Sett',
+      unit: '%',
       sensorType: 'MPU-6050',
     },
     {
       id: 10,
+      icon: 'osem-shock',
+      title: 'Surface Compacted',
+      unit: '%',
+      sensorType: 'MPU-6050',
+    },
+    {
+      id: 11,
+      icon: 'osem-shock',
+      title: 'Surface Paving',
+      unit: '%',
+      sensorType: 'MPU-6050',
+    },
+    {
+      id: 12,
+      icon: 'osem-shock',
+      title: 'Standing',
+      unit: '%',
+      sensorType: 'MPU-6050',
+    },
+    {
+      id: 13,
       icon: 'osem-dashboard',
-      title: 'Geschwindigkeit',
-      unit: 'km/h',
+      title: 'Speed',
+      unit: 'm/s',
       sensorType: 'GPS',
     },
   ],

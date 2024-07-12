@@ -35,6 +35,7 @@ import { toast } from '@/components/ui/use-toast'
 import { useTrack } from '@/lib/db/hooks/useTrack'
 import { BaseExporter } from '@/lib/exporter/BaseExporter'
 import { CSVExporter } from '@/lib/exporter/CSVExporter'
+import { OpenSenseMapExporter } from '@/lib/exporter/OpenSenseMapExporter'
 import { ZipExporter } from '@/lib/exporter/ZIPExporter'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { buffer, bbox, featureCollection, point } from '@turf/turf'
@@ -196,6 +197,11 @@ export default function TrackDetailPage() {
             <DropdownMenuContent align="start" side="top">
               <DropdownMenuItem onClick={() => handleExport(CSVExporter)}>
                 CSV
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => handleExport(OpenSenseMapExporter)}
+              >
+                openSenseMap
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => handleExport(ZipExporter)}>
                 ZIP

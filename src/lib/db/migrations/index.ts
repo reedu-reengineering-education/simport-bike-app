@@ -1,9 +1,9 @@
 import { InitialMigration1716477284299 } from './1716477284299-initial-migration'
 import { IndexMigration1719321106834 } from './1719321106834-index-migration'
-import { UploadsTableMigration1719920282097 } from './1719920282097-uploads-table-migration'
+import { UploadTableMigration1719920282098 } from './1719920282098-upload-table-migration'
 
 export {
   IndexMigration1719321106834,
   InitialMigration1716477284299,
-  UploadsTableMigration1719920282097,
+  UploadTableMigration1719920282098,
 }

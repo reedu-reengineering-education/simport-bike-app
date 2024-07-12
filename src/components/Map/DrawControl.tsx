@@ -18,7 +18,9 @@ type DrawControlProps = ConstructorParameters<typeof MapboxDraw>[0] & {
 }
 
 const DrawControl = forwardRef<MapboxDraw, DrawControlProps>((props, ref) => {
+  // @ts-ignore
   const drawRef = useControl<MapboxDraw>(
+    // @ts-ignore
     () => new MapboxDraw(props),
     ({ map }) => {
       props.onCreate && map.on('draw.create', props.onCreate)

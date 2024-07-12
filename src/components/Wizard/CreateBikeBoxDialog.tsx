@@ -6,9 +6,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
+import { createSenseBoxBike } from '@/lib/api/openSenseMapClient'
+import { senseBoxBikeModel } from '@/lib/api/opensensemap-bike-model-factory'
+import { useAuthStore } from '@/lib/store/useAuthStore'
+import useOpenSenseMapAuth from '@/lib/useOpenSenseMapAuth'
+import { Geolocation } from '@capacitor/geolocation'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { InfoIcon, Loader2, Plus } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
+import * as z from 'zod'
 import { Button } from '../ui/button'
 import {
   Form,
@@ -20,21 +28,6 @@ import {
   FormMessage,
 } from '../ui/form'
 import { Input } from '../ui/input'
-
-import { zodResolver } from '@hookform/resolvers/zod'
-import * as z from 'zod'
-
-const formSchema = z.object({
-  name: z.string().min(2).max(50),
-  model: z.string().optional(),
-})
-
-import { createSenseBoxBike } from '@/lib/api/openSenseMapClient'
-import { senseBoxBikeModel } from '@/lib/api/opensensemap-bike-model-factory'
-import { useAuthStore } from '@/lib/store/useAuthStore'
-import useOpenSenseMapAuth from '@/lib/useOpenSenseMapAuth'
-import { Geolocation } from '@capacitor/geolocation'
-import { useTranslation } from 'react-i18next'
 import {
   Select,
   SelectContent,
@@ -43,6 +36,11 @@ import {
   SelectValue,
 } from '../ui/select'
 import { toast } from '../ui/use-toast'
+
+const formSchema = z.object({
+  name: z.string().min(2).max(50),
+  model: z.string(),
+})
 
 export default function CreateBikeBoxDialog() {
   const [open, setOpen] = useState(false)
@@ -58,8 +56,7 @@ export default function CreateBikeBoxDialog() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: '',
-      model: 'default',
+      model: 'atrai',
     },
   })
 
@@ -110,12 +107,13 @@ export default function CreateBikeBoxDialog() {
                   <FormItem>
                     <FormLabel>{t('model')}</FormLabel>
                     <Select
+                      value={field.value}
+                      name={field.name}
                       onValueChange={field.onChange}
-                      defaultValue={field.value}
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue />
+                          <SelectValue onBlur={field.onBlur} ref={field.ref} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>

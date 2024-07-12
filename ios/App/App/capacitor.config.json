@@ -3,7 +3,7 @@
 	"appName": "senseBox:Bike",
 	"webDir": "dist",
 	"server": {
-		"url": "http://192.168.0.220:5173",
+		"url": "http://192.168.2.136:5173",
 		"cleartext": true
 	},
 	"android": {
