@@ -30,7 +30,9 @@
       "download": "Herunterladen",
       "download-failed": "Herunterladen fehlgeschlagen",
       "download-loading": "Herunterladen...",
-      "loading": "Laden..."
+      "loading": "Laden...",
+      "aggregated": "Aggregiert",
+      "raw": "Rohdaten"
     },
     "controls": {
       "connect": "Verbinden",

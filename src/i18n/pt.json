@@ -30,7 +30,9 @@
       "download": "Baixar",
       "download-failed": "Falha ao baixar",
       "download-loading": "Baixando...",
-      "loading": "Carregando..."
+      "loading": "Carregando...",
+      "aggregated": "Agregado",
+      "raw": "Dados brutos"
     },
     "controls": {
       "connect": "Conectar",

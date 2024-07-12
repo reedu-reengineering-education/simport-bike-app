@@ -30,7 +30,9 @@
       "download": "Download",
       "download-failed": "Download failed",
       "download-loading": "Downloading...",
-      "loading": "Loading..."
+      "loading": "Loading...",
+      "aggregated": "Aggregated",
+      "raw": "Raw Data"
     },
     "controls": {
       "connect": "Connect",

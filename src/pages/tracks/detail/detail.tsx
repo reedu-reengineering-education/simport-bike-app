@@ -15,6 +15,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
+import { Badge } from '@/components/ui/badge'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -194,17 +195,26 @@ export default function TrackDetailPage() {
                 )}
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" side="top">
+            <DropdownMenuContent align="start" side="top" className="gap-2">
               <DropdownMenuItem onClick={() => handleExport(CSVExporter)}>
-                CSV
+                {t('tracks.aggregated')}{' '}
+                <Badge className="ml-2" variant={'secondary'}>
+                  .csv
+                </Badge>
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => handleExport(OpenSenseMapExporter)}
               >
-                openSenseMap
+                openSenseMap{' '}
+                <Badge className="ml-2" variant={'secondary'}>
+                  .csv
+                </Badge>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => handleExport(ZipExporter)}>
-                ZIP
+                {t('tracks.raw')}{' '}
+                <Badge className="ml-2" variant={'secondary'}>
+                  .zip
+                </Badge>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
