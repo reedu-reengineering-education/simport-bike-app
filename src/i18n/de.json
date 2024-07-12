@@ -81,6 +81,7 @@
       "humidity": "rel. Luftfeuchtigkeit",
       "accelerometer": "Beschleunigung",
       "surface_classification": "Straßenoberfläche",
+      "surface_anomaly": "Straßenanomalie",
       "distance": "Überholabstand",
       "finedust": "Feinstaub",
       "overtaking": "Überholvorgang"

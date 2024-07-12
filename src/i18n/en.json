@@ -81,6 +81,7 @@
       "humidity": "Relative Humidity",
       "accelerometer": "Acceleration",
       "surface_classification": "Road Surface",
+      "surface_anomaly": "Road Anomaly",
       "distance": "Overtaking Distance",
       "finedust": "Fine Dust",
       "overtaking": "Overtaking Maneuver"

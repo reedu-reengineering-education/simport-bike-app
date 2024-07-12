@@ -81,6 +81,7 @@
       "humidity": "Umidade relativa do ar",
       "accelerometer": "Acelerômetro",
       "surface_classification": "Superfície da estrada",
+      "surface_anomaly": "Anomalia na estrada",
       "distance": "Distância de ultrapassagem",
       "finedust": "Partículas finas",
       "overtaking": "Ultrapassagem"
