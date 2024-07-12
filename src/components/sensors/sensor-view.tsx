@@ -31,7 +31,7 @@ export default function SensorView({
   const { value, historyValues } = useRawSensorValues(characteristic)
 
   const { t } = useTranslation('translation', { keyPrefix: 'phenomena' })
-  const timeframeTreshold = subSeconds(new Date(), 10)
+  const timeframeTreshold = subSeconds(new Date(), 20)
   const timeframeValues = historyValues.filter(
     v => v.timestamp > timeframeTreshold,
   )

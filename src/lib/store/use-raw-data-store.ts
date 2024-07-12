@@ -28,7 +28,7 @@ export const useRawBLEDataStore = create<RawBLEDataStore<number[]>>(set => ({
         ...state.rawBleSensorData,
         [characteristic]: [
           ...(state.rawBleSensorData[characteristic] || []).filter(
-            data => now.getTime() - data.timestamp.getTime() < 15000,
+            data => now.getTime() - data.timestamp.getTime() < 25000,
           ),
           measurement,
         ],
