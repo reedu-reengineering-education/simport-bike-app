@@ -31,7 +31,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import { useTrack } from '@/lib/db/hooks/useTrack'
 import { BaseExporter } from '@/lib/exporter/BaseExporter'
@@ -166,7 +165,6 @@ export default function TrackDetailPage() {
             <Link to="/tracks">{t('tracks.title')}</Link>
           </div>
         )}
-
         {track && (
           <div className="grid gap-8">
             <MeasurementCharts
@@ -176,79 +174,82 @@ export default function TrackDetailPage() {
             />
           </div>
         )}
-
-        <Separator />
-        <div className="flex gap-2">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button disabled={isExporting} className="flex-1">
-                {isExporting && (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    {t('tracks.download-loading')}
-                  </>
-                )}
-                {!isExporting && (
-                  <>
-                    {t('tracks.download')} <FileDownIcon className="h-4 ml-2" />
-                  </>
-                )}
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" side="top" className="gap-2">
-              <DropdownMenuItem onClick={() => handleExport(CSVExporter)}>
-                {t('tracks.aggregated')}{' '}
-                <Badge className="ml-2" variant={'secondary'}>
-                  .csv
-                </Badge>
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => handleExport(OpenSenseMapExporter)}
-              >
-                openSenseMap{' '}
-                <Badge className="ml-2" variant={'secondary'}>
-                  .csv
-                </Badge>
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleExport(ZipExporter)}>
-                {t('tracks.raw')}{' '}
-                <Badge className="ml-2" variant={'secondary'}>
-                  .zip
-                </Badge>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button variant={'destructive'} className="w-full flex-1">
-                {t('tracks.delete')}
-              </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>
-                  {t('tracks.delete-confirmation')}
-                </AlertDialogTitle>
-                <AlertDialogDescription>
-                  {t('tracks.delete-confirmation-description')}
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>{t('tracks.cancel')}</AlertDialogCancel>
-                <AlertDialogAction
-                  onClick={async () => {
-                    await deleteTrack(trackId)
-                    navigate({
-                      to: '/tracks',
-                    })
-                  }}
+        {/* This is the garage for the controls below */}
+        <div className="mb-safe-offset-12" />
+        <div className="fixed bottom-0 left-0 p-4 mb-safe w-full">
+          <div className="p-4 bg-background rounded-md border shadow-sm w-full flex gap-2">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button disabled={isExporting} className="flex-1">
+                  {isExporting && (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      {t('tracks.download-loading')}
+                    </>
+                  )}
+                  {!isExporting && (
+                    <>
+                      {t('tracks.download')}{' '}
+                      <FileDownIcon className="h-4 ml-2" />
+                    </>
+                  )}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" side="top" className="gap-2">
+                <DropdownMenuItem onClick={() => handleExport(CSVExporter)}>
+                  {t('tracks.aggregated')}{' '}
+                  <Badge className="ml-2" variant={'secondary'}>
+                    .csv
+                  </Badge>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => handleExport(OpenSenseMapExporter)}
                 >
+                  openSenseMap{' '}
+                  <Badge className="ml-2" variant={'secondary'}>
+                    .csv
+                  </Badge>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleExport(ZipExporter)}>
+                  {t('tracks.raw')}{' '}
+                  <Badge className="ml-2" variant={'secondary'}>
+                    .zip
+                  </Badge>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant={'destructive'} className="w-full flex-1">
                   {t('tracks.delete')}
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>
+                    {t('tracks.delete-confirmation')}
+                  </AlertDialogTitle>
+                  <AlertDialogDescription>
+                    {t('tracks.delete-confirmation-description')}
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>{t('tracks.cancel')}</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={async () => {
+                      await deleteTrack(trackId)
+                      navigate({
+                        to: '/tracks',
+                      })
+                    }}
+                  >
+                    {t('tracks.delete')}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div>
         </div>
       </div>
     </div>
