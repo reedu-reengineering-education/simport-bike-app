@@ -16,7 +16,7 @@ import { useUploadStore } from './store/useUploadStore'
 import useSenseBox from './useSenseBox'
 
 const useRecordTrack = () => {
-  const [isLoading, _setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const selectedBox = useAuthStore(state => state.selectedBox)
   const values = useSenseBoxValuesStore(state => state.values)
   const valuesRef = useRef<typeof values>()
@@ -64,8 +64,13 @@ const useRecordTrack = () => {
 
     setUploadStart(new Date())
 
-    const intervalId = setInterval(() => {
-      uploadToOpenSenseMap()
+    const intervalId = setInterval(async () => {
+      try {
+        setIsLoading(true)
+        await uploadToOpenSenseMap()
+      } finally {
+        setIsLoading(false)
+      }
     }, interval)
     setIntervalId(intervalId)
 

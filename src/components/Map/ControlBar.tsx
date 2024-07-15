@@ -1,3 +1,4 @@
+import { useAuthStore } from '@/lib/store/useAuthStore'
 import useBLEDevice from '@/lib/useBLE'
 import useRecordTrack from '@/lib/useRecordTrack'
 import {
@@ -18,7 +19,7 @@ const ControlBar = forwardRef<HTMLDivElement>((_, ref) => {
     namePrefix: 'senseBox',
   })
 
-  // const selectedBox = useAuthStore(state => state.selectedBox)
+  const selectedBox = useAuthStore(state => state.selectedBox)
 
   const { isRecording, start, stop, isLoading } = useRecordTrack()
   // const setShowWizardDrawer = useUIStore(state => state.setShowWizardDrawer)
@@ -53,18 +54,23 @@ const ControlBar = forwardRef<HTMLDivElement>((_, ref) => {
         !isRecording ? (
           <Button
             size={'sm'}
-            className="w-full"
+            className="w-full relative"
             onClick={() => start()}
             variant={'secondary'}
           >
             <Circle className="mr-2 h-5 fill-red-500 text-red-500" />
             {t('start')}
+            {selectedBox && (
+              <span className="absolute top-0 right-0 translate-x-1/4 -translate-y-1/4 flex h-3 w-3">
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-teal-500"></span>
+              </span>
+            )}
           </Button>
         ) : (
           <>
             <Button
               size={'sm'}
-              className="w-full"
+              className="w-full relative"
               onClick={() => stop()}
               variant={'secondary'}
             >
@@ -75,6 +81,12 @@ const ControlBar = forwardRef<HTMLDivElement>((_, ref) => {
                 <Square className="mr-2 h-5 fill-red-500 text-red-500" />
               )}
               {t('stop')}
+              {selectedBox && (
+                <span className="absolute top-0 right-0 translate-x-1/4 -translate-y-1/4 flex h-3 w-3">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-teal-500"></span>
+                </span>
+              )}
             </Button>
           </>
         )

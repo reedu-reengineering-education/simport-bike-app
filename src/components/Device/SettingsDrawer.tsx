@@ -12,6 +12,7 @@ import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { Button } from '../ui/button'
 
+import { useAuthStore } from '@/lib/store/useAuthStore'
 import { useUIStore } from '@/lib/store/useUIStore'
 import { Browser } from '@capacitor/browser'
 import { LanguageIcon, LockClosedIcon } from '@heroicons/react/24/outline'
@@ -80,6 +81,9 @@ export default function SettingsDrawer() {
 
   const { setShowWizardDrawer } = useUIStore()
 
+  const isLoggedIn = useAuthStore(state => state.isLoggedIn)
+  const selectedBox = useAuthStore(state => state.selectedBox)
+
   return (
     <Drawer
       open={open}
@@ -98,13 +102,24 @@ export default function SettingsDrawer() {
             <div className="grid gap-4 grid-cols-2">
               <Button
                 variant="secondary"
-                className="justify-start"
+                className="justify-start relative"
                 onClick={() => {
                   setOpen(false)
                   setShowWizardDrawer(true)
                 }}
               >
                 <EarthIcon className="h-4 mr-2" /> openSenseMap
+                <span className="absolute top-0 right-0 translate-x-1/4 -translate-y-1/4 flex h-3 w-3">
+                  {isLoggedIn && selectedBox && (
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-teal-500"></span>
+                  )}
+                  {isLoggedIn && !selectedBox && (
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-orange-300"></span>
+                  )}
+                  {!isLoggedIn && (
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-rose-400"></span>
+                  )}
+                </span>
               </Button>
               <ExclusionZoneDialog />
               <Button

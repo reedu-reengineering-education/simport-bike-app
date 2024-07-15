@@ -2,7 +2,7 @@ import { useRef } from 'react'
 import ControlBar from '../Map/ControlBar'
 import MeasurementsGrid from '../Map/MeasurementsGrid'
 import WizardDrawer from '../Wizard/WizardDrawer'
-import { Drawer, DrawerContent, DrawerFooter } from '../ui/drawer'
+import { Drawer, DrawerContent } from '../ui/drawer'
 import TrajectoryMap from './TrajectoryMap'
 
 // const DRAG_HANDLE_HEIGHT = 8 + 16
@@ -60,14 +60,11 @@ export default function DeviceMapWrapper() {
             //   }
             // }}
           >
-            <>
-              <DrawerContent className="h-full">
-                <div className="mt-2" />
-                <ControlBar ref={controlBarRef} />
-                <MeasurementsGrid ref={drawerContentRef} />
-                <DrawerFooter />
-              </DrawerContent>
-            </>
+            <DrawerContent className="h-full overflow-y-auto">
+              <div className="mt-2" />
+              <ControlBar ref={controlBarRef} />
+              <MeasurementsGrid ref={drawerContentRef} />
+            </DrawerContent>
           </Drawer>
         </div>
       </div>
