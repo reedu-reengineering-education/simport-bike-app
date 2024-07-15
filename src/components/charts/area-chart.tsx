@@ -938,7 +938,7 @@ const AreaChart = React.forwardRef<HTMLDivElement, AreaChartProps>(
                     }}
                     key={category}
                     name={category}
-                    type="natural"
+                    type="basis"
                     dataKey={category}
                     stroke=""
                     strokeWidth={2}
@@ -960,7 +960,7 @@ const AreaChart = React.forwardRef<HTMLDivElement, AreaChartProps>(
                     strokeOpacity={0}
                     key={category}
                     name={category}
-                    type="natural"
+                    type="basis"
                     dataKey={category}
                     stroke="transparent"
                     fill="transparent"
