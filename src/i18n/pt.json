@@ -87,6 +87,13 @@
       "distance": "Distância de ultrapassagem",
       "finedust": "Partículas finas",
       "overtaking": "Ultrapassagem"
+    },
+    "surface": {
+      "asphalt": "Asfalto",
+      "paving": "Pavimentação",
+      "sett": "Paralelepípedo",
+      "compacted": "Compactado",
+      "standing": "Parado"
     }
   }
 }

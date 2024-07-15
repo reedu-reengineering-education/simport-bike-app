@@ -87,6 +87,13 @@
       "distance": "Overtaking Distance",
       "finedust": "Fine Dust",
       "overtaking": "Overtaking Maneuver"
+    },
+    "surface": {
+      "asphalt": "Asphalt",
+      "paving": "Paving",
+      "sett": "Sett",
+      "compacted": "Compacted",
+      "standing": "Standing"
     }
   }
 }

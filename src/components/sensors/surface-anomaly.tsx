@@ -11,7 +11,7 @@ const surfaceAnomaly: Sensor = {
       rawHistoryValuesToData={values =>
         values.map(v => ({ x: v.timestamp, y: v.measurement[0] }))
       }
-      name={'surface-anomaly'}
+      name={'surface_anomaly'}
       unit={''}
       chartProps={{
         index: 'x',

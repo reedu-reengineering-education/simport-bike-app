@@ -87,6 +87,13 @@
       "distance": "Überholabstand",
       "finedust": "Feinstaub",
       "overtaking": "Überholvorgang"
+    },
+    "surface": {
+      "asphalt": "Asphalt",
+      "paving": "Pflaster",
+      "compacted": "Verdichtet",
+      "sett": "Kopfsteinpflaster",
+      "standing": "Stehend"
     }
   }
 }

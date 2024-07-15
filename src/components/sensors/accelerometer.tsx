@@ -1,5 +1,5 @@
-import { AvailableChartColors } from '@/lib/chartUtils'
 import AccelerometerSensor from '@/lib/sensors/accelerometer'
+import { useTranslation } from 'react-i18next'
 import { Sensor } from '.'
 import { CategoryBar } from '../charts/category-bar'
 import SensorView from './sensor-view'
@@ -33,10 +33,10 @@ const accelerometer: Sensor = {
       customComponent={value => {
         const [asphalt, compacted, paving, sett, standing] =
           (value?.measurement as [number, number, number, number, number]) ?? [
-            0, 0, 0,
+            0, 0, 0, 0, 0,
           ]
 
-        AvailableChartColors
+        const { t } = useTranslation('translation', { keyPrefix: 'surface' })
 
         return (
           <div className="flex flex-col justify-around h-full">
@@ -45,31 +45,31 @@ const accelerometer: Sensor = {
                 <div className="rounded-full bg-blue-500 text-xs px-1">
                   {asphalt.toFixed(2)}
                 </div>
-                <span className="text-sm">Asphalt</span>
+                <span className="text-sm">{t('asphalt')}</span>
               </div>
               <div className="flex gap-2 items-center">
                 <div className="rounded-full bg-emerald-500 text-xs px-1">
                   {compacted.toFixed(2)}
                 </div>
-                <span className="text-sm">Compacted</span>
+                <span className="text-sm">{t('compacted')}</span>
               </div>
               <div className="flex gap-2 items-center">
                 <div className="rounded-full bg-violet-500 text-xs px-1">
                   {paving.toFixed(2)}
                 </div>
-                <span className="text-sm">Paving</span>
+                <span className="text-sm">{t('paving')}</span>
               </div>
               <div className="flex gap-2 items-center">
                 <div className="rounded-full bg-amber-500 text-xs px-1">
                   {sett.toFixed(2)}
                 </div>
-                <span className="text-sm">Sett</span>
+                <span className="text-sm">{t('sett')}</span>
               </div>
               <div className="flex gap-2 items-center">
                 <div className="rounded-full bg-gray-500 text-xs px-1">
                   {standing.toFixed(2)}
                 </div>
-                <span className="text-sm">Standing</span>
+                <span className="text-sm">{t('standing')}</span>
               </div>
             </div>
             <CategoryBar
