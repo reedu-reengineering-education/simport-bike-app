@@ -6,6 +6,7 @@ import senseBoxBikeDataSource from '@/lib/db/sources/senseBoxBikeDataSource'
 import { getTitlefromSensorKey } from '@/lib/senseBoxSensorIdMatcher'
 import { useAuthStore } from '@/lib/store/useAuthStore'
 import * as dfd from 'danfojs'
+import { DataFrame } from 'danfojs/dist/danfojs-base'
 import { DataSource, Repository } from 'typeorm'
 
 let connection: DataSource
@@ -70,56 +71,60 @@ export async function exportData(trackId: Track['id']) {
   console.log('--- OSEM --- Unique group numbers: ')
   console.log(uniqueGroupNumbers)
 
-  // get all groups numbers that need to be uploaded
-  // find all in upload table where group_number is not in uniqueGroupNumbers
-
   await initializeConnection()
 
-  const allgrpus = await uploadRepository.find()
-
+  // get all groups numbers that need to be uploaded
+  // find all in upload table where group_number is not in uniqueGroupNumbers
+  const uploadedGroups = await uploadRepository.find()
   const groupsToUpload = uniqueGroupNumbers.filter(
     groupNumber =>
-      !allgrpus.find(upload => upload.group_number === groupNumber),
+      !uploadedGroups.find(upload => upload.group_number === groupNumber),
   )
 
   console.log('--- OSEM --- Groups to upload: ')
   console.log(groupsToUpload)
 
   // get data to upload
-  const dataToUpload = []
+  const dataToUpload: DataFrame[] = []
   for (const groupNumber of groupsToUpload) {
     const groupData = df.query(df['group_number'].eq(groupNumber))
     dataToUpload.push(groupData)
   }
 
-  console.log('--- OSEM --- Data to upload: ')
+  // const CSV_LIMIT = 2500
+  const csv = dataToUpload.map(dfToOsemCSV).join('')
 
-  for (const data of dataToUpload) {
-    const csvData = dfToOsemCSV(data)
+  // for (const uploadData of dataToUpload) {
+  //   const csvData = dfToOsemCSV(uploadData)
 
-    if (!csvData) {
-      console.log('--- OSEM --- No data to upload')
-      continue
-    }
+  //   if (!csvData) {
+  //     console.log('--- OSEM --- No data to upload')
+  //     return
+  //   }
 
-    // upload data
-    console.log('--- OSEM --- Uploading data: ')
-    uploadDataCSV(senseBox, csvData)
+  // upload data
+  console.log('--- OSEM --- Uploading data: ')
+  const uploadSuccess = await uploadDataCSV(senseBox, csv)
 
-    const uploadBuffer = dataToUpload.map(data => {
-      const upload = new Upload()
-      upload.uploaded = true
-      upload.group_number = data['group_number'].values[0] as number
-      return upload
-    })
-
-    // save data to uploads table
-    await senseBoxBikeDataSource.dataSource.transaction(async manager => {
-      for (const upload of uploadBuffer) {
-        await manager.save(upload)
-      }
-    })
+  if (!uploadSuccess) {
+    console.log('--- OSEM --- Upload failed')
+    return
   }
+
+  const uploadBuffer = dataToUpload.map(data => {
+    const upload = new Upload()
+    upload.uploaded = true
+    upload.group_number = data['group_number'].values[0] as number
+    return upload
+  })
+
+  // save data to uploads table
+  await senseBoxBikeDataSource.dataSource.transaction(async manager => {
+    for (const upload of uploadBuffer) {
+      await manager.save(upload)
+    }
+  })
+  // }
 }
 
 export function dfToOsemCSV(df: dfd.DataFrame) {
@@ -165,6 +170,7 @@ export function dfToOsemCSV(df: dfd.DataFrame) {
 
     for (const column of variableColumns) {
       const value = (row as number[])[columns.indexOf(column)]
+      console.log(value)
       if (value === null || value === undefined || isNaN(value)) {
         console.log('--- OSEM --- Skipping row because of missing value')
         continue
@@ -186,7 +192,7 @@ export function dfToOsemCSV(df: dfd.DataFrame) {
 
       // anotherSensorId,value,RFC 3339-timestamp,longitude,latitude
 
-      csvString += `${sensorId},${value.toFixed(4)},${utcDate},${longitude},${latitude}\n`
+      csvString += `${sensorId},${value.toFixed(2)},${utcDate},${longitude},${latitude}\n`
     }
   }
 
