@@ -12,7 +12,8 @@ import {
   DialogTrigger,
 } from '../ui/dialog'
 
-import { bbox, featureCollection } from '@turf/turf'
+import bbox from '@turf/bbox'
+import { featureCollection } from '@turf/helpers'
 import { EarthLock } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { MapRef } from 'react-map-gl'

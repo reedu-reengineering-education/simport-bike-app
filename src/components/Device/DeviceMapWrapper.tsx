@@ -60,8 +60,7 @@ export default function DeviceMapWrapper() {
             //   }
             // }}
           >
-            <DrawerContent className="h-full overflow-y-auto">
-              <div className="mt-2" />
+            <DrawerContent className="h-full">
               <ControlBar ref={controlBarRef} />
               <MeasurementsGrid ref={drawerContentRef} />
             </DrawerContent>

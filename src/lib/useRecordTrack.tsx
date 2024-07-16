@@ -119,56 +119,8 @@ const useRecordTrack = () => {
 
     if (!selectedBox || !lcurrentTrackIdRef.current) {
       return
-      // throw new Error('No box selected.')
     }
     exportData(lcurrentTrackIdRef.current)
-    // const uploader = OpenSenseMapLiveExporter.getInstance(currentTrackId)
-    // await uploader.export()
-
-    // if (!valuesRef.current) {
-    //   throw new Error('No values.')
-    // }
-
-    // const data = valuesRef.current
-    //   .filter(
-    //     record => !isInExclusionZone(point([record.gps_lng!, record.gps_lat!])),
-    //   )
-    //   .flatMap(record => match(selectedBox, record))
-    //   .map(record => ({
-    //     ...record,
-    //     value: record.value.toFixed(2),
-    //   }))
-    //   .slice(-2500) // max data to upload
-
-    // let filteredData = data
-
-    // if (lastUploadRef.current && uploadStartRef.current) {
-    //   filteredData = data.filter(
-    //     record =>
-    //       new Date(record.createdAt).getTime() >
-    //         uploadStartRef.current!.getTime() &&
-    //       new Date(record.createdAt).getTime() >
-    //         lastUploadRef.current!.getTime(),
-    //   )
-    // }
-
-    // if (filteredData.length === 0) {
-    //   console.log('No new data to upload.')
-    //   return
-    // }
-
-    // try {
-    //   setIsLoading(true)
-    //   await uploadData(selectedBox, filteredData)
-    //   const maxTimestamp = new Date(
-    //     Math.max(...data.map(record => new Date(record.createdAt).getTime())),
-    //   )
-    //   setLastUpload(maxTimestamp)
-    // } catch (error) {
-    //   console.error(error)
-    // } finally {
-    //   setIsLoading(false)
-    // }
   }
 
   return { isRecording: intervalId !== undefined, isLoading, start, stop }

@@ -26,7 +26,7 @@ export default function TrajectoryMap() {
       mapRef.current?.flyTo({
         center,
         zoom,
-        pitch: 45,
+        pitch: 55,
       })
     }
   }, [trajectory])

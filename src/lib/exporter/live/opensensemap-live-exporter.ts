@@ -3,8 +3,10 @@ import getAggregatedData from '@/lib/db/aggregation'
 import { Track } from '@/lib/db/entities'
 import { Upload } from '@/lib/db/entities/upload'
 import senseBoxBikeDataSource from '@/lib/db/sources/senseBoxBikeDataSource'
+import { isInExclusionZone } from '@/lib/exclusion-zone'
 import { getTitlefromSensorKey } from '@/lib/senseBoxSensorIdMatcher'
 import { useAuthStore } from '@/lib/store/useAuthStore'
+import { point } from '@turf/helpers'
 import * as dfd from 'danfojs'
 import { DataFrame } from 'danfojs/dist/danfojs-base'
 import { DataSource, Repository } from 'typeorm'
@@ -161,6 +163,13 @@ export function dfToOsemCSV(df: dfd.DataFrame) {
     if (!latitude || !longitude) {
       console.log(
         '--- OSEM --- Skipping row because of missing latitude or longitude',
+      )
+      continue
+    }
+
+    if (isInExclusionZone(point([longitude, latitude]))) {
+      console.log(
+        '--- OSEM --- Skipping row because it is in the exclusion zone',
       )
       continue
     }

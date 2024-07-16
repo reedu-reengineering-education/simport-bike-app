@@ -27,10 +27,7 @@ const ControlBar = forwardRef<HTMLDivElement>((_, ref) => {
   const { t } = useTranslation('translation', { keyPrefix: 'controls' })
 
   return (
-    <div
-      className="flex w-full justify-between gap-2 p-2 pb-safe-or-4"
-      ref={ref}
-    >
+    <div className="flex w-full justify-between gap-2 p-2 py-4" ref={ref}>
       <SettingsDrawer />
       {!isConnected ? (
         <div className="mx-auto flex w-full max-w-xl rounded-md bg-secondary">

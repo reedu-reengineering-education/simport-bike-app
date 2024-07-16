@@ -1,4 +1,4 @@
-import { inside } from '@turf/turf'
+import { booleanPointInPolygon } from '@turf/boolean-point-in-polygon'
 import { useExclusionZoneStore } from './store/useExclusionZoneStore'
 
 export function isInExclusionZone(point: GeoJSON.Feature<GeoJSON.Point>) {
@@ -7,6 +7,6 @@ export function isInExclusionZone(point: GeoJSON.Feature<GeoJSON.Point>) {
   if (ez.features.length === 0) return false
 
   return ez.features.some(feature => {
-    return inside(point, feature)
+    return booleanPointInPolygon(point, feature)
   })
 }
