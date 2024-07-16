@@ -187,11 +187,12 @@ export async function createSenseBoxBike(
   longitude: number,
   model: senseBoxBikeModel = 'default',
 ) {
+  const groupTags = model === 'atrai' ? ['bike', 'ATRAI'] : ['bike']
   const boxData = senseBoxBikeModelFactory(
     name,
     longitude,
     latitude,
-    undefined,
+    groupTags,
     model,
   )
   const response = await axiosApiInstance.post('/boxes', boxData)

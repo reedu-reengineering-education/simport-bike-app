@@ -4,14 +4,14 @@ export const senseBoxBikeModelFactory = (
   name: string,
   longitude: number,
   latitude: number,
-  grouptag?: string,
+  grouptags?: string[],
   model: senseBoxBikeModel = 'default',
 ) => {
   const baseProperties = {
     name: name,
     exposure: 'mobile',
     location: [longitude, latitude],
-    grouptag: [grouptag ?? 'bike'],
+    grouptag: grouptags ?? ['bike'],
   }
   return {
     ...baseProperties,
