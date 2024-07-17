@@ -1,4 +1,4 @@
-name: Build Next.js App
+name: Build Web App
 
 on:
   # Trigger the workflow on push or pull request,
