@@ -14,7 +14,7 @@ interface SettingsStoreInterface {
 export const useSettingsStore = create<SettingsStoreInterface>()(
   persist(
     set => ({
-      uploadInterval: 10,
+      uploadInterval: 30,
       setUploadInterval: uploadInterval => set({ uploadInterval }),
       useSenseBoxGPS: false,
       setUseSenseBoxGPS: useSenseBoxGPS => set({ useSenseBoxGPS }),

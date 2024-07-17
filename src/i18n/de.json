@@ -1,0 +1,103 @@
+{
+  "translation": {
+    "settings": {
+      "title": "Einstellungen",
+      "app-settings-title": "App-Einstellungen",
+      "privacy": "Datenschutz",
+      "dark": "Dunkles Thema",
+      "light": "Helles Thema",
+      "language": "Sprache",
+      "record-settings-title": "Aufnahmeeinstellungen",
+      "smartphone-gps": "Smartphone-GPS",
+      "smartphone-gps-desc": "Verwenden Sie das GPS Ihres Smartphones, um Ihren Standort zu verfolgen.",
+      "reduced-motion": "Bewegung reduzieren",
+      "reduced-motion-desc": "Reduzieren Sie Bewegungen und Animationen in der App.",
+      "save": "Speichern",
+      "private-zones": {
+        "title": "Private Zonen",
+        "description": "Private Zonen sind Bereiche, in denen Ihr Standort nicht verfolgt wird.",
+        "save": "Speichern"
+      }
+    },
+    "tracks": {
+      "title": "Strecken",
+      "no-tracks": "Keine Strecken verfügbar.",
+      "not-found": "Strecke nicht gefunden",
+      "delete": "Löschen",
+      "delete-confirmation": "Möchten Sie diese Strecke wirklich löschen?",
+      "delete-confirmation-description": "Diese Aktion kann nicht rückgängig gemacht werden.",
+      "cancel": "Abbrechen",
+      "download": "Herunterladen",
+      "download-failed": "Herunterladen fehlgeschlagen",
+      "download-loading": "Herunterladen...",
+      "loading": "Laden...",
+      "aggregated": "Aggregiert",
+      "raw": "Rohdaten"
+    },
+    "controls": {
+      "connect": "Verbinden",
+      "disconnect": "Trennen",
+      "start": "Aufzeichnen",
+      "stop": "Stop"
+    },
+    "notifications": {
+      "track-saved": {
+        "title": "Strecke gespeichert",
+        "description": "Ihre Strecke wurde erfolgreich gespeichert.",
+        "action": "Anzeigen"
+      },
+      "track-exported": {
+        "title": "Strecke exportiert",
+        "description": "Datei wurde in Dokumente exportiert"
+      }
+    },
+    "opensensemap": {
+      "login": "Anmelden",
+      "register": "Registrieren",
+      "email": "E-Mail",
+      "password": "Passwort",
+      "login-action": "Anmelden",
+      "login-failed": "Anmeldung fehlgeschlagen",
+      "password-no-match": "Passwörter stimmen nicht überein",
+      "register-action": "Registrieren",
+      "register-failed": "Registrierung fehlgeschlagen",
+      "name": "Name",
+      "password-repeat": "Passwort wiederholen",
+      "select-box": "senseBox auswählen",
+      "create-sensebox-bike-dialog": {
+        "trigger": "Neue senseBox:Bike erstellen",
+        "failed-title": "Fehler",
+        "failed-description": "Fehler beim Erstellen der senseBox:bike",
+        "title": "Neue senseBox:bike",
+        "model": "Modell",
+        "default": "Standard",
+        "atrai": "ATRAI",
+        "name": "Name",
+        "description": "Der Name der senseBox:bike wird auf der openSenseMap angezeigt.",
+        "position-info": "Die Position der senseBox:bike wird automatisch von Ihrem Smartphone übernommen.",
+        "create": "Erstellen"
+      },
+      "next": "Weiter",
+      "edit": "Bearbeiten",
+      "linked-sensebox": "Verknüpfte senseBox",
+      "okay": "Okay"
+    },
+    "phenomena": {
+      "temperature": "Temperatur",
+      "humidity": "rel. Luftfeuchtigkeit",
+      "accelerometer": "Beschleunigung",
+      "surface_classification": "Straßenoberfläche",
+      "surface_anomaly": "Straßenanomalie",
+      "distance": "Überholabstand",
+      "finedust": "Feinstaub",
+      "overtaking": "Überholvorgang"
+    },
+    "surface": {
+      "asphalt": "Asphalt",
+      "paving": "Pflaster",
+      "compacted": "Verdichtet",
+      "sett": "Kopfsteinpflaster",
+      "standing": "Stehend"
+    }
+  }
+}

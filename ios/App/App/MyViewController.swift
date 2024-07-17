@@ -16,7 +16,7 @@ class MyViewController: CAPBridgeViewController {
 
         // Do any additional setup after loading the view.
     }
-    
+
 
     /*
     // MARK: - Navigation

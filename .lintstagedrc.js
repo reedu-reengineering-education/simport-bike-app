@@ -1,10 +1,10 @@
 const path = require('path')
 
-const buildEslintCommand = filenames =>
-  `next lint --fix --file ${filenames
+const buildBiomeFixCommand = filenames =>
+  `biome check --apply --no-errors-on-unmatched ${filenames
     .map(f => path.relative(process.cwd(), f))
-    .join(' --file ')}`
+    .join(' ')}`
 
 module.exports = {
-  '*.{js,jsx,ts,tsx}': [buildEslintCommand],
+  '*.{js,jsx,ts,tsx}': [buildBiomeFixCommand],
 }

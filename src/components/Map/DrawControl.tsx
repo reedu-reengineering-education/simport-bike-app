@@ -1,5 +1,3 @@
-'use client'
-
 import MapboxDraw from '@mapbox/mapbox-gl-draw'
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
 import { useControl } from 'react-map-gl'
@@ -20,7 +18,9 @@ type DrawControlProps = ConstructorParameters<typeof MapboxDraw>[0] & {
 }
 
 const DrawControl = forwardRef<MapboxDraw, DrawControlProps>((props, ref) => {
+  // @ts-ignore
   const drawRef = useControl<MapboxDraw>(
+    // @ts-ignore
     () => new MapboxDraw(props),
     ({ map }) => {
       props.onCreate && map.on('draw.create', props.onCreate)

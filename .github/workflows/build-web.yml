@@ -1,4 +1,4 @@
-name: Build Next.js App
+name: Build Web App
 
 on:
   # Trigger the workflow on push or pull request,
@@ -20,7 +20,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [20.x]
 
     steps:
       - name: Check out Git repository

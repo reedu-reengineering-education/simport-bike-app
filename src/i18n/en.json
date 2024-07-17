@@ -1,0 +1,103 @@
+{
+  "translation": {
+    "settings": {
+      "title": "Settings",
+      "app-settings-title": "App Settings",
+      "privacy": "Privacy",
+      "dark": "Dark Theme",
+      "light": "Light Theme",
+      "language": "Language",
+      "record-settings-title": "Record Settings",
+      "smartphone-gps": "Smartphone GPS",
+      "smartphone-gps-desc": "Use your smartphone's GPS to track your location.",
+      "reduced-motion": "Reduced Motion",
+      "reduced-motion-desc": "Reduce motion and animations in the app.",
+      "save": "Save",
+      "private-zones": {
+        "title": "Private Zones",
+        "description": "Private zones are areas where your location is not tracked.",
+        "save": "Save"
+      }
+    },
+    "tracks": {
+      "title": "Tracks",
+      "no-tracks": "No tracks available.",
+      "not-found": "Track not found",
+      "delete": "Delete",
+      "delete-confirmation": "Are you sure you want to delete this track?",
+      "delete-confirmation-description": "This action cannot be undone.",
+      "cancel": "Cancel",
+      "download": "Download",
+      "download-failed": "Download failed",
+      "download-loading": "Downloading...",
+      "loading": "Loading...",
+      "aggregated": "Aggregated",
+      "raw": "Raw Data"
+    },
+    "controls": {
+      "connect": "Connect",
+      "disconnect": "Disconnect",
+      "start": "Start",
+      "stop": "Stop"
+    },
+    "notifications": {
+      "track-saved": {
+        "title": "Track Saved",
+        "description": "Your track has been successfully saved.",
+        "action": "View"
+      },
+      "track-exported": {
+        "title": "Track Exported",
+        "description": "File has been exported to Documents"
+      }
+    },
+    "opensensemap": {
+      "login": "Login",
+      "register": "Register",
+      "email": "Email",
+      "password": "Password",
+      "login-action": "Login",
+      "login-failed": "Login failed",
+      "password-no-match": "Passwords do not match",
+      "register-action": "Register",
+      "register-failed": "Registration failed",
+      "name": "Name",
+      "password-repeat": "Repeat Password",
+      "select-box": "Select senseBox",
+      "create-sensebox-bike-dialog": {
+        "trigger": "Create New senseBox:Bike",
+        "failed-title": "Error",
+        "failed-description": "Failed to create senseBox:bike",
+        "title": "New senseBox:bike",
+        "model": "Model",
+        "default": "Default",
+        "atrai": "ATRAI",
+        "name": "Name",
+        "description": "The name of the senseBox:bike will be displayed on the openSenseMap.",
+        "position-info": "The position of the senseBox:bike will be automatically taken from your smartphone.",
+        "create": "Create"
+      },
+      "next": "Next",
+      "edit": "Edit",
+      "linked-sensebox": "Linked senseBox",
+      "okay": "Okay"
+    },
+    "phenomena": {
+      "temperature": "Temperature",
+      "humidity": "Relative Humidity",
+      "accelerometer": "Acceleration",
+      "surface_classification": "Road Surface",
+      "surface_anomaly": "Road Anomaly",
+      "distance": "Overtaking Distance",
+      "finedust": "Fine Dust",
+      "overtaking": "Overtaking Maneuver"
+    },
+    "surface": {
+      "asphalt": "Asphalt",
+      "paving": "Paving",
+      "sett": "Sett",
+      "compacted": "Compacted",
+      "standing": "Standing"
+    }
+  }
+}

@@ -1,21 +1,36 @@
-'use client'
-
 import { useSettingsStore } from '@/lib/store/useSettingsStore'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Cog, ExternalLinkIcon } from 'lucide-react'
+import {
+  Cog,
+  EarthIcon,
+  ExternalLinkIcon,
+  MoonIcon,
+  SunIcon,
+} from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { Button } from '../ui/button'
 
+import { useAuthStore } from '@/lib/store/useAuthStore'
+import { useUIStore } from '@/lib/store/useUIStore'
+import { Browser } from '@capacitor/browser'
+import { LanguageIcon, LockClosedIcon } from '@heroicons/react/24/outline'
+import { useTheme } from 'next-themes'
+import { useTranslation } from 'react-i18next'
 import {
   Drawer,
   DrawerContent,
   DrawerFooter,
-  DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
 } from '../ui/drawer'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '../ui/dropdown-menu'
 import {
   Form,
   FormControl,
@@ -24,7 +39,6 @@ import {
   FormItem,
   FormLabel,
 } from '../ui/form'
-import { Slider } from '../ui/slider'
 import { Switch } from '../ui/switch'
 import ExclusionZoneDialog from './ExclusionZoneDialog'
 
@@ -41,8 +55,6 @@ export default function SettingsDrawer() {
   const reducedMotion = useSettingsStore(state => state.reducedMotion)
   const setReducedMotion = useSettingsStore(state => state.setReducedMotion)
 
-  // const { send } = useSenseBox()
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -54,14 +66,6 @@ export default function SettingsDrawer() {
   })
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
-    // send(
-    //   '29BD0A85-51E4-4D3C-914E-126541EB2A5E',
-    //   '60B1D5CE-3539-44D2-BB35-FF2DAABE17FF',
-    //   numbersToDataView([
-    //     values.uploadInterval,
-    //     values.switchUseDeviceGPS ? 1 : 0,
-    //   ]),
-    // )
     useSettingsStore.setState({
       uploadInterval: values.uploadInterval,
       useSenseBoxGPS: !values.switchUseSmartphoneGPS,
@@ -71,6 +75,15 @@ export default function SettingsDrawer() {
   }
   const [open, setOpen] = useState(false)
 
+  const { theme, setTheme } = useTheme()
+
+  const { t, i18n } = useTranslation('translation', { keyPrefix: 'settings' })
+
+  const { setShowWizardDrawer } = useUIStore()
+
+  const isLoggedIn = useAuthStore(state => state.isLoggedIn)
+  const selectedBox = useAuthStore(state => state.selectedBox)
+
   return (
     <Drawer
       open={open}
@@ -78,24 +91,96 @@ export default function SettingsDrawer() {
       onOpenChange={open => setOpen(open)}
     >
       <DrawerTrigger asChild>
-        <Button variant="bold" size={'icon'} onClick={() => setOpen(true)}>
+        <Button variant="secondary" size="sm" onClick={() => setOpen(true)}>
           <Cog className="h-6" />
         </Button>
       </DrawerTrigger>
       <DrawerContent>
-        <div className="mx-auto w-full max-w-sm">
-          <DrawerHeader>
-            <DrawerTitle>Einstellungen</DrawerTitle>
-          </DrawerHeader>
+        <div className="mx-auto w-full max-w-sm max-h-[60vh] overflow-scroll mt-4">
           <div className="flex flex-col justify-end gap-6 p-4">
-            <ExclusionZoneDialog />
+            <DrawerTitle>{t('app-settings-title')}</DrawerTitle>
+            <div className="grid gap-4 grid-cols-2">
+              <Button
+                variant="secondary"
+                className="justify-start relative"
+                onClick={() => {
+                  setOpen(false)
+                  setShowWizardDrawer(true)
+                }}
+              >
+                <EarthIcon className="h-4 mr-2" /> openSenseMap
+                <span className="absolute top-0 right-0 translate-x-1/4 -translate-y-1/4 flex h-3 w-3">
+                  {isLoggedIn && selectedBox && (
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-teal-500"></span>
+                  )}
+                  {isLoggedIn && !selectedBox && (
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-orange-300"></span>
+                  )}
+                  {!isLoggedIn && (
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-rose-400"></span>
+                  )}
+                </span>
+              </Button>
+              <ExclusionZoneDialog />
+              <Button
+                variant="secondary"
+                className="justify-start"
+                onClick={async () =>
+                  await Browser.open({
+                    url: 'https://sensebox.de/sensebox-bike-privacy-policy/',
+                    presentationStyle: 'popover',
+                  })
+                }
+              >
+                <LockClosedIcon className="mr-2 h-4" /> {t('privacy')}
+              </Button>
+              {theme === 'light' ? (
+                <Button
+                  variant="secondary"
+                  className="justify-start"
+                  onClick={() => setTheme('dark')}
+                >
+                  <MoonIcon className="mr-2 h-4" /> {t('dark')}
+                </Button>
+              ) : (
+                <Button
+                  variant="secondary"
+                  onClick={() => setTheme('light')}
+                  className="justify-start"
+                >
+                  <SunIcon className="mr-2 h-4" /> {t('light')}
+                </Button>
+              )}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant={'secondary'} className="justify-start">
+                    <LanguageIcon className="h-4 mr-2" />
+                    {t('language')}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem onClick={() => i18n.changeLanguage('de')}>
+                    🇩🇪 German
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => i18n.changeLanguage('en')}>
+                    🇬🇧 English
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => i18n.changeLanguage('pt')}>
+                    🇵🇹 Portugese
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+
+            <DrawerTitle>{t('record-settings-title')}</DrawerTitle>
+
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(handleSubmit)}
                 className="space-y-8"
               >
                 <div className="space-y-4">
-                  <FormField
+                  {/* <FormField
                     name="uploadInterval"
                     control={form.control}
                     render={({ field }) => (
@@ -121,16 +206,15 @@ export default function SettingsDrawer() {
                         </FormControl>
                       </FormItem>
                     )}
-                  />
+                  /> */}
                   <FormField
                     name="switchUseSmartphoneGPS"
                     control={form.control}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Smartphone GPS</FormLabel>
+                        <FormLabel>{t('smartphone-gps')}</FormLabel>
                         <FormDescription>
-                          Anstelle des senseBox GPS Moduls das GPS des
-                          Smartphones verwenden
+                          {t('smartphone-gps-desc')}
                         </FormDescription>
                         <FormControl>
                           <Switch
@@ -146,9 +230,9 @@ export default function SettingsDrawer() {
                     control={form.control}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Reduced Motion</FormLabel>
+                        <FormLabel>{t('reduced-motion')}</FormLabel>
                         <FormDescription>
-                          Enable this setting to reduce animations
+                          {t('reduced-motion-desc')}
                         </FormDescription>
                         <FormControl>
                           <Switch
@@ -160,7 +244,7 @@ export default function SettingsDrawer() {
                     )}
                   />
                 </div>
-                <Button type="submit">Speichern</Button>
+                <Button type="submit">{t('save')}</Button>
               </form>
             </Form>
           </div>
@@ -172,6 +256,7 @@ export default function SettingsDrawer() {
                 className="gap-0.25 flex items-center text-xs text-muted-foreground"
                 href="https://opensensemap.org"
                 target="_blank"
+                rel="noreferrer"
               >
                 openSenseMap
                 <ExternalLinkIcon className="ml-1 h-3 w-3" />
@@ -180,6 +265,7 @@ export default function SettingsDrawer() {
                 className="gap-0.25 flex items-center text-xs text-muted-foreground"
                 href="https://reedu.de"
                 target="_blank"
+                rel="noreferrer"
               >
                 re:edu
                 <ExternalLinkIcon className="ml-1 h-3 w-3" />
@@ -188,10 +274,6 @@ export default function SettingsDrawer() {
           </div>
         </DrawerFooter>
       </DrawerContent>
-      {/* <div className="mx-auto max-w-md overflow-y-auto">
-        <p className="mb-4 font-medium">Einstellungen</p>
-
-      </div> */}
     </Drawer>
   )
 }

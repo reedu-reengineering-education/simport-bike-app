@@ -1,27 +1,54 @@
-'use client'
+import 'mapbox-gl/dist/mapbox-gl.css'
+import { useTheme } from 'next-themes'
+import { forwardRef, useEffect, useRef } from 'react'
+import { MapProps, MapRef, Map as ReactMap } from 'react-map-gl'
 
-import { MapProps, MapRef, Map as ReactMap } from 'react-map-gl/maplibre'
-import 'maplibre-gl/dist/maplibre-gl.css'
-import { forwardRef } from 'react'
-import { useThemeDetector } from '@/lib/useThemeDetector'
-
-const Map = forwardRef<MapRef, MapProps>(
+const InteractiveMap = forwardRef<MapRef, MapProps>(
   ({ children, mapStyle, ...props }, ref) => {
-    const isDarkTheme = useThemeDetector()
+    const { theme } = useTheme()
 
-    const basemap = isDarkTheme ? 'dataviz-dark' : 'streets-v2'
+    const localRef = useRef<MapRef>(null)
+    const mapRef = ref || localRef
+
+    useEffect(() => {
+      // @ts-ignore
+      if (!mapRef.current) return
+
+      // @ts-ignore
+      // onMapLoad({ target: mapRef.current })
+    }, [theme])
+
+    // const onMapLoad = (e: mapboxgl.MapboxEvent<undefined>) => {
+    //   if (!e.target) return
+
+    //   if (!e.target.isStyleLoaded()) return
+
+    //   // @ts-ignore
+    //   e.target.setConfigProperty(
+    //     'basemap',
+    //     'lightPreset',
+    //     theme === 'dark' ? 'night' : '',
+    //   )
+    // }
 
     return (
       // @ts-ignore
       <ReactMap
         mapStyle={
-          mapStyle ||
-          `https://api.maptiler.com/maps/${basemap}/style.json?key=DT8RRRX6sOuzQrcuhKuE`
+          mapStyle || theme === 'dark'
+            ? 'mapbox://styles/mapbox/dark-v11'
+            : 'mapbox://styles/mapbox/outdoors-v12'
         }
-        ref={ref}
+        mapboxAccessToken={import.meta.env.VITE_MAPBOX_ACCESS_TOKEN}
+        ref={mapRef}
         style={{
           width: '100%',
           height: '100%',
+        }}
+        // onLoad={onMapLoad}
+        // @ts-ignore
+        projection={{
+          name: 'mercator',
         }}
         {...props}
       >
@@ -31,6 +58,6 @@ const Map = forwardRef<MapRef, MapProps>(
   },
 )
 
-Map.displayName = 'Map'
+InteractiveMap.displayName = 'Map'
 
-export default Map
+export default InteractiveMap

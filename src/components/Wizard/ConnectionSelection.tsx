@@ -1,10 +1,9 @@
-'use client'
-
-import { Button } from '../ui/button'
-import { ArrowLeft, CheckCircle } from 'lucide-react'
-import WizardSlide from './WizardSlide'
 import { useAuthStore } from '@/lib/store/useAuthStore'
+import { ArrowLeft, CheckCircle } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { useSwiper } from 'swiper/react'
+import { Button } from '../ui/button'
+import WizardSlide from './WizardSlide'
 
 export default function ConnectionSelection({
   onClose,
@@ -15,6 +14,8 @@ export default function ConnectionSelection({
 
   const swiper = useSwiper()
 
+  const { t } = useTranslation('translation', { keyPrefix: 'opensensemap' })
+
   return (
     <WizardSlide className="flex h-full w-full flex-col justify-between gap-8">
       <Button
@@ -22,10 +23,10 @@ export default function ConnectionSelection({
         className="w-fit"
         onClick={() => swiper.slidePrev()}
       >
-        <ArrowLeft className="mr-2 w-5" /> Bearbeiten
+        <ArrowLeft className="mr-2 w-5" /> {t('edit')}
       </Button>
 
-      <p className="font-medium">Verknüpfte Box</p>
+      <p className="font-medium">{t('linked-sensebox')}</p>
       <div className="flex items-center gap-2">
         <CheckCircle className="mr-2 h-5 w-5 text-green-500" />
         {selectedBox?.name}
@@ -36,7 +37,7 @@ export default function ConnectionSelection({
           onClose()
         }}
       >
-        OK
+        {t('okay')}
       </Button>
     </WizardSlide>
   )

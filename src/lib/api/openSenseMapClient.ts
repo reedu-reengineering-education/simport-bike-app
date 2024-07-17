@@ -1,6 +1,10 @@
 import { CapacitorHttp } from '@capacitor/core'
 import axios from 'axios'
 import { BoxEntity, BoxResponse, useAuthStore } from '../store/useAuthStore'
+import {
+  senseBoxBikeModel,
+  senseBoxBikeModelFactory,
+} from './opensensemap-bike-model-factory'
 
 const OSEM_BASE_URL = 'https://api.opensensemap.org'
 
@@ -59,53 +63,45 @@ const refreshAccessToken = async () => {
 }
 
 export async function signin(username: string, password: string) {
-  try {
-    // dont use the axiosApiInstance here, because we dont want to send the token
-    const response = await axiosApiInstanceWithoutInterceptor.post(
-      '/users/sign-in',
-      {
-        email: username,
-        password: password,
-      },
-    )
-    if (response.status === 200) {
-      const { token, refreshToken } = response.data
-      useAuthStore.getState().setToken(token)
-      useAuthStore.getState().setRefreshToken(refreshToken)
-      useAuthStore.getState().setEmail(username)
-      useAuthStore.getState().setIsLoggedIn(true)
-      return response.data
-    } else {
-      throw new Error(response.data.message)
-    }
-  } catch (error) {
-    throw error
+  // dont use the axiosApiInstance here, because we dont want to send the token
+  const response = await axiosApiInstanceWithoutInterceptor.post(
+    '/users/sign-in',
+    {
+      email: username,
+      password: password,
+    },
+  )
+  if (response.status === 200) {
+    const { token, refreshToken } = response.data
+    useAuthStore.getState().setToken(token)
+    useAuthStore.getState().setRefreshToken(refreshToken)
+    useAuthStore.getState().setEmail(username)
+    useAuthStore.getState().setIsLoggedIn(true)
+    return response.data
+  } else {
+    throw new Error(response.data.message)
   }
 }
 
 export async function register(name: string, email: string, password: string) {
-  try {
-    // dont use the axiosApiInstance here, because we dont want to send the token
-    const response = await axiosApiInstanceWithoutInterceptor.post(
-      '/users/register',
-      {
-        name: name,
-        email: email,
-        password: password,
-      },
-    )
-    if (response.status === 201) {
-      const { token, refreshToken } = response.data
-      useAuthStore.getState().setToken(token)
-      useAuthStore.getState().setRefreshToken(refreshToken)
-      useAuthStore.getState().setEmail(email)
-      useAuthStore.getState().setIsLoggedIn(true)
-      return response.data
-    } else {
-      throw new Error(response.data.message)
-    }
-  } catch (error) {
-    throw error
+  // dont use the axiosApiInstance here, because we dont want to send the token
+  const response = await axiosApiInstanceWithoutInterceptor.post(
+    '/users/register',
+    {
+      name: name,
+      email: email,
+      password: password,
+    },
+  )
+  if (response.status === 201) {
+    const { token, refreshToken } = response.data
+    useAuthStore.getState().setToken(token)
+    useAuthStore.getState().setRefreshToken(refreshToken)
+    useAuthStore.getState().setEmail(email)
+    useAuthStore.getState().setIsLoggedIn(true)
+    return response.data
+  } else {
+    throw new Error(response.data.message)
   }
 }
 
@@ -136,6 +132,7 @@ export async function signout() {
     useAuthStore.getState().setRefreshToken('')
     useAuthStore.getState().setEmail('')
     useAuthStore.getState().setIsLoggedIn(false)
+    useAuthStore.getState().setSelectedBox(undefined)
     return true
   } else {
     throw new Error(response.data.message)
@@ -168,96 +165,36 @@ export async function uploadData(box: BoxEntity, data: UploadData) {
   }
 }
 
+export async function uploadDataCSV(box: BoxEntity, data: string) {
+  const response = await CapacitorHttp.post({
+    url: `${OSEM_BASE_URL}/boxes/${box._id}/data`,
+    headers: {
+      Authorization: box.access_token,
+      'Content-Type': 'text/csv',
+    },
+    data,
+  })
+  if (response.status === 201) {
+    return true
+  } else {
+    throw new Error(response.data.message)
+  }
+}
+
 export async function createSenseBoxBike(
   name: string,
   latitude: number,
   longitude: number,
+  model: senseBoxBikeModel = 'default',
 ) {
-  const boxData = {
-    name: name,
-    exposure: 'mobile',
-    location: [longitude, latitude],
-    grouptag: ['bike'],
-    sensors: [
-      {
-        id: 0,
-        icon: 'osem-thermometer',
-        title: 'Temperatur',
-        unit: '°C',
-        sensorType: 'HDC1080',
-      },
-      {
-        id: 1,
-        icon: 'osem-humidity',
-        title: 'rel. Luftfeuchte',
-        unit: '%',
-        sensorType: 'HDC1080',
-      },
-      {
-        id: 2,
-        icon: 'osem-cloud',
-        title: 'PM1',
-        unit: 'µg/m³',
-        sensorType: 'SPS30',
-      },
-      {
-        id: 3,
-        icon: 'osem-cloud',
-        title: 'PM25',
-        unit: 'µg/m³',
-        sensorType: 'SPS30',
-      },
-      {
-        id: 4,
-        icon: 'osem-cloud',
-        title: 'PM4',
-        unit: 'µg/m³',
-        sensorType: 'SPS30',
-      },
-      {
-        id: 5,
-        icon: 'osem-cloud',
-        title: 'PM10',
-        unit: 'µg/m³',
-        sensorType: 'SPS30',
-      },
-      {
-        id: 6,
-        icon: 'osem-signal',
-        title: 'Distanz Links',
-        unit: 'cm',
-        sensorType: 'HC-SR04',
-      },
-      {
-        id: 7,
-        icon: 'osem-shock',
-        title: 'Beschleunigung X',
-        unit: 'm/s²',
-        sensorType: 'MPU-6050',
-      },
-      {
-        id: 8,
-        icon: 'osem-shock',
-        title: 'Beschleunigung Y',
-        unit: 'm/s²',
-        sensorType: 'MPU-6050',
-      },
-      {
-        id: 9,
-        icon: 'osem-shock',
-        title: 'Beschleunigung Z',
-        unit: 'm/s²',
-        sensorType: 'MPU-6050',
-      },
-      {
-        id: 10,
-        icon: 'osem-dashboard',
-        title: 'Geschwindigkeit',
-        unit: 'km/h',
-        sensorType: 'GPS',
-      },
-    ],
-  }
+  const groupTags = model === 'atrai' ? ['bike', 'ATRAI'] : ['bike']
+  const boxData = senseBoxBikeModelFactory(
+    name,
+    longitude,
+    latitude,
+    groupTags,
+    model,
+  )
   const response = await axiosApiInstance.post('/boxes', boxData)
   if (response.status === 201) {
     const { data } = response.data

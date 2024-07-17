@@ -1,5 +1,5 @@
-import { StateStorage } from 'zustand/middleware'
 import { Preferences } from '@capacitor/preferences'
+import { StateStorage } from 'zustand/middleware'
 
 /**
  * @description a custom storage engine for zustand. uses the capacitor preferences plugin. only suitable for small amounts of data

@@ -1,0 +1,103 @@
+{
+  "translation": {
+    "settings": {
+      "title": "Configurações",
+      "app-settings-title": "Configurações do aplicativo",
+      "privacy": "Privacidade",
+      "dark": "Modo escuro",
+      "light": "Modo claro",
+      "language": "Idioma",
+      "record-settings-title": "Configurações de gravação",
+      "smartphone-gps": "GPS do smartphone",
+      "smartphone-gps-desc": "Use o GPS do seu celular para rastrear a sua localização.",
+      "reduced-motion": "Reduzir movimento/animação",
+      "reduced-motion-desc": "Reduzir o movimento e as animações no aplicativo.",
+      "save": "Salvar",
+      "private-zones": {
+        "title": "Zonas restritas",
+        "description": "Zonas restritas são áreas em que sua localização não é rastreada.",
+        "save": "Salvar"
+      }
+    },
+    "tracks": {
+      "title": "Trajetos",
+      "no-tracks": "Nenhum trajeto disponível.",
+      "not-found": "Trajeto não encontrado",
+      "delete": "Deletar",
+      "delete-confirmation": "Tem certeza de que deseja deletar este trajeto?",
+      "delete-confirmation-description": "Esta ação não pode ser desfeita.",
+      "cancel": "Cancelar",
+      "download": "Baixar",
+      "download-failed": "Falha ao baixar",
+      "download-loading": "Baixando...",
+      "loading": "Carregando...",
+      "aggregated": "Agregado",
+      "raw": "Dados brutos"
+    },
+    "controls": {
+      "connect": "Conectar",
+      "disconnect": "Desconectar",
+      "start": "Iniciar",
+      "stop": "Parar"
+    },
+    "notifications": {
+      "track-saved": {
+        "title": "Trajeto salvo",
+        "description": "Seu trajeto foi salvo com sucesso.",
+        "action": "Visualizar"
+      },
+      "track-exported": {
+        "title": "Trajeto exportado",
+        "description": "O arquivo foi exportado para Documentos"
+      }
+    },
+    "opensensemap": {
+      "login": "Entrar",
+      "register": "Registrar",
+      "email": "E-mail",
+      "password": "Senha",
+      "login-action": "Entrar",
+      "login-failed": "Falha no login",
+      "password-no-match": "Senhas não correspondem",
+      "register-action": "Registrar",
+      "register-failed": "Falha no registro",
+      "name": "Nome",
+      "password-repeat": "Repetir a senha",
+      "select-box": "Selecionar a senseBox",
+      "create-sensebox-bike-dialog": {
+        "trigger": "Criar nova senseBox:Bike",
+        "failed-title": "Erro",
+        "failed-description": "Erro ao criar a senseBox:bike",
+        "title": "Nova senseBox:bike",
+        "model": "Modelo",
+        "default": "Padrão",
+        "atrai": "ATRAI",
+        "name": "Nome",
+        "description": "O nome da senseBox:bike será exibido no openSenseMap.",
+        "position-info": "A posição da senseBox:bike será automaticamente obtida do seu celular.",
+        "create": "Criar"
+      },
+      "next": "Próximo",
+      "edit": "Editar",
+      "linked-sensebox": "senseBox conectada",
+      "okay": "Ok"
+    },
+    "phenomena": {
+      "temperature": "Temperatura",
+      "humidity": "Umidade relativa do ar",
+      "accelerometer": "Acelerômetro",
+      "surface_classification": "Superfície do trajeto",
+      "surface_anomaly": "Irregularidade no pavimento",
+      "distance": "Distância de ultrapassagem",
+      "finedust": "Material particulado",
+      "overtaking": "Ultrapassagem"
+    },
+    "surface": {
+      "asphalt": "Asfalto",
+      "paving": "Pavimentação",
+      "sett": "Paralelepípedo",
+      "compacted": "Piso compactado",
+      "standing": "Parado"
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import Map from '@/components/Map/Map'
+import InteractiveMap from '@/components/Map/Map'
 import { useExclusionZoneStore } from '@/lib/store/useExclusionZoneStore'
 import { useEffect, useRef, useState } from 'react'
 import DrawControl from '../Map/DrawControl'
@@ -12,7 +12,10 @@ import {
   DialogTrigger,
 } from '../ui/dialog'
 
-import { bbox, featureCollection } from '@turf/turf'
+import bbox from '@turf/bbox'
+import { featureCollection } from '@turf/helpers'
+import { EarthLock } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { MapRef } from 'react-map-gl'
 
 export default function ExclusionZoneDialog() {
@@ -47,35 +50,38 @@ export default function ExclusionZoneDialog() {
 
   const [open, setOpen] = useState(false)
 
+  const { t } = useTranslation('translation', {
+    keyPrefix: 'settings.private-zones',
+  })
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="secondary" className="w-full">
-          Private Zonen verwalten
+        <Button variant="secondary" className="justify-start">
+          <EarthLock className="h-4 mr-2" />
+          {t('title')}
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Private Zonen</DialogTitle>
-          <DialogDescription>
-            Sie können private Zonen definieren, in denen keine Daten
-            aufgezeichnet werden.
-          </DialogDescription>
-          <DialogDescription className="flex flex-wrap items-center gap-x-1">
-            <p>Tippen Sie auf</p>
-            <div className="flex h-6 w-6 items-center justify-center rounded bg-white">
-              <i className="mapbox-gl-draw_ctrl-draw-btn mapbox-gl-draw_polygon" />
-            </div>
-            <p>um eine Zone zu zeichnen und auf</p>
-            <div className="flex h-6 w-6 items-center justify-center rounded bg-white">
-              <i className="mapbox-gl-draw_ctrl-draw-btn mapbox-gl-draw_trash" />
-            </div>
-            <p>um eine Zone zu löschen.</p>
-          </DialogDescription>
+          <DialogTitle>{t('title')}</DialogTitle>
+          <DialogDescription>{t('description')}</DialogDescription>
+          {/* <DialogDescription className="flex flex-wrap items-center gap-x-1">
+            <p>
+              Tippen Sie auf{' '}
+              <div className=" h-6 w-6 items-center justify-center rounded bg-muted flex">
+                <i className="mapbox-gl-draw_ctrl-draw-btn mapbox-gl-draw_polygon" />
+              </div>{' '}
+              um eine Zone zu zeichnen und auf{' '}
+              <div className=" h-6 w-6 items-center justify-center rounded bg-muted flex">
+                <i className="mapbox-gl-draw_ctrl-draw-btn mapbox-gl-draw_trash" />
+              </div>{' '}
+              um eine Zone zu löschen.
+            </p>
+          </DialogDescription> */}
         </DialogHeader>
         <div className="h-96 w-full overflow-hidden rounded-md">
-          {/* @ts-ignore */}
-          <Map ref={mapRef}>
+          <InteractiveMap ref={mapRef}>
             <DrawControl
               position="top-left"
               displayControlsDefault={false}
@@ -85,7 +91,7 @@ export default function ExclusionZoneDialog() {
               }}
               ref={ref => setDrawRef(ref)}
             />
-          </Map>
+          </InteractiveMap>
         </div>
         <Button
           onClick={() => {
@@ -99,7 +105,7 @@ export default function ExclusionZoneDialog() {
             setOpen(false)
           }}
         >
-          Speichern
+          {t('save')}
         </Button>
       </DialogContent>
     </Dialog>
