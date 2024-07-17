@@ -63,9 +63,8 @@ export class ZipExporter extends BaseExporter implements AbstractExporter {
     }
     const zipString = await zip.generateAsync({ type: 'base64' })
 
-    console.log('ZIP File - writing to filesystem')
     const tempZipFile = await Filesystem.writeFile({
-      path: `track_${format(new Date(track.start), 'yyyy-MM-dd_HH-mm-ss')}.zip`,
+      path: `senseBox_bike_${format(new Date(track.start), 'yyyy-MM-dd_HH-mm-ss')}.zip`,
       data: zipString,
       directory: Directory.Cache,
     })

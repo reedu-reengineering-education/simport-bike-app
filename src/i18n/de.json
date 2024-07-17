@@ -45,6 +45,10 @@
         "title": "Strecke gespeichert",
         "description": "Ihre Strecke wurde erfolgreich gespeichert.",
         "action": "Anzeigen"
+      },
+      "track-exported": {
+        "title": "Strecke exportiert",
+        "description": "Datei wurde in Dokumente exportiert"
       }
     },
     "opensensemap": {

@@ -46,7 +46,7 @@ export default function TracksPage() {
           </Breadcrumb>
         </Navbar>
       </header>
-      <div className="flex-1 overflow-scroll p-4 pb-safe grid gap-14">
+      <div className="flex-1 overflow-scroll p-4 pb-safe-or-4 grid gap-14">
         {loading && <Spinner />}
         {tracks.length === 0 && <p>{t('no-tracks')}</p>}
         {tracks.map(track => (

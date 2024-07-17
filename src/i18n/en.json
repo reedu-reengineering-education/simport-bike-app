@@ -45,6 +45,10 @@
         "title": "Track Saved",
         "description": "Your track has been successfully saved.",
         "action": "View"
+      },
+      "track-exported": {
+        "title": "Track Exported",
+        "description": "File has been exported to Documents"
       }
     },
     "opensensemap": {

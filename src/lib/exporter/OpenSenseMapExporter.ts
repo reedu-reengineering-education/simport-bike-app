@@ -4,6 +4,9 @@ import { AbstractExporter } from './AbstractExporter'
 import { BaseExporter } from './BaseExporter'
 import { dfToOsemCSV } from './live/opensensemap-live-exporter'
 
+import { toast } from '@/components/ui/use-toast'
+import i18n from '@/i18n'
+import { Capacitor } from '@capacitor/core'
 import { Share } from '@capacitor/share'
 import { format } from 'date-fns'
 
@@ -38,9 +41,25 @@ export class OpenSenseMapExporter
 
     const mycsv = dfToOsemCSV(df)
 
+    // if platform is android
+    if (Capacitor.getPlatform() === 'android') {
+      await Filesystem.writeFile({
+        data: mycsv as string,
+        path: `senseBox_bike_osem_${format(metadata.start, 'yyyy-MM-dd_HH-mm')}.csv`,
+        directory: Directory.Documents,
+        encoding: Encoding.UTF8,
+      })
+      toast({
+        title: i18n.t('notifications.track-exported.title'),
+        description: i18n.t('notifications.track-exported.description'),
+      })
+      return
+    }
+
+    // if platform is ios
     const mywriteResult = await Filesystem.writeFile({
       data: mycsv as string,
-      path: `senseBox_bike_${format(metadata.start, 'yyyy-MM-dd_HH-mm')}.csv`,
+      path: `senseBox_bike_osem_${format(metadata.start, 'yyyy-MM-dd_HH-mm')}.csv`,
       directory: Directory.Cache,
       encoding: Encoding.UTF8,
     })

@@ -45,6 +45,10 @@
         "title": "Trajeto salvo",
         "description": "Seu trajeto foi salvo com sucesso.",
         "action": "Visualizar"
+      },
+      "track-exported": {
+        "title": "Trajeto exportado",
+        "description": "O arquivo foi exportado para Documentos"
       }
     },
     "opensensemap": {
