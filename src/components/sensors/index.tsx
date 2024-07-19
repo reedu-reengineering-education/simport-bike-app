@@ -4,6 +4,7 @@ import finedust from './finedust'
 import humidity from './humidity'
 import overtaking from './overtaking'
 import surfaceAnomaly from './surface-anomaly'
+import surfaceClassification from './surface-classification'
 import temperature from './temperature'
 import ultrasonic from './ultrasonic-distance-sensor'
 
@@ -21,6 +22,7 @@ const sensors = [
   finedust,
   overtaking,
   battery,
+  surfaceClassification,
   surfaceAnomaly,
 ]
 

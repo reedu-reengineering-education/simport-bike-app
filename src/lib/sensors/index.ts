@@ -6,6 +6,7 @@ import GPSSensor from './gps'
 import HumiditySensor from './humidity'
 import OvertakingPredictionSensor from './overtaking-prediction'
 import SurfaceAnomalySensor from './surface-anomaly'
+import SurfaceClassificationSensor from './surface-classification'
 import TemperatureSensor from './temperature'
 import UltrasonicDistanceSensor from './ultrasonic-distance'
 
@@ -18,6 +19,7 @@ const sensors = [
   OvertakingPredictionSensor,
   FinedustSensor,
   BatterySensor,
+  SurfaceClassificationSensor,
   SurfaceAnomalySensor,
   GPSSensor,
 ]
