@@ -42,10 +42,7 @@ export default function useBLEDevice(_options: RequestBleDeviceOptions) {
   const disconnect = async () => {
     if (!device) return
 
-    // unsubscribeFromAvailableSensors()
     await disconnectFromDevice()
-    // setDevice(undefined)
-    // setConnected(false)
   }
 
   return {

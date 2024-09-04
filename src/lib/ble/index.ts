@@ -75,14 +75,13 @@ const connectToDeviceWithHandler = async (
       useDisconnectStore.getState().setUserDisconnect(false)
       useBLEStore.getState().setConnected(false)
     } else {
-      toast({ title: '🦈 Device disconnected, attempting to reconnect...' })
+      toast({ title: 'Device disconnected, attempting to reconnect...' })
       await reconnectWithRetry(deviceId)
     }
   }
 
   try {
     await BleClient.connect(deviceId, disconnectHandler)
-    toast({ title: '🦈 Successfully connected to device' })
   } catch (error) {
     console.error('🦈 Initial connection failed:', error)
   }
@@ -95,31 +94,30 @@ const reconnectWithRetry = async (deviceId: string): Promise<void> => {
   while (retries < maxRetries) {
     try {
       toast({
-        title: `🦈 Attempting to reconnect. Retry ${retries + 1} of ${maxRetries}`,
+        title: `Reconnecting... ${retries + 1} / ${maxRetries}`,
       })
       await BleClient.connect(deviceId, undefined, { timeout: 5000 })
 
-      toast({ title: '🦈 Successfully reconnected to device' })
+      toast({ title: 'Successfully reconnected to device' })
       subscribeToAvailableSensors()
       return
     } catch (error) {
-      toast({ title: `🦈 Reconnect attempt ${retries + 1} failed: ${error}` })
+      toast({ title: `Reconnect attempt ${retries + 1} failed: ${error}` })
       retries++
     }
   }
 
-  toast({ title: '🦈 Could not reconnect to device after 5 attempts' })
+  toast({ title: 'Could not reconnect to device after 5 attempts' })
   disconnectFromDevice()
 }
 
 export const disconnectFromDevice = async () => {
-  useDisconnectStore.getState().setUserDisconnect(true)
-
   const deviceId = useBLEStore.getState().device?.deviceId
   if (!deviceId) {
     useDisconnectStore.getState().setUserDisconnect(false)
     throw new Error('No device connected')
   }
+  useDisconnectStore.getState().setUserDisconnect(true)
   console.log('🦈 Disconnecting from device', deviceId)
   console.log(useDisconnectStore.getState().userDisconnect)
   await BleClient.disconnect(deviceId)
